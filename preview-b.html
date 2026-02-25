@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B &#8212; Campus Energy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;overflow:hidden;height:100vh;width:100vw;background:#f5f0e8;color:#0a0a12;-webkit-font-smoothing:antialiased}
+
+/* Diagonal split */
+.bg-left{position:absolute;top:0;left:0;width:52%;height:100%;background:#0a0a12;clip-path:polygon(0 0,100% 0,85% 100%,0 100%);z-index:0}
+.bg-accent{position:absolute;top:0;left:0;width:54%;height:100%;background:linear-gradient(180deg,#00C65B 0%,#007a38 100%);clip-path:polygon(0 0,100% 0,83% 100%,0 100%);z-index:0;opacity:.9}
+.bg-left2{position:absolute;top:0;left:0;width:50%;height:100%;background:#0a0a12;clip-path:polygon(0 0,100% 0,82% 100%,0 100%);z-index:1}
+
+/* Dot pattern on right */
+.dots{position:absolute;top:0;right:0;width:55%;height:100%;z-index:1;background-image:radial-gradient(circle,rgba(0,198,91,.18) 1.5px,transparent 1.5px);background-size:28px 28px;background-position:10px 10px}
+
+.option-tag{position:fixed;top:16px;left:16px;background:#00C65B;color:#000;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:4px;z-index:10;text-transform:uppercase}
+
+.slide{position:relative;z-index:3;width:100%;height:100%;display:flex;align-items:center;padding:60px 80px;gap:60px}
+
+.left-col{flex:1;max-width:520px}
+.right-col{flex:0 0 340px;display:flex;flex-direction:column;gap:16px}
+
+.label{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,96px);line-height:.95;margin-bottom:16px;color:#fff;letter-spacing:2px}
+h1 .green{color:#00C65B}
+.sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:28px;letter-spacing:.5px}
+.divider{width:50px;height:3px;background:#00C65B;border-radius:2px;margin-bottom:24px}
+.meta{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase}
+.meta strong{color:rgba(255,255,255,.55)}
+
+/* Right stat boxes */
+.stat-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 22px;backdrop-filter:blur(8px)}
+.stat-box .num{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#00C65B;letter-spacing:1px;line-height:1}
+.stat-box .lbl{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
+
+/* Right side tag */
+.right-tag{background:#00C65B;color:#000;font-size:11px;font-weight:800;letter-spacing:2px;padding:8px 16px;border-radius:6px;text-transform:uppercase;text-align:center;margin-top:8px}
+
+.circle-bg{position:absolute;right:60px;bottom:40px;width:180px;height:180px;border-radius:50%;border:1px solid rgba(0,198,91,.15);z-index:2}
+.circle-bg2{position:absolute;right:100px;bottom:80px;width:100px;height:100px;border-radius:50%;border:1px solid rgba(0,198,91,.1);z-index:2}
+</style>
+</head>
+<body>
+<div class="bg-accent"></div>
+<div class="bg-left2"></div>
+<div class="dots"></div>
+
+<div class="option-tag">&#9650; Option B &#8212; Campus Energy (Split)</div>
+
+<div class="slide">
+  <div class="left-col">
+    <div class="label">TiKiT Agency &#215; Humanz</div>
+    <h1>FRESH<br><span class="green">DROP</span><br>KSA</h1>
+    <div class="divider"></div>
+    <p class="sub">University Activations &#8212; Mentos KSA 2025</p>
+    <div class="meta"><strong>Confidential</strong> &#8212; Prepared for Humanz</div>
+  </div>
+
+  <div class="right-col">
+    <div class="stat-box">
+      <div class="num">5</div>
+      <div class="lbl">Saudi Cities</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">50+</div>
+      <div class="lbl">Campus Creators</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">650K</div>
+      <div class="lbl">Max Budget (AED)</div>
+    </div>
+    <div class="right-tag">2025 Campaign</div>
+  </div>
+</div>
+
+<div class="circle-bg"></div>
+<div class="circle-bg2"></div>
+</body>
+</html>
