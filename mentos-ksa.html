@@ -16,11 +16,22 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 
-:root{--bg:#0a0a12;--green:#00C65B;--teal:#00D4AA;--white:#FFFFFF;--gray:#8a8a9a;--dark-card:#13131f;--card-border:#1e1e30}
+:root{--bg:#04080f;--green:#00C65B;--teal:#00D4AA;--white:#FFFFFF;--gray:#8a8a9a;--dark-card:#0d1520;--card-border:#1a2535;--purple:#7b2fff}
 
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
 
-.deck{position:relative;width:100%;height:100%}
+/* Aurora background */
+.aurora-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora-blob{position:absolute;border-radius:50%;filter:blur(130px);animation:aurora-drift 14s ease-in-out infinite alternate}
+.aurora-blob-1{width:680px;height:680px;background:radial-gradient(circle,rgba(0,198,91,.5) 0%,transparent 70%);top:-250px;left:-180px;opacity:.55;animation-delay:0s}
+.aurora-blob-2{width:560px;height:560px;background:radial-gradient(circle,rgba(123,47,255,.6) 0%,transparent 70%);bottom:-200px;right:-150px;opacity:.5;animation-delay:-5s}
+.aurora-blob-3{width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,170,.45) 0%,transparent 70%);top:38%;left:52%;opacity:.38;animation-delay:-9s}
+@keyframes aurora-drift{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,35px) scale(1.1)}}
+
+/* Grid overlay */
+.grid-overlay{position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+
+.deck{position:relative;z-index:2;width:100%;height:100%}
 
 .slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;transform:translateX(40px);transition:all .5s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto}
 
@@ -120,7 +131,11 @@ p{font-size:16px;line-height:1.7;color:#c8c8d8;max-width:800px}
 
 .phase-q3{background:rgba(0,212,170,.15);color:var(--teal)}
 
-.phase-q4{background:rgba(130,100,255,.15);color:#9580ff}
+.phase-q4{background:rgba(123,47,255,.15);color:#a580ff}
+
+/* Corner accent decoration */
+.corner-accent{position:fixed;bottom:0;right:0;width:340px;height:340px;border-top:1px solid rgba(0,198,91,.12);border-left:1px solid rgba(0,198,91,.12);border-radius:32px 0 0 0;z-index:3;pointer-events:none}
+.corner-dot{position:fixed;bottom:36px;right:36px;width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 18px var(--green);z-index:4;pointer-events:none}
 
 
 
@@ -246,7 +261,8 @@ p{font-size:16px;line-height:1.7;color:#c8c8d8;max-width:800px}
 
 @media print{
 
-  body{overflow:visible;height:auto;background:#0a0a12!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{overflow:visible;height:auto;background:#04080f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .aurora-bg,.grid-overlay,.corner-accent,.corner-dot{display:none!important}
 
   .conf-badge,.tikit-footer,.nav,.progress-bar,.pdf-btn{display:none!important}
 
@@ -267,6 +283,16 @@ p{font-size:16px;line-height:1.7;color:#c8c8d8;max-width:800px}
 <body>
 
 
+
+<!-- Aurora background layer -->
+<div class="aurora-bg">
+  <div class="aurora-blob aurora-blob-1"></div>
+  <div class="aurora-blob aurora-blob-2"></div>
+  <div class="aurora-blob aurora-blob-3"></div>
+</div>
+<div class="grid-overlay"></div>
+<div class="corner-accent"></div>
+<div class="corner-dot"></div>
 
 <div class="conf-badge">CONFIDENTIAL</div>
 
