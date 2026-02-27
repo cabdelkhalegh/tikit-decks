@@ -237,13 +237,52 @@ p{font-size:16px;line-height:1.7;color:#c8c8d8;max-width:800px}
 
 @media(max-width:768px){
 
-.slide{padding:40px 24px}
+.slide{padding:20px 16px!important;justify-content:flex-start;padding-top:40px}
 
-.two-col,.city-grid{grid-template-columns:1fr}
+.slide h1,.title-slide h1{font-size:32px!important}
 
-.card-grid{grid-template-columns:1fr}
+.slide h2{font-size:24px!important}
 
-.stat-row{gap:20px}
+.slide p,.slide li{font-size:13px!important}
+
+.two-col,.city-grid,.card-grid{grid-template-columns:1fr!important}
+
+.stat-row{flex-direction:column;gap:16px}
+
+.stat{text-align:left}
+
+.stat .num{font-size:32px}
+
+/* Mobile card fixes */
+.card{padding:16px;margin-bottom:12px}
+
+.city-col,.city-col ul,.city-col li{padding:0;margin:0}
+
+/* Fix title slide */
+.title-slide{justify-content:center!important;text-align:center}
+
+.title-slide .tagline{font-size:18px}
+
+/* Fix budget options grid */
+div[style*="grid-template-columns:1fr 1fr 1fr"]{grid-template-columns:1fr!important}
+
+/* Fix rate card */
+div[style*="max-width:860px"]{max-width:100%!important;padding:12px!important}
+
+/* Reduce padding on all elements */
+.subtitle,.label{font-size:11px!important;letter-spacing:2px!important}
+
+.divider{width:40px!important}
+
+.conf-badge,.pdf-btn{font-size:9px;padding:3px 8px}
+
+.nav{bottom:10px;right:10px}
+
+.nav button{width:32px;height:32px;font-size:14px}
+
+.tikit-footer{bottom:8px;left:12px;font-size:9px}
+
+.progress-bar{height:2px}
 
 }
 
