@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qalby Etmaan 2026 — Ramadan Campaign | TiKiT Agency</title>
+<title>Qalby Etmaan 2026 — Ramadan | TiKiT</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -16,91 +16,92 @@
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:'Inter',sans-serif}
 #progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--green2));z-index:1000;transition:width .4s;box-shadow:0 0 20px var(--gold)}
-#counter{position:fixed;top:14px;right:24px;z-index:1000;font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px}
+#counter{position:fixed;top:14px;right:24px;z-index:1000;font-size:14px;color:var(--gold);font-weight:600;letter-spacing:1px}
 
-/* Ramadan decorations */
-.moon{position:fixed;top:30px;right:60px;font-size:48px;opacity:0.15;z-index:0}
-.lantern{position:fixed;bottom:80px;left:40px;font-size:36px;opacity:0.1;z-index:0}
-.stars{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background-image:radial-gradient(2px 2px at 20px 30px,var(--gold2,transparent),transparent),radial-gradient(2px 2px at 40px 70px,var(--gold,transparent),transparent),radial-gradient(1px 1px at 90px 40px,var(--gold2,transparent),transparent),radial-gradient(2px 2px at 130px 80px,var(--gold,transparent),transparent),radial-gradient(1px 1px at 160px 120px,var(--gold2,transparent),transparent);background-size:200px 200px;animation:twinkle 4s ease-in-out infinite}
+.moon{position:fixed;top:30px;right:60px;font-size:56px;opacity:0.12;z-index:0}
+.lantern{position:fixed;bottom:100px;left:50px;font-size:42px;opacity:0.08;z-index:0}
+.stars{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background-image:radial-gradient(2px 2px at 20px 30px,var(--gold2),transparent),radial-gradient(2px 2px at 40px 70px,var(--gold),transparent),radial-gradient(1px 1px at 90px 40px,var(--gold2),transparent),radial-gradient(2px 2px at 130px 80px,var(--gold),transparent),radial-gradient(1px 1px at 160px 120px,var(--gold2),transparent);background-size:200px 200px;animation:twinkle 4s ease-in-out infinite}
 @keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:0.6}}
 
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px 60px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px);z-index:1}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 100px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px);z-index:1}
 .slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-.slide h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,52px);text-align:center;line-height:1.2;margin-bottom:16px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.slide h2{font-size:clamp(18px,2.5vw,34px);font-weight:800;margin-bottom:14px;text-align:center;color:var(--cream)}
-.slide h3{font-size:15px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:4px;margin-bottom:10px;text-align:center}
-.slide p,.slide li{font-size:clamp(13px,1.4vw,16px);line-height:1.75;color:#c8d4c8;max-width:850px;text-align:center}
-.slide ul{list-style:none;text-align:left;max-width:780px}
+.slide h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,72px);text-align:center;line-height:1.15;margin-bottom:24px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slide h2{font-size:clamp(24px,3.2vw,44px);font-weight:800;margin-bottom:20px;text-align:center;color:var(--cream)}
+.slide h3{font-size:18px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:5px;margin-bottom:14px;text-align:center}
+.slide p,.slide li{font-size:clamp(16px,1.8vw,22px);line-height:1.8;color:#d0e0d0;max-width:1000px;text-align:center}
+.slide ul{list-style:none;text-align:left;max-width:900px}
 .slide ul li::before{content:'☪ ';color:var(--gold)}
+.slide ul li{margin-bottom:14px}
 .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl}
 .gold{color:var(--gold)}.green{color:var(--green2)}.cream{color:var(--cream)}.bold{font-weight:700}
-.tag{display:inline-block;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tag{display:inline-block;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
 .tag-gold{background:rgba(212,168,67,.2);color:var(--gold);border:1px solid rgba(212,168,67,.4)}
 .tag-green{background:rgba(76,175,80,.2);color:var(--green3);border:1px solid rgba(76,175,80,.4)}
 .tag-cream{background:rgba(253,248,232,.1);color:var(--cream);border:1px solid rgba(253,248,232,.3)}
 
-#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:12px}
-#nav button{background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.3);color:var(--gold);width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:20px;transition:.25s}
-#nav button:hover{background:var(--gold);color:#0d1f0d;border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,67,.5)}
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:14px}
+#nav button{background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.3);color:var(--gold);width:52px;height:52px;border-radius:50%;cursor:pointer;font-size:24px;transition:.25s}
+#nav button:hover{background:var(--gold);color:#0d1f0d;border-color:var(--gold);box-shadow:0 0 25px rgba(212,168,67,.5)}
 
-.footer{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:#5a6a5a;letter-spacing:2px;text-transform:uppercase}
+.footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:#5a6a5a;letter-spacing:2px;text-transform:uppercase}
 
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:900px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:950px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;max-width:950px}
-.card{background:var(--card);border:1px solid rgba(76,175,80,.15);border-radius:14px;padding:24px 20px;text-align:left}
-.card h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--cream)}
-.card p{font-size:12px;text-align:left;color:#a8b8a8;line-height:1.6}
-.card .num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;width:100%;max-width:1050px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%;max-width:1100px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;width:100%;max-width:1100px}
+.card{background:var(--card);border:1px solid rgba(76,175,80,.15);border-radius:16px;padding:32px 26px;text-align:left}
+.card h4{font-size:18px;font-weight:700;margin-bottom:12px;color:var(--cream)}
+.card p{font-size:15px;text-align:left;color:#b8c8b8;line-height:1.7}
+.card .num{font-family:'Playfair Display',serif;font-size:38px;color:var(--gold);margin-bottom:8px}
 
-.hadith{background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(46,125,50,.08));border:1px solid rgba(212,168,67,.2);border-radius:12px;padding:20px 24px;max-width:800px;margin:12px auto}
-.hadith .arabic{font-family:'Noto Sans Arabic',sans-serif;font-size:15px;color:var(--gold);margin-bottom:10px;direction:rtl;text-align:right}
-.hadith .source{font-size:11px;color:var(--gray);font-style:italic}
+.hadith{background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(46,125,50,.08));border:1px solid rgba(212,168,67,.2);border-radius:14px;padding:26px 32px;max-width:900px;margin:18px auto}
+.hadith .arabic{font-family:'Noto Sans Arabic',sans-serif;font-size:20px;color:var(--gold);margin-bottom:14px;direction:rtl;text-align:right;line-height:1.6}
+.hadith .source{font-size:13px;color:var(--gray);font-style:italic}
+.hadith p{font-size:16px !important;margin-top:14px !important}
 
-.stats-row{display:flex;justify-content:center;gap:50px;margin:25px 0}
+.stats-row{display:flex;justify-content:center;gap:70px;margin:35px 0}
 .stat{text-align:center}
-.stat .n{font-family:'Playfair Display',serif;font-size:44px;color:var(--gold);line-height:1.1}
-.stat .l{font-size:11px;color:#8a9a8a;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.stat .n{font-family:'Playfair Display',serif;font-size:56px;color:var(--gold);line-height:1.1}
+.stat .l{font-size:14px;color:#8a9a8a;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
 
-.phases{display:flex;gap:16px;width:100%;max-width:950px}
-.phase{flex:1;background:var(--card);border-radius:14px;padding:22px 18px;position:relative;overflow:hidden}
-.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phases{display:flex;gap:22px;width:100%;max-width:1100px}
+.phase{flex:1;background:var(--card);border-radius:16px;padding:28px 24px;position:relative;overflow:hidden}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
 .phase.p1::before{background:var(--gold)}.phase.p2::before{background:var(--green2)}.phase.p3::before{background:var(--green3)}
-.phase h4{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--cream)}.phase .dates{font-size:11px;color:var(--gray);margin-bottom:10px}
-.phase ul{list-style:none;font-size:12px;color:#a8b8a8;line-height:1.7}
+.phase h4{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--cream)}.phase .dates{font-size:13px;color:var(--gray);margin-bottom:14px}
+.phase ul{list-style:none;font-size:15px;color:#b8c8b8;line-height:2}
 .phase ul li::before{content:'✦ ';color:var(--gold)}
 
-.outreach-box{background:var(--card);border:1px solid rgba(212,168,67,.25);border-radius:16px;padding:30px 34px;max-width:750px;text-align:left;font-size:13px;line-height:1.9;color:#c8d4c8}
-.outreach-box .subj{color:var(--gold);font-weight:700;font-size:12px;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
-.outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#b8c8b8}
+.outreach-box{background:var(--card);border:1px solid rgba(212,168,67,.25);border-radius:18px;padding:38px 42px;max-width:850px;text-align:left;font-size:16px;line-height:2;color:#d0e0d0}
+.outreach-box .subj{color:var(--gold);font-weight:700;font-size:14px;margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+.outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#c8d8c8}
 
-.why-free{background:linear-gradient(135deg,rgba(46,125,50,.15),rgba(212,168,67,.1));border:1px solid rgba(76,175,80,.3);border-radius:14px;padding:24px;max-width:800px;margin:16px auto}
-.why-free h4{color:var(--green3);font-size:15px;margin-bottom:14px;text-align:center}
-.why-free ul{font-size:13px;line-height:2}
-.why-free li::before{content:'🌙 '}
+.why-free{background:linear-gradient(135deg,rgba(46,125,50,.15),rgba(212,168,67,.1));border:1px solid rgba(76,175,80,.3);border-radius:16px;padding:32px;max-width:950px;margin:22px auto}
+.why-free h4{color:var(--green3);font-size:20px;margin-bottom:18px;text-align:center}
+.why-free ul{font-size:17px;line-height:2.2}
+.why-free li{margin-bottom:16px !important}
 
-.calendar{width:100%;max-width:850px}
-.week{background:var(--card);border-radius:12px;padding:18px;margin-bottom:12px;border:1px solid rgba(76,175,80,.1)}
-.week h4{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px}
-.week-row{display:flex;gap:10px;flex-wrap:wrap}
-.day{background:var(--card2);border-radius:8px;padding:10px 12px;min-width:110px;flex:1}
-.day .d{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
-.day .c{font-size:12px;font-weight:600;color:var(--cream);margin:5px 0 3px}
-.day .t{font-size:10px;color:#8a9a8a}
+.calendar{width:100%;max-width:1000px}
+.week{background:var(--card);border-radius:14px;padding:24px;margin-bottom:16px;border:1px solid rgba(76,175,80,.1)}
+.week h4{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:14px}
+.week-row{display:flex;gap:14px;flex-wrap:wrap}
+.day{background:var(--card2);border-radius:10px;padding:14px 16px;min-width:140px;flex:1}
+.day .d{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.day .c{font-size:15px;font-weight:600;color:var(--cream);margin:8px 0 5px}
+.day .t{font-size:12px;color:#8a9a8a}
 
-.kpi{display:flex;align-items:center;gap:14px;width:100%;max-width:700px;margin:7px 0}
-.kpi-label{width:140px;text-align:right;font-size:12px;font-weight:600;color:#b8c8b8}
-.kpi-bar{flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:11px;overflow:hidden;position:relative}
-.kpi-fill{height:100%;border-radius:11px;background:linear-gradient(90deg,var(--gold),var(--green2));transition:width 1.2s .3s}
-.kpi-val{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#fff}
+.kpi{display:flex;align-items:center;gap:18px;width:100%;max-width:800px;margin:10px 0}
+.kpi-label{width:160px;text-align:right;font-size:15px;font-weight:600;color:#c8d8c8}
+.kpi-bar{flex:1;height:28px;background:rgba(255,255,255,.05);border-radius:14px;overflow:hidden;position:relative}
+.kpi-fill{height:100%;border-radius:14px;background:linear-gradient(90deg,var(--gold),var(--green2));transition:width 1.2s .3s}
+.kpi-val{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#fff}
 
-.comp-card{background:var(--card);border-radius:14px;padding:24px 20px;text-align:center;border:1px solid rgba(76,175,80,.15)}
-.comp-card:hover{border-color:var(--gold);transform:translateY(-2px);transition:.2s}
+.comp-card{background:var(--card);border-radius:16px;padding:30px 24px;text-align:center;border:1px solid rgba(76,175,80,.15)}
+.comp-card:hover{border-color:var(--gold);transform:translateY(-3px);transition:.2s}
 .comp-card.recommended{border:2px solid var(--gold);background:linear-gradient(180deg,rgba(212,168,67,.1),var(--card))}
-.comp-card h4{color:var(--gold);font-size:14px;margin-bottom:6px}
-.comp-card .price{font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);margin:8px 0}
-.comp-card .desc{font-size:11px;color:var(--gray);margin-bottom:14px}
-.comp-card ul{list-style:none;font-size:11px;color:#a8b8a8;text-align:left;line-height:1.9}
+.comp-card h4{color:var(--gold);font-size:17px;margin-bottom:8px}
+.comp-card .price{font-family:'Playfair Display',serif;font-size:32px;color:var(--cream);margin:12px 0}
+.comp-card .desc{font-size:14px;color:var(--gray);margin-bottom:18px}
+.comp-card ul{list-style:none;font-size:14px;color:#b8c8b8;text-align:left;line-height:2.2}
 .comp-card li::before{content:'✓ ';color:var(--green2)}
 </style>
 </head>
@@ -116,9 +117,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <h3>🤲 Ramadan Campaign 2026</h3>
 <h1>قَلبِي إِتْمَان</h1>
 <h1>Qalby Etmaan</h1>
-<p style="font-size:16px;color:var(--green3);margin-top:8px">Community Donation Jar Initiative</p>
-<p style="font-size:15px;color:var(--gold);margin-top:16px">Supporting Orphans in Gaza · Ramadan 2026</p>
-<div style="margin-top:30px">
+<p style="font-size:20px;color:var(--green3);margin-top:12px">Community Donation Jar Initiative</p>
+<p style="font-size:19px;color:var(--gold);margin-top:20px">Supporting Orphans in Gaza · Ramadan 2026</p>
+<div style="margin-top:40px">
 <span class="tag tag-gold">Ramadan</span>
 <span class="tag tag-green">#نجمع_لنغيث</span>
 <span class="tag tag-cream">Free Rewards</span>
@@ -138,7 +139,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="hadith">
 <div class="arabic">كَانَ رَسُولُ اللَّهِ صلى الله عليه وسلم أَجْوَدَ النَّاسِ، وَكَانَ أَجْوَدُ مَا يَكُونُ فِي رَمَضَانَ حِينَ يَلْقَاهُ جِبْرِيلُ</div>
 <div class="source">— Sahih Al Bukhari</div>
-<p style="margin-top:12px;font-size:13px">"The Prophet Muhammad ﷺ was the most generous of all people, and he was most generous in Ramadan when Gabriel met him."</p>
+<p>"The Prophet Muhammad ﷺ was the most generous of all people, and he was most generous in Ramadan when Gabriel met him."</p>
 </div>
 </div>
 
@@ -146,21 +147,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="3">
 <h3>☪ The Evidence</h3>
 <h2>Hadiths That Transform Your Perspective</h2>
-<div style="max-width:850px">
+<div style="max-width:950px">
 <div class="hadith">
 <div class="arabic">صَدَقَةُ رَمَضَانَ أَفْضَلُ الصَّدَقَةِ</div>
 <div class="source">— Jami At Tirmidhi</div>
-<p style="margin-top:8px;font-size:12px">"Charity given in Ramadan is the BEST charity."</p>
+<p>"Charity given in Ramadan is the BEST charity."</p>
 </div>
 <div class="hadith">
 <div class="arabic">وَالصَّدَقَةُ تُطْفِئُ الْخَطِيئَةَ كَمَا يُطْفِئُ الْمَاءُ النَّارَ</div>
 <div class="source">— Jami At Tirmidhi</div>
-<p style="margin-top:8px;font-size:12px">"Charity extinguishes sins just as water extinguishes fire."</p>
+<p>"Charity extinguishes sins just as water extinguishes fire."</p>
 </div>
 <div class="hadith">
 <div class="arabic">ظِلُّ الْمُؤْمِنِ يَوْمَ الْقِيَامَةِ صَدَقَتُهُ</div>
 <div class="source">— Musnad Ahmad</div>
-<p style="margin-top:8px;font-size:12px">"The shade of the believer on the Day of Resurrection is their charity."</p>
+<p>"The shade of the believer on the Day of Resurrection is their charity."</p>
 </div>
 </div>
 </div>
@@ -180,14 +181,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <li><strong>Zero risk, infinite reward</strong> — "Charity does not decrease wealth" (Muslim)</li>
 </ul>
 </div>
-<p style="margin-top:20px;color:var(--gold);font-weight:600">🎯 Your audience is watching. Be the reason they give.</p>
+<p style="margin-top:28px;color:var(--gold);font-weight:700;font-size:20px">🎯 Your audience is watching. Be the reason they give.</p>
 </div>
 
 <!-- SLIDE 5: OBJECTIVES -->
 <div class="slide" data-n="5">
 <h3>🎯 Campaign Objectives</h3>
 <h2>What We're Building Together</h2>
-<div class="grid2" style="margin-top:20px">
+<div class="grid2" style="margin-top:28px">
 <div class="card">
 <h4>🤝 Normalize Daily Giving</h4>
 <p>Transform spare change into lasting impact. Make giving part of daily routine.</p>
@@ -214,7 +215,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="grid2">
 <div class="card" style="border-color:rgba(76,175,80,.3)">
 <h4 class="green">✅ Do Speak</h4>
-<ul style="margin-top:12px;font-size:12px">
+<ul style="margin-top:16px;font-size:15px">
 <li>Dignified, respectful tone</li>
 <li>Family values & togetherness</li>
 <li>Hope & upliftment</li>
@@ -225,7 +226,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 </div>
 <div class="card" style="border-color:rgba(255,100,100,.2)">
 <h4 style="color:#ff8888">❌ Avoid</h4>
-<ul style="margin-top:12px;font-size:12px">
+<ul style="margin-top:16px;font-size:15px">
 <li>Political statements</li>
 <li>Shock/graphic imagery</li>
 <li>Emotional exploitation</li>
@@ -234,14 +235,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 </ul>
 </div>
 </div>
-<p style="margin-top:24px;color:var(--gold);font-weight:600">Hashtag: #نجمع_لنغيث</p>
+<p style="margin-top:32px;color:var(--gold);font-weight:700;font-size:18px">Hashtag: #نجمع_لنغيث</p>
 </div>
 
 <!-- SLIDE 7: CONTENT TYPES -->
 <div class="slide" data-n="7">
 <h3>🎬 Content Direction</h3>
 <h2>What We Need From You</h2>
-<div class="grid3" style="margin-top:20px">
+<div class="grid3" style="margin-top:28px">
 <div class="card" style="text-align:center">
 <h4>📱 Reels</h4>
 <p>60-90 sec. Family setting. Natural, unscripted. Show the jar in your home.</p>
@@ -255,10 +256,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <p>"What I tell my kids about giving" — authentic, personal, relatable.</p>
 </div>
 </div>
-<div class="hadith" style="margin-top:24px">
+<div class="hadith" style="margin-top:32px">
 <div class="arabic">مَنْ فَطَّرَ صَائِمًا كَانَ لَهُ مِثْلُ أَجْرِهِ</div>
 <div class="source">— Sunan At Tirmidhi</div>
-<p style="margin-top:8px;font-size:12px">"Whoever gives iftar to a fasting person gets the same reward." — Your content feeds souls.</p>
+<p>"Whoever gives if person gets the same reward." — Yourtar to a fasting content feeds souls.</p>
 </div>
 </div>
 
@@ -266,7 +267,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="8">
 <h3>📅 Content Calendar</h3>
 <h2>Weeks 1–2</h2>
-<div class="calendar" style="margin-top:16px">
+<div class="calendar" style="margin-top:24px">
 <div class="week">
 <h4>WEEK 1 — Launch Wave</h4>
 <div class="week-row">
@@ -292,7 +293,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="9">
 <h3>🤝 Partnership Models</h3>
 <h2>Choose Your Way to Give</h2>
-<div class="grid3" style="margin-top:20px">
+<div class="grid3" style="margin-top:28px">
 <div class="comp-card">
 <h4>Option A — Pure Sadaqah</h4>
 <div class="price">FREE</div>
@@ -336,7 +337,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="10">
 <h3>📊 Success Metrics</h3>
 <h2>What Success Looks Like</h2>
-<div style="width:100%;max-width:700px;margin-top:16px">
+<div style="width:100%;max-width:800px;margin-top:24px">
 <div class="kpi"><div class="kpi-label">Total Reach</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">TBD</span></div></div></div>
 <div class="kpi"><div class="kpi-label">Engagement Rate</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="4"><span class="kpi-val">≥4%</span></div></div></div>
 <div class="kpi"><div class="kpi-label">Reels Views</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="75"><span class="kpi-val">≥75K</span></div></div></div>
@@ -349,7 +350,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="11">
 <h3>🚀 Ready to Join?</h3>
 <h2>Next Steps</h2>
-<div class="phases" style="margin-top:20px">
+<div class="phases" style="margin-top:28px">
 <div class="phase p1">
 <h4>Phase 1</h4>
 <div class="dates">This Week</div>
@@ -378,10 +379,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 </ul>
 </div>
 </div>
-<div class="hadith" style="margin-top:24px">
+<div class="hadith" style="margin-top:32px">
 <div class="arabic">مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ</div>
 <div class="source">— Sahih Muslim</div>
-<p style="margin-top:8px;font-size:12px">"Charity does not decrease wealth."</p>
+<p>"Charity does not decrease wealth."</p>
 </div>
 </div>
 
@@ -389,36 +390,36 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 <div class="slide" data-n="12">
 <h3>🤲 Your TiKiT Team</h3>
 <h2>Let's Build Barakah Together</h2>
-<div class="grid4" style="margin-top:30px;max-width:800px">
-<div class="card" style="text-align:center;padding:20px">
+<div class="grid4" style="margin-top:40px;max-width:950px">
+<div class="card" style="text-align:center;padding:28px">
 <h4 style="color:var(--gold)">A</h4>
-<p style="font-weight:700;font-size:14px">Alaa Al Aisami</p>
-<p style="font-size:11px;color:var(--gray)">Projects Director</p>
+<p style="font-weight:700;font-size:18px">Alaa Al Aisami</p>
+<p style="font-size:14px;color:var(--gray)">Projects Director</p>
 </div>
-<div class="card" style="text-align:center;padding:20px">
+<div class="card" style="text-align:center;padding:28px">
 <h4 style="color:var(--green2)">Z</h4>
-<p style="font-weight:700;font-size:14px">Zain</p>
-<p style="font-size:11px;color:var(--gray)">Team</p>
+<p style="font-weight:700;font-size:18px">Zain</p>
+<p style="font-size:14px;color:var(--gray)">Team</p>
 </div>
-<div class="card" style="text-align:center;padding:20px">
+<div class="card" style="text-align:center;padding:28px">
 <h4 style="color:var(--gold)">A</h4>
-<p style="font-weight:700;font-size:14px">Areej</p>
-<p style="font-size:11px;color:var(--gray)">Team</p>
+<p style="font-weight:700;font-size:18px">Areej</p>
+<p style="font-size:14px;color:var(--gray)">Team</p>
 </div>
-<div class="card" style="text-align:center;padding:20px">
+<div class="card" style="text-align:center;padding:28px">
 <h4 style="color:var(--green3)">M</h4>
-<p style="font-weight:700;font-size:14px">Mamdouh</p>
-<p style="font-size:11px;color:var(--gray)">Marketing Director</p>
+<p style="font-weight:700;font-size:18px">Mamdouh</p>
+<p style="font-size:14px;color:var(--gray)">Marketing Director</p>
 </div>
 </div>
-<div style="margin-top:40px">
+<div style="margin-top:48px">
 <span class="tag tag-gold">TIKIT AGENCY</span>
 <span class="tag tag-green">DUBAI</span>
 <span class="tag tag-cream">Ramadan 2026</span>
 </div>
-<div class="hadith" style="margin-top:24px;max-width:500px">
+<div class="hadith" style="margin-top:32px;max-width:600px">
 <div class="arabic">رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي</div>
-<p style="margin-top:8px;font-size:11px;color:var(--gray)">"My Lord, keep me and my descendants established in prayer."</p>
+<p>"My Lord, keep me and my descendants established in prayer."</p>
 </div>
 </div>
 
