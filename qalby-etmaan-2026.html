@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qalby Etmaan 2026 — Gaza Orphan Support | TiKiT Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--gold:#d4a843;--teal:#00b4d8;--white:#f0f0f0;--gray:#888;--card:#14141f;--card2:#1a1a2e;--green:#4caf50}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:'Inter',sans-serif}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:1000;transition:width .4s}
+#counter{position:fixed;top:12px;right:24px;z-index:1000;font-size:13px;color:var(--gray);font-weight:600;letter-spacing:1px}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px)}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,56px);text-align:center;line-height:1.15;margin-bottom:20px}
+.slide h2{font-size:clamp(20px,2.8vw,38px);font-weight:800;margin-bottom:18px;text-align:center}
+.slide h3{font-size:18px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;text-align:center}
+.slide p,.slide li{font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:#ccc;max-width:900px;text-align:center}
+.slide ul{list-style:none;text-align:left;max-width:800px}
+.slide ul li::before{content:'▸ ';color:var(--gold)}
+.ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl}
+.gold{color:var(--gold)}.teal{color:var(--teal)}.green{color:var(--green)}.bold{font-weight:700}
+.tag{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tag-gold{background:rgba(212,168,67,.15);color:var(--gold);border:1px solid rgba(212,168,67,.3)}
+.tag-teal{background:rgba(0,180,216,.12);color:var(--teal);border:1px solid rgba(0,180,216,.3)}
+.tag-green{background:rgba(76,175,80,.15);color:var(--green);border:1px solid rgba(76,175,80,.3)}
+
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:12px}
+#nav button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--white);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;transition:.2s}
+#nav button:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+
+.footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;max-width:1000px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%;max-width:1100px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:1100px}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px 24px;text-align:left}
+.card h4{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--white)}
+.card p{font-size:12px;text-align:left;color:#aaa;line-height:1.5}
+.card .num{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);margin-bottom:8px}
+
+.inf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;width:100%;max-width:1000px}
+.inf{background:var(--card);border-radius:12px;padding:16px;text-align:center;border-left:3px solid var(--gold)}
+.inf.tb{border-left-color:var(--teal)}.inf.green{border-left-color:var(--green)}
+.inf .handle{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:2px}
+.inf .name{font-size:11px;color:#999;margin-bottom:4px}
+.inf .foll{font-size:16px;font-weight:800;color:var(--white)}
+.inf .role{font-size:11px;color:#777;margin-top:4px}
+
+.kpi{display:flex;align-items:center;gap:16px;width:100%;max-width:700px;margin:8px 0}
+.kpi-label{width:160px;text-align:right;font-size:13px;font-weight:600;color:#ccc}
+.kpi-bar{flex:1;height:24px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;position:relative}
+.kpi-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,var(--gold),var(--teal));transition:width 1.2s .3s}
+.kpi-val{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#fff}
+
+.phases{display:flex;gap:20px;width:100%;max-width:1000px}
+.phase{flex:1;background:var(--card);border-radius:14px;padding:24px 20px;position:relative}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phase.p1::before{background:var(--gold)}.phase.p2::before{background:var(--teal)}.phase.p3::before{background:var(--green)}
+.phase h4{font-size:15px;font-weight:800;margin-bottom:4px}.phase .dates{font-size:11px;color:var(--gray);margin-bottom:10px}
+.phase ul{list-style:none;font-size:12px;color:#bbb;line-height:1.7}
+.phase ul li::before{content:'→ ';color:var(--gold)}
+
+.calendar{width:100%;max-width:900px}
+.week{background:var(--card);border-radius:12px;padding:20px;margin-bottom:14px}
+.week h4{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px}
+.week-row{display:flex;gap:12px;flex-wrap:wrap}
+.day{background:var(--card2);border-radius:8px;padding:12px 14px;min-width:120px;flex:1}
+.day .d{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.day .c{font-size:13px;font-weight:600;color:var(--white);margin:6px 0 4px}
+.day .t{font-size:11px;color:#999}
+
+.outreach-box{background:var(--card);border:1px solid rgba(212,168,67,.2);border-radius:16px;padding:32px 36px;max-width:750px;text-align:left;font-size:13px;line-height:1.85;color:#ccc}
+.outreach-box .subj{color:var(--gold);font-weight:700;font-size:12px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#bbb}
+
+.stats-row{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.stat{text-align:center}
+.stat .n{font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);line-height:1}
+.stat .l{font-size:12px;color:#888;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:900px;text-align:left}
+.two-col h3{text-align:left;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="counter">1 / 10</div>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide active" data-n="1">
+<h3>Humanitarian Campaign</h3>
+<h1>Qalby Etmaan 2026</h1>
+<p style="font-size:18px;color:#aaa;margin-bottom:8px">Community Donation Jar Initiative</p>
+<p style="color:var(--teal);font-size:16px">Supporting Orphans in Gaza · #نجمع_لنغيث</p>
+<div style="margin-top:40px">
+<span class="tag tag-gold">TIKIT AGENCY</span>
+<span class="tag tag-teal">2026</span>
+</div>
+<div class="footer">Swipe or use arrow keys to navigate</div>
+</div>
+
+<!-- SLIDE 2: OVERVIEW -->
+<div class="slide" data-n="2">
+<h3>The Mission</h3>
+<h2>Every Jar Counts. Every Child Matters.</h2>
+<div class="stats-row">
+<div class="stat"><div class="n">12</div><div class="l">Months</div></div>
+<div class="stat"><div class="n">UAE</div><div class="l">Primary Market</div></div>
+<div class="stat"><div class="n">50+</div><div class="l">Creators</div></div>
+</div>
+<div class="grid2" style="margin-top:30px">
+<div class="card">
+<h4>🎯 Objective</h4>
+<p>Normalize daily giving habits through community donation jars. Support Gaza orphans with consistent, sustainable funding.</p>
+</div>
+<div class="card">
+<h4>💡 Big Idea</h4>
+<p>"Small repeated giving creates long-term protection." — Transform spare change into lasting impact.</p>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 3: GUARDRAILS -->
+<div class="slide" data-n="3">
+<h3>Messaging Framework</h3>
+<h2>Guardrails</h2>
+<div class="grid2">
+<div class="card">
+<h4 class="green">✅ Do</h4>
+<ul style="margin-top:12px">
+<li>Dignified, family-values tone</li>
+<li>Unscripted storytelling</li>
+<li>Organic home/family settings</li>
+<li>Role-model positioning</li>
+<li>Continuity + trust messaging</li>
+</ul>
+</div>
+<div class="card">
+<h4 style="color:#ff6b6b">❌ Avoid</h4>
+<ul style="margin-top:12px">
+<li>Political content</li>
+<li>Shock visuals</li>
+<li>Emotional exploitation</li>
+<li>Hard "donate now" CTA</li>
+<li>Sales-promoter language</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:30px;color:var(--gold);font-weight:600">Hashtag: #نجمع_لنغيث</p>
+</div>
+
+<!-- SLIDE 4: INFLUENCER TIERS -->
+<div class="slide" data-n="4">
+<h3>Creator Strategy</h3>
+<h2>Influencer Tiers</h2>
+<div class="grid4" style="margin-top:20px">
+<div class="inf">
+<div class="handle">TIER 1 — ANCHOR</div>
+<div class="name">Macro</div>
+<div class="foll">100K–500K</div>
+<div class="role">Launch wave · Credibility</div>
+</div>
+<div class="inf tb">
+<div class="handle">TIER 2 — CORE</div>
+<div class="name">Mid-Tier</div>
+<div class="foll">30K–100K</div>
+<div class="role">Content drivers · Engagement</div>
+</div>
+<div class="inf green">
+<div class="handle">TIER 3 — RIPPLE</div>
+<div class="name">Micro</div>
+<div class="foll">10K–30K</div>
+<div class="role">Trust · Authenticity</div>
+</div>
+<div class="inf">
+<div class="handle">UGC</div>
+<div class="name">Organic</div>
+<div class="foll">Any</div>
+<div class="role">Community participation</div>
+</div>
+</div>
+<div class="card" style="margin-top:30px;max-width:700px">
+<h4>Filter Criteria</h4>
+<p>UAE/GCC demographics · Family-oriented (25-45 parents) · Lifestyle/parenting/humanitarian content · ≥2% engagement · Arabic-native preferred · Brand safety</p>
+</div>
+</div>
+
+<!-- SLIDE 5: OUTREACH -->
+<div class="slide" data-n="5">
+<h3>Creator Outreach</h3>
+<h2>Template</h2>
+<div class="outreach-box">
+<div class="subj">Subject: partnership opportunity — Qalby Etmaan 2026 🕊️</div>
+<div style="margin-bottom:16px">
+<p class="ar">السلام عليكم ورحمة الله وبركاته،</p>
+<p>أسمي [YOUR NAME]، أشغل الشراكات مع صناع المحتوى في مشروع <strong>جمع_لنغيث</strong> — الحملة الوطنية لدعم أيتام غزة عبر أوعية التبرع المجتمعية.</p>
+<p>نبحث عن صناع محتوى يحبون family values ويؤمنون إن الـ small repeated giving يصنع فرق كبير.</p>
+</div>
+<div style="background:rgba(76,175,80,.1);border-radius:8px;padding:16px;margin:16px 0">
+<p style="color:var(--green);font-weight:600;margin-bottom:8px">ما نعرضه:</p>
+<ul style="color:#bbb">
+<li>محتوى إنساني حنيقيقي (ريل + ستوري)</li>
+<li>كامل الحرية في أسلوبك وسردك</li>
+<li>دعم فني من فريقنا</li>
+<li>إمكانية تعويض أو شراكة حسب تفضيلك</li>
+</ul>
+</div>
+<p>Interested? نحب نسمع منك. Enough said — let's talk.</p>
+</div>
+</div>
+
+<!-- SLIDE 6: CALENDAR -->
+<div class="slide" data-n="6">
+<h3>Content Calendar</h3>
+<h2>Weeks 1–2</h2>
+<div class="calendar" style="margin-top:20px">
+<div class="week">
+<h4>WEEK 1</h4>
+<div class="week-row">
+<div class="day"><div class="d">Day 1</div><div class="c">Announcement Reel</div><div class="t">"This year, we're doing something different..."</div></div>
+<div class="day"><div class="d">Day 3</div><div class="c">Story Set (3)</div><div class="t">Donation jar unboxing</div></div>
+<div class="day"><div class="d">Day 5</div><div class="c">Reel</div><div class="t">Family teaching children about giving</div></div>
+<div class="day"><div class="d">Day 7</div><div class="c">Story Set (3)</div><div class="t">Behind-the-scenes: setting up jar</div></div>
+</div>
+</div>
+<div class="week">
+<h4>WEEK 2</h4>
+<div class="week-row">
+<div class="day"><div class="d">Day 9</div><div class="c">Reel</div><div class="t">"What would you do with 1 AED?"</div></div>
+<div class="day"><div class="d">Day 11</div><div class="c">Story Set (3)</div><div class="t">Week 1 reflection</div></div>
+<div class="day"><div class="d">Day 13</div><div class="c">Reel</div><div class="t">Community compilation</div></div>
+<div class="day"><div class="d">Day 14</div><div class="c">Reel + Story</div><div class="t">Month 1 check-in</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 7: KPIS -->
+<div class="slide" data-n="7">
+<h3>Performance</h3>
+<h2>KPI Dashboard</h2>
+<div style="width:100%;max-width:750px;margin-top:20px">
+<div class="kpi"><div class="kpi-label">Total Reach</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">TBD</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Engagement Rate</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="3"><span class="kpi-val">≥3%</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Reels Views</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="50"><span class="kpi-val">≥50K</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Story Completes</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">≥70%</span></div></div></div>
+<div class="kpi"><div class="kpi-label">UGC (Jar Posts)</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="20"><span class="kpi-val">≥20</span></div></div></div>
+</div>
+<div class="card" style="margin-top:24px;max-width:500px">
+<h4>📊 Measurement Tools</h4>
+<p>Native Analytics (IG/TikTok) · Hashtag Tracking · Creator Reports · Monthly Summaries</p>
+</div>
+</div>
+
+<!-- SLIDE 8: COMP MODEL -->
+<div class="slide" data-n="8">
+<h3>Partnership</h3>
+<h2>Compensation Models</h2>
+<div class="grid3" style="margin-top:20px">
+<div class="card" style="text-align:center">
+<h4 style="color:var(--gold)">Option A</h4>
+<h2 style="font-size:28px;margin:10px 0">Voluntary</h2>
+<p style="font-size:12px">Creator participation based on humanitarian alignment</p>
+<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
+<p style="font-size:12px;text-align:left">• No monetary compensation<br>• Free creator toolkit<br>• Impact reports<br>• Brand partnership letter</p>
+</div>
+<div class="card" style="text-align:center;border:1px solid var(--gold)">
+<h4 style="color:var(--teal)">Option B ⭐</h4>
+<h2 style="font-size:28px;margin:10px 0">Hybrid</h2>
+<p style="font-size:12px">Voluntary + bonus incentives</p>
+<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
+<p style="font-size:12px;text-align:left">• Voluntary base<br>• Performance bonuses<br>• Monthly giveaways<br>• Featured creator posts</p>
+</div>
+<div class="card" style="text-align:center">
+<h4 style="color:var(--green)">Option C</h4>
+<h2 style="font-size:28px;margin:10px 0">Paid</h2>
+<p style="font-size:12px">Full creator fee structure</p>
+<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
+<p style="font-size:12px;text-align:left">• Per-deliverable fees<br>• Usage rights<br>• Exclusive access<br>• Quarterly events</p>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 9: NEXT STEPS -->
+<div class="slide" data-n="9">
+<h3>Next Steps</h3>
+<h2>Ready to Launch?</h2>
+<div class="phases">
+<div class="phase p1">
+<h4>Phase 1</h4>
+<div class="dates">Week 1–2</div>
+<ul>
+<li>Confirm launch date</li>
+<li>Finalize comp model</li>
+<li>Approve creator tiers</li>
+</ul>
+</div>
+<div class="phase p2">
+<h4>Phase 2</h4>
+<div class="dates">Week 3–4</div>
+<ul>
+<li>Pull creator shortlist</li>
+<li>Send outreach</li>
+<li>Build content calendar</li>
+</ul>
+</div>
+<div class="phase p3">
+<h4>Phase 3</h4>
+<div class="dates">Week 5+</div>
+<ul>
+<li>First wave live</li>
+<li>Track KPIs</li>
+<li>Iterate & scale</li>
+</ul>
+</div>
+</div>
+<div class="card" style="margin-top:30px;max-width:600px">
+<h4>⚠️ Pending Confirmation</h4>
+<p>1) Launch date &nbsp; 2) Comp model &nbsp; 3) Deliverables per creator &nbsp; 4) Geographic scope</p>
+</div>
+</div>
+
+<!-- SLIDE 10: TEAM -->
+<div class="slide" data-n="10">
+<h3>Your TiKiT Team</h3>
+<h2>Let's Build Together</h2>
+<div class="grid2" style="margin-top:30px;max-width:800px">
+<div class="card" style="text-align:center">
+<h4 style="color:var(--gold)">A</h4>
+<p style="font-weight:700">Alaa Al Aisami</p>
+<p style="font-size:12px;color:#888">Projects Director</p>
+</div>
+<div class="card" style="text-align:center">
+<h4 style="color:var(--teal)">Z</h4>
+<p style="font-weight:700">Zain</p>
+<p style="font-size:12px;color:#888">Team</p>
+</div>
+<div class="card" style="text-align:center">
+<h4 style="color:var(--gold)">A</h4>
+<p style="font-weight:700">Areej</p>
+<p style="font-size:12px;color:#888">Team</p>
+</div>
+<div class="card" style="text-align:center">
+<h4 style="color:var(--green)">M</h4>
+<p style="font-weight:700">Mamdouh</p>
+<p style="font-size:12px;color:#888">Marketing Director</p>
+</div>
+</div>
+<div style="margin-top:40px">
+<span class="tag tag-gold">TIKIT AGENCY</span>
+<span class="tag tag-teal">DUBAI</span>
+<span class="tag tag-green">BURLINGTON TOWER</span>
+</div>
+</div>
+
+<div id="nav">
+<button onclick="prev()">←</button>
+<button onclick="next()">→</button>
+</div>
+
+<script>
+let current = 1;
+const total = 10;
+function show(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelector(`[data-n="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = `${n} / ${total}`;
+  document.getElementById('progress').style.width = `${(n/total)*100}%`;
+  if(n===7) animateKPIs();
+}
+function next() { if(current<total) { current++; show(current); }}
+function prev() { if(current>1) { current--; show(current); }}
+document.addEventListener('keydown', e => { if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
+function animateKPIs() {
+  document.querySelectorAll('.kpi-fill').forEach(f => {
+    f.style.width = f.dataset.target + '%';
+  });
+}
+show(1);
+</script>
+</body>
+</html>
