@@ -3,355 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qalby Etmaan 2026 — Gaza Orphan Support | TiKiT Agency</title>
+<title>Qalby Etmaan 2026 — Ramadan Campaign | TiKiT Agency</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--gold:#d4a843;--teal:#00b4d8;--white:#f0f0f0;--gray:#888;--card:#14141f;--card2:#1a1a2e;--green:#4caf50}
+:root{
+--bg:#0d1f0d;--bg2:#0a1709;
+--gold:#d4a843;--gold2:#f5d876;
+--green:#2e7d32;--green2:#4caf50;--green3:#81c784;
+--white:#f5f5f5;--cream:#fdf8e8;
+--gray:#8a9a8a;--card:#142414;--card2:#1a2e1a
+}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:'Inter',sans-serif}
-#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:1000;transition:width .4s}
-#counter{position:fixed;top:12px;right:24px;z-index:1000;font-size:13px;color:var(--gray);font-weight:600;letter-spacing:1px}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 80px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px)}
+#progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--green2));z-index:1000;transition:width .4s;box-shadow:0 0 20px var(--gold)}
+#counter{position:fixed;top:14px;right:24px;z-index:1000;font-size:13px;color:var(--gold);font-weight:600;letter-spacing:1px}
+
+/* Ramadan decorations */
+.moon{position:fixed;top:30px;right:60px;font-size:48px;opacity:0.15;z-index:0}
+.lantern{position:fixed;bottom:80px;left:40px;font-size:36px;opacity:0.1;z-index:0}
+.stars{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background-image:radial-gradient(2px 2px at 20px 30px,var(--gold2,transparent),transparent),radial-gradient(2px 2px at 40px 70px,var(--gold,transparent),transparent),radial-gradient(1px 1px at 90px 40px,var(--gold2,transparent),transparent),radial-gradient(2px 2px at 130px 80px,var(--gold,transparent),transparent),radial-gradient(1px 1px at 160px 120px,var(--gold2,transparent),transparent);background-size:200px 200px;animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:0.6}}
+
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:50px 60px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px);z-index:1}
 .slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
-.slide h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4.5vw,56px);text-align:center;line-height:1.15;margin-bottom:20px}
-.slide h2{font-size:clamp(20px,2.8vw,38px);font-weight:800;margin-bottom:18px;text-align:center}
-.slide h3{font-size:18px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:3px;margin-bottom:10px;text-align:center}
-.slide p,.slide li{font-size:clamp(13px,1.5vw,17px);line-height:1.7;color:#ccc;max-width:900px;text-align:center}
-.slide ul{list-style:none;text-align:left;max-width:800px}
-.slide ul li::before{content:'▸ ';color:var(--gold)}
+.slide h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,52px);text-align:center;line-height:1.2;margin-bottom:16px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slide h2{font-size:clamp(18px,2.5vw,34px);font-weight:800;margin-bottom:14px;text-align:center;color:var(--cream)}
+.slide h3{font-size:15px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:4px;margin-bottom:10px;text-align:center}
+.slide p,.slide li{font-size:clamp(13px,1.4vw,16px);line-height:1.75;color:#c8d4c8;max-width:850px;text-align:center}
+.slide ul{list-style:none;text-align:left;max-width:780px}
+.slide ul li::before{content:'☪ ';color:var(--gold)}
 .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl}
-.gold{color:var(--gold)}.teal{color:var(--teal)}.green{color:var(--green)}.bold{font-weight:700}
-.tag{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
-.tag-gold{background:rgba(212,168,67,.15);color:var(--gold);border:1px solid rgba(212,168,67,.3)}
-.tag-teal{background:rgba(0,180,216,.12);color:var(--teal);border:1px solid rgba(0,180,216,.3)}
-.tag-green{background:rgba(76,175,80,.15);color:var(--green);border:1px solid rgba(76,175,80,.3)}
+.gold{color:var(--gold)}.green{color:var(--green2)}.cream{color:var(--cream)}.bold{font-weight:700}
+.tag{display:inline-block;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tag-gold{background:rgba(212,168,67,.2);color:var(--gold);border:1px solid rgba(212,168,67,.4)}
+.tag-green{background:rgba(76,175,80,.2);color:var(--green3);border:1px solid rgba(76,175,80,.4)}
+.tag-cream{background:rgba(253,248,232,.1);color:var(--cream);border:1px solid rgba(253,248,232,.3)}
 
 #nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:12px}
-#nav button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--white);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;transition:.2s}
-#nav button:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+#nav button{background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.3);color:var(--gold);width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:20px;transition:.25s}
+#nav button:hover{background:var(--gold);color:#0d1f0d;border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,67,.5)}
 
-.footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase}
+.footer{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:11px;color:#5a6a5a;letter-spacing:2px;text-transform:uppercase}
 
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;max-width:1000px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%;max-width:1100px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:1100px}
-.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px 24px;text-align:left}
-.card h4{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--white)}
-.card p{font-size:12px;text-align:left;color:#aaa;line-height:1.5}
-.card .num{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:900px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:950px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;max-width:950px}
+.card{background:var(--card);border:1px solid rgba(76,175,80,.15);border-radius:14px;padding:24px 20px;text-align:left}
+.card h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--cream)}
+.card p{font-size:12px;text-align:left;color:#a8b8a8;line-height:1.6}
+.card .num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);margin-bottom:6px}
 
-.inf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;width:100%;max-width:1000px}
-.inf{background:var(--card);border-radius:12px;padding:16px;text-align:center;border-left:3px solid var(--gold)}
-.inf.tb{border-left-color:var(--teal)}.inf.green{border-left-color:var(--green)}
-.inf .handle{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:2px}
-.inf .name{font-size:11px;color:#999;margin-bottom:4px}
-.inf .foll{font-size:16px;font-weight:800;color:var(--white)}
-.inf .role{font-size:11px;color:#777;margin-top:4px}
+.hadith{background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(46,125,50,.08));border:1px solid rgba(212,168,67,.2);border-radius:12px;padding:20px 24px;max-width:800px;margin:12px auto}
+.hadith .arabic{font-family:'Noto Sans Arabic',sans-serif;font-size:15px;color:var(--gold);margin-bottom:10px;direction:rtl;text-align:right}
+.hadith .source{font-size:11px;color:var(--gray);font-style:italic}
 
-.kpi{display:flex;align-items:center;gap:16px;width:100%;max-width:700px;margin:8px 0}
-.kpi-label{width:160px;text-align:right;font-size:13px;font-weight:600;color:#ccc}
-.kpi-bar{flex:1;height:24px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;position:relative}
-.kpi-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,var(--gold),var(--teal));transition:width 1.2s .3s}
-.kpi-val{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#fff}
-
-.phases{display:flex;gap:20px;width:100%;max-width:1000px}
-.phase{flex:1;background:var(--card);border-radius:14px;padding:24px 20px;position:relative}
-.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.phase.p1::before{background:var(--gold)}.phase.p2::before{background:var(--teal)}.phase.p3::before{background:var(--green)}
-.phase h4{font-size:15px;font-weight:800;margin-bottom:4px}.phase .dates{font-size:11px;color:var(--gray);margin-bottom:10px}
-.phase ul{list-style:none;font-size:12px;color:#bbb;line-height:1.7}
-.phase ul li::before{content:'→ ';color:var(--gold)}
-
-.calendar{width:100%;max-width:900px}
-.week{background:var(--card);border-radius:12px;padding:20px;margin-bottom:14px}
-.week h4{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:12px}
-.week-row{display:flex;gap:12px;flex-wrap:wrap}
-.day{background:var(--card2);border-radius:8px;padding:12px 14px;min-width:120px;flex:1}
-.day .d{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
-.day .c{font-size:13px;font-weight:600;color:var(--white);margin:6px 0 4px}
-.day .t{font-size:11px;color:#999}
-
-.outreach-box{background:var(--card);border:1px solid rgba(212,168,67,.2);border-radius:16px;padding:32px 36px;max-width:750px;text-align:left;font-size:13px;line-height:1.85;color:#ccc}
-.outreach-box .subj{color:var(--gold);font-weight:700;font-size:12px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
-.outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#bbb}
-
-.stats-row{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.stats-row{display:flex;justify-content:center;gap:50px;margin:25px 0}
 .stat{text-align:center}
-.stat .n{font-family:'Playfair Display',serif;font-size:48px;color:var(--gold);line-height:1}
-.stat .l{font-size:12px;color:#888;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+.stat .n{font-family:'Playfair Display',serif;font-size:44px;color:var(--gold);line-height:1.1}
+.stat .l{font-size:11px;color:#8a9a8a;margin-top:6px;text-transform:uppercase;letter-spacing:1px}
 
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:900px;text-align:left}
-.two-col h3{text-align:left;margin-bottom:16px}
+.phases{display:flex;gap:16px;width:100%;max-width:950px}
+.phase{flex:1;background:var(--card);border-radius:14px;padding:22px 18px;position:relative;overflow:hidden}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.phase.p1::before{background:var(--gold)}.phase.p2::before{background:var(--green2)}.phase.p3::before{background:var(--green3)}
+.phase h4{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--cream)}.phase .dates{font-size:11px;color:var(--gray);margin-bottom:10px}
+.phase ul{list-style:none;font-size:12px;color:#a8b8a8;line-height:1.7}
+.phase ul li::before{content:'✦ ';color:var(--gold)}
+
+.outreach-box{background:var(--card);border:1px solid rgba(212,168,67,.25);border-radius:16px;padding:30px 34px;max-width:750px;text-align:left;font-size:13px;line-height:1.9;color:#c8d4c8}
+.outreach-box .subj{color:var(--gold);font-weight:700;font-size:12px;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
+.outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#b8c8b8}
+
+.why-free{background:linear-gradient(135deg,rgba(46,125,50,.15),rgba(212,168,67,.1));border:1px solid rgba(76,175,80,.3);border-radius:14px;padding:24px;max-width:800px;margin:16px auto}
+.why-free h4{color:var(--green3);font-size:15px;margin-bottom:14px;text-align:center}
+.why-free ul{font-size:13px;line-height:2}
+.why-free li::before{content:'🌙 '}
+
+.calendar{width:100%;max-width:850px}
+.week{background:var(--card);border-radius:12px;padding:18px;margin-bottom:12px;border:1px solid rgba(76,175,80,.1)}
+.week h4{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:10px}
+.week-row{display:flex;gap:10px;flex-wrap:wrap}
+.day{background:var(--card2);border-radius:8px;padding:10px 12px;min-width:110px;flex:1}
+.day .d{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.day .c{font-size:12px;font-weight:600;color:var(--cream);margin:5px 0 3px}
+.day .t{font-size:10px;color:#8a9a8a}
+
+.kpi{display:flex;align-items:center;gap:14px;width:100%;max-width:700px;margin:7px 0}
+.kpi-label{width:140px;text-align:right;font-size:12px;font-weight:600;color:#b8c8b8}
+.kpi-bar{flex:1;height:22px;background:rgba(255,255,255,.05);border-radius:11px;overflow:hidden;position:relative}
+.kpi-fill{height:100%;border-radius:11px;background:linear-gradient(90deg,var(--gold),var(--green2));transition:width 1.2s .3s}
+.kpi-val{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#fff}
+
+.comp-card{background:var(--card);border-radius:14px;padding:24px 20px;text-align:center;border:1px solid rgba(76,175,80,.15)}
+.comp-card:hover{border-color:var(--gold);transform:translateY(-2px);transition:.2s}
+.comp-card.recommended{border:2px solid var(--gold);background:linear-gradient(180deg,rgba(212,168,67,.1),var(--card))}
+.comp-card h4{color:var(--gold);font-size:14px;margin-bottom:6px}
+.comp-card .price{font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);margin:8px 0}
+.comp-card .desc{font-size:11px;color:var(--gray);margin-bottom:14px}
+.comp-card ul{list-style:none;font-size:11px;color:#a8b8a8;text-align:left;line-height:1.9}
+.comp-card li::before{content:'✓ ';color:var(--green2)}
 </style>
 </head>
 <body>
+<div class="moon">☪</div>
+<div class="lantern">🏮</div>
+<div class="stars"></div>
 <div id="progress"></div>
-<div id="counter">1 / 10</div>
+<div id="counter">1 / 12</div>
 
 <!-- SLIDE 1: COVER -->
 <div class="slide active" data-n="1">
-<h3>Humanitarian Campaign</h3>
-<h1>Qalby Etmaan 2026</h1>
-<p style="font-size:18px;color:#aaa;margin-bottom:8px">Community Donation Jar Initiative</p>
-<p style="color:var(--teal);font-size:16px">Supporting Orphans in Gaza · #نجمع_لنغيث</p>
-<div style="margin-top:40px">
-<span class="tag tag-gold">TIKIT AGENCY</span>
-<span class="tag tag-teal">2026</span>
+<h3>🤲 Ramadan Campaign 2026</h3>
+<h1>قَلبِي إِتْمَان</h1>
+<h1>Qalby Etmaan</h1>
+<p style="font-size:16px;color:var(--green3);margin-top:8px">Community Donation Jar Initiative</p>
+<p style="font-size:15px;color:var(--gold);margin-top:16px">Supporting Orphans in Gaza · Ramadan 2026</p>
+<div style="margin-top:30px">
+<span class="tag tag-gold">Ramadan</span>
+<span class="tag tag-green">#نجمع_لنغيث</span>
+<span class="tag tag-cream">Free Rewards</span>
 </div>
 <div class="footer">Swipe or use arrow keys to navigate</div>
 </div>
 
-<!-- SLIDE 2: OVERVIEW -->
+<!-- SLIDE 2: THE REWARD -->
 <div class="slide" data-n="2">
-<h3>The Mission</h3>
-<h2>Every Jar Counts. Every Child Matters.</h2>
+<h3>✦ The Power of Giving in Ramadan ✦</h3>
+<h2>Why This Month Changes Everything</h2>
 <div class="stats-row">
-<div class="stat"><div class="n">12</div><div class="l">Months</div></div>
-<div class="stat"><div class="n">UAE</div><div class="l">Primary Market</div></div>
-<div class="stat"><div class="n">50+</div><div class="l">Creators</div></div>
+<div class="stat"><div class="n">×70</div><div class="l">Reward Multiplier</div></div>
+<div class="stat"><div class="n">83yr</div><div class="l">Laylatul Qadr</div></div>
+<div class="stat"><div class="n">∞</div><div class="l">Barakah</div></div>
 </div>
-<div class="grid2" style="margin-top:30px">
-<div class="card">
-<h4>🎯 Objective</h4>
-<p>Normalize daily giving habits through community donation jars. Support Gaza orphans with consistent, sustainable funding.</p>
-</div>
-<div class="card">
-<h4>💡 Big Idea</h4>
-<p>"Small repeated giving creates long-term protection." — Transform spare change into lasting impact.</p>
-</div>
+<div class="hadith">
+<div class="arabic">كَانَ رَسُولُ اللَّهِ صلى الله عليه وسلم أَجْوَدَ النَّاسِ، وَكَانَ أَجْوَدُ مَا يَكُونُ فِي رَمَضَانَ حِينَ يَلْقَاهُ جِبْرِيلُ</div>
+<div class="source">— Sahih Al Bukhari</div>
+<p style="margin-top:12px;font-size:13px">"The Prophet Muhammad ﷺ was the most generous of all people, and he was most generous in Ramadan when Gabriel met him."</p>
 </div>
 </div>
 
-<!-- SLIDE 3: GUARDRAILS -->
+<!-- SLIDE 3: HADITHS DEEP -->
 <div class="slide" data-n="3">
-<h3>Messaging Framework</h3>
-<h2>Guardrails</h2>
-<div class="grid2">
-<div class="card">
-<h4 class="green">✅ Do</h4>
-<ul style="margin-top:12px">
-<li>Dignified, family-values tone</li>
-<li>Unscripted storytelling</li>
-<li>Organic home/family settings</li>
-<li>Role-model positioning</li>
-<li>Continuity + trust messaging</li>
-</ul>
+<h3>☪ The Evidence</h3>
+<h2>Hadiths That Transform Your Perspective</h2>
+<div style="max-width:850px">
+<div class="hadith">
+<div class="arabic">صَدَقَةُ رَمَضَانَ أَفْضَلُ الصَّدَقَةِ</div>
+<div class="source">— Jami At Tirmidhi</div>
+<p style="margin-top:8px;font-size:12px">"Charity given in Ramadan is the BEST charity."</p>
 </div>
-<div class="card">
-<h4 style="color:#ff6b6b">❌ Avoid</h4>
-<ul style="margin-top:12px">
-<li>Political content</li>
-<li>Shock visuals</li>
-<li>Emotional exploitation</li>
-<li>Hard "donate now" CTA</li>
-<li>Sales-promoter language</li>
-</ul>
+<div class="hadith">
+<div class="arabic">وَالصَّدَقَةُ تُطْفِئُ الْخَطِيئَةَ كَمَا يُطْفِئُ الْمَاءُ النَّارَ</div>
+<div class="source">— Jami At Tirmidhi</div>
+<p style="margin-top:8px;font-size:12px">"Charity extinguishes sins just as water extinguishes fire."</p>
+</div>
+<div class="hadith">
+<div class="arabic">ظِلُّ الْمُؤْمِنِ يَوْمَ الْقِيَامَةِ صَدَقَتُهُ</div>
+<div class="source">— Musnad Ahmad</div>
+<p style="margin-top:8px;font-size:12px">"The shade of the believer on the Day of Resurrection is their charity."</p>
 </div>
 </div>
-<p style="margin-top:30px;color:var(--gold);font-weight:600">Hashtag: #نجمع_لنغيث</p>
 </div>
 
-<!-- SLIDE 4: INFLUENCER TIERS -->
+<!-- SLIDE 4: WHY FREE -->
 <div class="slide" data-n="4">
-<h3>Creator Strategy</h3>
-<h2>Influencer Tiers</h2>
-<div class="grid4" style="margin-top:20px">
-<div class="inf">
-<div class="handle">TIER 1 — ANCHOR</div>
-<div class="name">Macro</div>
-<div class="foll">100K–500K</div>
-<div class="role">Launch wave · Credibility</div>
-</div>
-<div class="inf tb">
-<div class="handle">TIER 2 — CORE</div>
-<div class="name">Mid-Tier</div>
-<div class="foll">30K–100K</div>
-<div class="role">Content drivers · Engagement</div>
-</div>
-<div class="inf green">
-<div class="handle">TIER 3 — RIPPLE</div>
-<div class="name">Micro</div>
-<div class="foll">10K–30K</div>
-<div class="role">Trust · Authenticity</div>
-</div>
-<div class="inf">
-<div class="handle">UGC</div>
-<div class="name">Organic</div>
-<div class="foll">Any</div>
-<div class="role">Community participation</div>
-</div>
-</div>
-<div class="card" style="margin-top:30px;max-width:700px">
-<h4>Filter Criteria</h4>
-<p>UAE/GCC demographics · Family-oriented (25-45 parents) · Lifestyle/parenting/humanitarian content · ≥2% engagement · Arabic-native preferred · Brand safety</p>
-</div>
-</div>
-
-<!-- SLIDE 5: OUTREACH -->
-<div class="slide" data-n="5">
-<h3>Creator Outreach</h3>
-<h2>Template</h2>
-<div class="outreach-box">
-<div class="subj">Subject: partnership opportunity — Qalby Etmaan 2026 🕊️</div>
-<div style="margin-bottom:16px">
-<p class="ar">السلام عليكم ورحمة الله وبركاته،</p>
-<p>أسمي [YOUR NAME]، أشغل الشراكات مع صناع المحتوى في مشروع <strong>جمع_لنغيث</strong> — الحملة الوطنية لدعم أيتام غزة عبر أوعية التبرع المجتمعية.</p>
-<p>نبحث عن صناع محتوى يحبون family values ويؤمنون إن الـ small repeated giving يصنع فرق كبير.</p>
-</div>
-<div style="background:rgba(76,175,80,.1);border-radius:8px;padding:16px;margin:16px 0">
-<p style="color:var(--green);font-weight:600;margin-bottom:8px">ما نعرضه:</p>
-<ul style="color:#bbb">
-<li>محتوى إنساني حنيقيقي (ريل + ستوري)</li>
-<li>كامل الحرية في أسلوبك وسردك</li>
-<li>دعم فني من فريقنا</li>
-<li>إمكانية تعويض أو شراكة حسب تفضيلك</li>
+<h3>🤲 Why Create for FREE?</h3>
+<h2>Your Content Becomes Sadaqah</h2>
+<div class="why-free">
+<h4>✦ This Is Not Work — This Is Worship ✦</h4>
+<ul>
+<li><strong>Multiply your rewards</strong> — Every view spreads good, every share multiplies the sadaqah</li>
+<li><strong>Be the role model</strong> — Show your children and followers what Ramadan generosity looks like</li>
+<li><strong>Laylatul Qadr opportunity</strong> — Content shared in these nights = rewards of 83+ years of worship</li>
+<li><strong>Protect your family</strong> — "Charity saves from hellfire" (Bukhari)</li>
+<li><strong>Leave a legacy</strong> — Your content continues giving long after Ramadan ends</li>
+<li><strong>Zero risk, infinite reward</strong> — "Charity does not decrease wealth" (Muslim)</li>
 </ul>
 </div>
-<p>Interested? نحب نسمع منك. Enough said — let's talk.</p>
+<p style="margin-top:20px;color:var(--gold);font-weight:600">🎯 Your audience is watching. Be the reason they give.</p>
+</div>
+
+<!-- SLIDE 5: OBJECTIVES -->
+<div class="slide" data-n="5">
+<h3>🎯 Campaign Objectives</h3>
+<h2>What We're Building Together</h2>
+<div class="grid2" style="margin-top:20px">
+<div class="card">
+<h4>🤝 Normalize Daily Giving</h4>
+<p>Transform spare change into lasting impact. Make giving part of daily routine.</p>
+</div>
+<div class="card">
+<h4>🧒 Support Gaza Orphans</h4>
+<p>Every jar feeds, clothes, and educates a child. Real impact, measurable outcomes.</p>
+</div>
+<div class="card">
+<h4>👨‍👩‍👧‍👦 Family Values Content</h4>
+<p>Create content that families watch together. Teach the next generation.</p>
+</div>
+<div class="card">
+<h4>🌙 Ramadan Legacy</h4>
+<p>This campaign continues beyond Ramadan. Build something that lasts.</p>
+</div>
 </div>
 </div>
 
-<!-- SLIDE 6: CALENDAR -->
+<!-- SLIDE 6: GUARDRAILS -->
 <div class="slide" data-n="6">
-<h3>Content Calendar</h3>
-<h2>Weeks 1–2</h2>
-<div class="calendar" style="margin-top:20px">
-<div class="week">
-<h4>WEEK 1</h4>
-<div class="week-row">
-<div class="day"><div class="d">Day 1</div><div class="c">Announcement Reel</div><div class="t">"This year, we're doing something different..."</div></div>
-<div class="day"><div class="d">Day 3</div><div class="c">Story Set (3)</div><div class="t">Donation jar unboxing</div></div>
-<div class="day"><div class="d">Day 5</div><div class="c">Reel</div><div class="t">Family teaching children about giving</div></div>
-<div class="day"><div class="d">Day 7</div><div class="c">Story Set (3)</div><div class="t">Behind-the-scenes: setting up jar</div></div>
+<h3>📜 Messaging Framework</h3>
+<h2>How We Speak</h2>
+<div class="grid2">
+<div class="card" style="border-color:rgba(76,175,80,.3)">
+<h4 class="green">✅ Do Speak</h4>
+<ul style="margin-top:12px;font-size:12px">
+<li>Dignified, respectful tone</li>
+<li>Family values & togetherness</li>
+<li>Hope & upliftment</li>
+<li>"Be the reason" / role model framing</li>
+<li>Ramadan blessings & rewards</li>
+<li>Simple CTA: "Join us"</li>
+</ul>
+</div>
+<div class="card" style="border-color:rgba(255,100,100,.2)">
+<h4 style="color:#ff8888">❌ Avoid</h4>
+<ul style="margin-top:12px;font-size:12px">
+<li>Political statements</li>
+<li>Shock/graphic imagery</li>
+<li>Emotional exploitation</li>
+<li>Hard "donate NOW" pressure</li>
+<li>Sales/promotional language</li>
+</ul>
 </div>
 </div>
-<div class="week">
-<h4>WEEK 2</h4>
-<div class="week-row">
-<div class="day"><div class="d">Day 9</div><div class="c">Reel</div><div class="t">"What would you do with 1 AED?"</div></div>
-<div class="day"><div class="d">Day 11</div><div class="c">Story Set (3)</div><div class="t">Week 1 reflection</div></div>
-<div class="day"><div class="d">Day 13</div><div class="c">Reel</div><div class="t">Community compilation</div></div>
-<div class="day"><div class="d">Day 14</div><div class="c">Reel + Story</div><div class="t">Month 1 check-in</div></div>
-</div>
-</div>
-</div>
+<p style="margin-top:24px;color:var(--gold);font-weight:600">Hashtag: #نجمع_لنغيث</p>
 </div>
 
-<!-- SLIDE 7: KPIS -->
+<!-- SLIDE 7: CONTENT TYPES -->
 <div class="slide" data-n="7">
-<h3>Performance</h3>
-<h2>KPI Dashboard</h2>
-<div style="width:100%;max-width:750px;margin-top:20px">
-<div class="kpi"><div class="kpi-label">Total Reach</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">TBD</span></div></div></div>
-<div class="kpi"><div class="kpi-label">Engagement Rate</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="3"><span class="kpi-val">≥3%</span></div></div></div>
-<div class="kpi"><div class="kpi-label">Reels Views</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="50"><span class="kpi-val">≥50K</span></div></div></div>
-<div class="kpi"><div class="kpi-label">Story Completes</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">≥70%</span></div></div></div>
-<div class="kpi"><div class="kpi-label">UGC (Jar Posts)</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="20"><span class="kpi-val">≥20</span></div></div></div>
-</div>
-<div class="card" style="margin-top:24px;max-width:500px">
-<h4>📊 Measurement Tools</h4>
-<p>Native Analytics (IG/TikTok) · Hashtag Tracking · Creator Reports · Monthly Summaries</p>
-</div>
-</div>
-
-<!-- SLIDE 8: COMP MODEL -->
-<div class="slide" data-n="8">
-<h3>Partnership</h3>
-<h2>Compensation Models</h2>
+<h3>🎬 Content Direction</h3>
+<h2>What We Need From You</h2>
 <div class="grid3" style="margin-top:20px">
 <div class="card" style="text-align:center">
-<h4 style="color:var(--gold)">Option A</h4>
-<h2 style="font-size:28px;margin:10px 0">Voluntary</h2>
-<p style="font-size:12px">Creator participation based on humanitarian alignment</p>
-<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
-<p style="font-size:12px;text-align:left">• No monetary compensation<br>• Free creator toolkit<br>• Impact reports<br>• Brand partnership letter</p>
-</div>
-<div class="card" style="text-align:center;border:1px solid var(--gold)">
-<h4 style="color:var(--teal)">Option B ⭐</h4>
-<h2 style="font-size:28px;margin:10px 0">Hybrid</h2>
-<p style="font-size:12px">Voluntary + bonus incentives</p>
-<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
-<p style="font-size:12px;text-align:left">• Voluntary base<br>• Performance bonuses<br>• Monthly giveaways<br>• Featured creator posts</p>
+<h4>📱 Reels</h4>
+<p>60-90 sec. Family setting. Natural, unscripted. Show the jar in your home.</p>
 </div>
 <div class="card" style="text-align:center">
-<h4 style="color:var(--green)">Option C</h4>
-<h2 style="font-size:28px;margin:10px 0">Paid</h2>
-<p style="font-size:12px">Full creator fee structure</p>
-<hr style="border:none;border-top:1px solid rgba(255,255,255,.1);margin:16px 0">
-<p style="font-size:12px;text-align:left">• Per-deliverable fees<br>• Usage rights<br>• Exclusive access<br>• Quarterly events</p>
+<h4>📖 Stories</h4>
+<p>3-frame sequence. Unbox the jar → why it matters → invite followers.</p>
+</div>
+<div class="card" style="text-align:center">
+<h4>💬 POV</h4>
+<p>"What I tell my kids about giving" — authentic, personal, relatable.</p>
+</div>
+</div>
+<div class="hadith" style="margin-top:24px">
+<div class="arabic">مَنْ فَطَّرَ صَائِمًا كَانَ لَهُ مِثْلُ أَجْرِهِ</div>
+<div class="source">— Sunan At Tirmidhi</div>
+<p style="margin-top:8px;font-size:12px">"Whoever gives iftar to a fasting person gets the same reward." — Your content feeds souls.</p>
+</div>
+</div>
+
+<!-- SLIDE 8: CALENDAR -->
+<div class="slide" data-n="8">
+<h3>📅 Content Calendar</h3>
+<h2>Weeks 1–2</h2>
+<div class="calendar" style="margin-top:16px">
+<div class="week">
+<h4>WEEK 1 — Launch Wave</h4>
+<div class="week-row">
+<div class="day"><div class="d">Day 1</div><div class="c">Ramadan Reel</div><div class="t">"This Ramadan, we start something new..."</div></div>
+<div class="day"><div class="d">Day 2</div><div class="c">Story Set</div><div class="t">Jar unboxing + intention setting</div></div>
+<div class="day"><div class="d">Day 4</div><div class="c">Reel</div><div class="t">Kids learning to give</div></div>
+<div class="day"><div class="d">Day 6</div><div class="c">Story Set</div><div class="t">First week reflection</div></div>
+</div>
+</div>
+<div class="week">
+<h4>WEEK 2 — Momentum</h4>
+<div class="week-row">
+<div class="day"><div class="d">Day 8</div><div class="c">Reel</div><div class="t">"1 AED = ?" (impact)</div></div>
+<div class="day"><div class="d">Day 10</div><div class="c">Story Set</div><div class="t">Community highlights</div></div>
+<div class="day"><div class="d">Day 12</div><div class="c">Reel</div><div class="t">Duet/stitch compilation</div></div>
+<div class="day"><div class="d">Day 14</div><div class="c">Reel</div><div class="t">Mid-Ramadan check-in</div></div>
+</div>
 </div>
 </div>
 </div>
 
-<!-- SLIDE 9: NEXT STEPS -->
+<!-- SLIDE 9: COMPENSATION -->
 <div class="slide" data-n="9">
-<h3>Next Steps</h3>
-<h2>Ready to Launch?</h2>
-<div class="phases">
+<h3>🤝 Partnership Models</h3>
+<h2>Choose Your Way to Give</h2>
+<div class="grid3" style="margin-top:20px">
+<div class="comp-card">
+<h4>Option A — Pure Sadaqah</h4>
+<div class="price">FREE</div>
+<div class="desc">Join us as a volunteer creator</div>
+<ul>
+<li>Full creative freedom</li>
+<li>Creator toolkit (jar + cards)</li>
+<li>Impact report after Ramadan</li>
+<li>Official partnership certificate</li>
+<li>Featured on campaign page</li>
+</ul>
+</div>
+<div class="comp-card recommended">
+<h4>⭐ Option B — Hybrid</h4>
+<div class="price">VOLUNTEER +</div>
+<div class="desc">Base sadaqah + bonuses</div>
+<ul>
+<li>All Option A benefits</li>
+<li>Performance bonuses</li>
+<li>Monthly giveaways</li>
+<li>Featured creator posts</li>
+<li>Priority for future campaigns</li>
+</ul>
+</div>
+<div class="comp-card">
+<h4>Option C — Full Fee</h4>
+<div class="price">AED SET</div>
+<div class="desc">Standard creator rates</div>
+<ul>
+<li>Per-deliverable fees</li>
+<li>Usage rights</li>
+<li>Dedicated account manager</li>
+<li>Campaign merchandise</li>
+<li>Event invitations</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 10: KPIS -->
+<div class="slide" data-n="10">
+<h3>📊 Success Metrics</h3>
+<h2>What Success Looks Like</h2>
+<div style="width:100%;max-width:700px;margin-top:16px">
+<div class="kpi"><div class="kpi-label">Total Reach</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="70"><span class="kpi-val">TBD</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Engagement Rate</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="4"><span class="kpi-val">≥4%</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Reels Views</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="75"><span class="kpi-val">≥75K</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Story Completes</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="75"><span class="kpi-val">≥75%</span></div></div></div>
+<div class="kpi"><div class="kpi-label">Creator Count</div><div class="kpi-bar"><div class="kpi-fill" style="width:0%" data-target="50"><span class="kpi-val">50+</span></div></div></div>
+</div>
+</div>
+
+<!-- SLIDE 11: NEXT STEPS -->
+<div class="slide" data-n="11">
+<h3>🚀 Ready to Join?</h3>
+<h2>Next Steps</h2>
+<div class="phases" style="margin-top:20px">
 <div class="phase p1">
 <h4>Phase 1</h4>
-<div class="dates">Week 1–2</div>
+<div class="dates">This Week</div>
 <ul>
-<li>Confirm launch date</li>
-<li>Finalize comp model</li>
-<li>Approve creator tiers</li>
+<li>Confirm participation</li>
+<li>Receive creator kit</li>
+<li>Pick your dates</li>
 </ul>
 </div>
 <div class="phase p2">
 <h4>Phase 2</h4>
-<div class="dates">Week 3–4</div>
+<div class="dates">Ramadan Week 1</div>
 <ul>
-<li>Pull creator shortlist</li>
-<li>Send outreach</li>
-<li>Build content calendar</li>
+<li>First content live</li>
+<li>Join creator group</li>
+<li>Track impact</li>
 </ul>
 </div>
 <div class="phase p3">
 <h4>Phase 3</h4>
-<div class="dates">Week 5+</div>
+<div class="dates">Ongoing</div>
 <ul>
-<li>First wave live</li>
-<li>Track KPIs</li>
-<li>Iterate & scale</li>
+<li>Weekly reports</li>
+<li>Bonus tracking</li>
+<li>Ramadan wrap</li>
 </ul>
 </div>
 </div>
-<div class="card" style="margin-top:30px;max-width:600px">
-<h4>⚠️ Pending Confirmation</h4>
-<p>1) Launch date &nbsp; 2) Comp model &nbsp; 3) Deliverables per creator &nbsp; 4) Geographic scope</p>
+<div class="hadith" style="margin-top:24px">
+<div class="arabic">مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ</div>
+<div class="source">— Sahih Muslim</div>
+<p style="margin-top:8px;font-size:12px">"Charity does not decrease wealth."</p>
 </div>
 </div>
 
-<!-- SLIDE 10: TEAM -->
-<div class="slide" data-n="10">
-<h3>Your TiKiT Team</h3>
-<h2>Let's Build Together</h2>
-<div class="grid2" style="margin-top:30px;max-width:800px">
-<div class="card" style="text-align:center">
+<!-- SLIDE 12: TEAM -->
+<div class="slide" data-n="12">
+<h3>🤲 Your TiKiT Team</h3>
+<h2>Let's Build Barakah Together</h2>
+<div class="grid4" style="margin-top:30px;max-width:800px">
+<div class="card" style="text-align:center;padding:20px">
 <h4 style="color:var(--gold)">A</h4>
-<p style="font-weight:700">Alaa Al Aisami</p>
-<p style="font-size:12px;color:#888">Projects Director</p>
+<p style="font-weight:700;font-size:14px">Alaa Al Aisami</p>
+<p style="font-size:11px;color:var(--gray)">Projects Director</p>
 </div>
-<div class="card" style="text-align:center">
-<h4 style="color:var(--teal)">Z</h4>
-<p style="font-weight:700">Zain</p>
-<p style="font-size:12px;color:#888">Team</p>
+<div class="card" style="text-align:center;padding:20px">
+<h4 style="color:var(--green2)">Z</h4>
+<p style="font-weight:700;font-size:14px">Zain</p>
+<p style="font-size:11px;color:var(--gray)">Team</p>
 </div>
-<div class="card" style="text-align:center">
+<div class="card" style="text-align:center;padding:20px">
 <h4 style="color:var(--gold)">A</h4>
-<p style="font-weight:700">Areej</p>
-<p style="font-size:12px;color:#888">Team</p>
+<p style="font-weight:700;font-size:14px">Areej</p>
+<p style="font-size:11px;color:var(--gray)">Team</p>
 </div>
-<div class="card" style="text-align:center">
-<h4 style="color:var(--green)">M</h4>
-<p style="font-weight:700">Mamdouh</p>
-<p style="font-size:12px;color:#888">Marketing Director</p>
+<div class="card" style="text-align:center;padding:20px">
+<h4 style="color:var(--green3)">M</h4>
+<p style="font-weight:700;font-size:14px">Mamdouh</p>
+<p style="font-size:11px;color:var(--gray)">Marketing Director</p>
 </div>
 </div>
 <div style="margin-top:40px">
 <span class="tag tag-gold">TIKIT AGENCY</span>
-<span class="tag tag-teal">DUBAI</span>
-<span class="tag tag-green">BURLINGTON TOWER</span>
+<span class="tag tag-green">DUBAI</span>
+<span class="tag tag-cream">Ramadan 2026</span>
+</div>
+<div class="hadith" style="margin-top:24px;max-width:500px">
+<div class="arabic">رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِنْ ذُرِّيَّتِي</div>
+<p style="margin-top:8px;font-size:11px;color:var(--gray)">"My Lord, keep me and my descendants established in prayer."</p>
 </div>
 </div>
 
@@ -362,13 +429,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 
 <script>
 let current = 1;
-const total = 10;
+const total = 12;
 function show(n) {
   document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
   document.querySelector(`[data-n="${n}"]`).classList.add('active');
   document.getElementById('counter').textContent = `${n} / ${total}`;
   document.getElementById('progress').style.width = `${(n/total)*100}%`;
-  if(n===7) animateKPIs();
+  if(n===10) animateKPIs();
 }
 function next() { if(current<total) { current++; show(current); }}
 function prev() { if(current>1) { current--; show(current); }}
