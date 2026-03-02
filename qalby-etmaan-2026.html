@@ -14,7 +14,7 @@
 --white:#f5f5f5;--cream:#fdf8e8;
 --gray:#8a9a8a;--card:#142414;--card2:#1a2e1a
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:'Inter',sans-serif}
+html,body{height:100%;overflow:hidden;background:  linear-gradient(rgba(4,12,4,0.70), rgba(4,12,4,0.70)),  url('bg-ramadan.png') center center / cover no-repeat fixed;color:var(--white);font-family:'Inter',sans-serif}
 #progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--green2));z-index:1000;transition:width .4s;box-shadow:0 0 20px var(--gold)}
 #counter{position:fixed;top:14px;right:24px;z-index:1000;font-size:14px;color:var(--gold);font-weight:600;letter-spacing:1px}
 
@@ -40,7 +40,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .tag-cream{background:rgba(253,248,232,.1);color:var(--cream);border:1px solid rgba(253,248,232,.3)}
 
 #nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:14px}
-#nav button{background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.3);color:var(--gold);width:52px;height:52px;border-radius:50%;cursor:pointer;font-size:24px;transition:.25s}
+#nav button{background:rgba(4,12,4,0.65);backdrop-filter:blur(8px);border:1px solid rgba(212,168,67,.40);color:var(--gold);width:52px;height:52px;border-radius:50%;cursor:pointer;font-size:24px;transition:.25s}
 #nav button:hover{background:var(--gold);color:#0d1f0d;border-color:var(--gold);box-shadow:0 0 25px rgba(212,168,67,.5)}
 
 .footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:#5a6a5a;letter-spacing:2px;text-transform:uppercase}
@@ -48,12 +48,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;width:100%;max-width:1050px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%;max-width:1100px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;width:100%;max-width:1100px}
-.card{background:var(--card);border:1px solid rgba(76,175,80,.15);border-radius:16px;padding:32px 26px;text-align:left}
+.card{background:rgba(10,22,10,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(212,168,67,.22);border-radius:16px;padding:32px 26px;text-align:left}
 .card h4{font-size:18px;font-weight:700;margin-bottom:12px;color:var(--cream)}
 .card p{font-size:15px;text-align:left;color:#b8c8b8;line-height:1.7}
 .card .num{font-family:'Playfair Display',serif;font-size:38px;color:var(--gold);margin-bottom:8px}
 
-.hadith{background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(46,125,50,.08));border:1px solid rgba(212,168,67,.2);border-radius:14px;padding:26px 32px;max-width:900px;margin:18px auto}
+.hadith{background:rgba(6,16,6,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(212,168,67,.30);border-radius:14px;padding:26px 32px;max-width:900px;margin:18px auto}
 .hadith .arabic{font-family:'Noto Sans Arabic',sans-serif;font-size:20px;color:var(--gold);margin-bottom:14px;direction:rtl;text-align:right;line-height:1.6}
 .hadith .source{font-size:13px;color:var(--gray);font-style:italic}
 .hadith p{font-size:16px !important;margin-top:14px !important}
@@ -75,7 +75,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--white);fo
 .outreach-box .subj{color:var(--gold);font-weight:700;font-size:14px;margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
 .outreach-box .ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#c8d8c8}
 
-.why-free{background:linear-gradient(135deg,rgba(46,125,50,.15),rgba(212,168,67,.1));border:1px solid rgba(76,175,80,.3);border-radius:16px;padding:32px;max-width:950px;margin:22px auto}
+.why-free{background:rgba(8,20,8,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(76,175,80,.35);border-radius:16px;padding:32px;max-width:950px;margin:22px auto}
 .why-free h4{color:var(--green3);font-size:20px;margin-bottom:18px;text-align:center}
 .why-free ul{font-size:17px;line-height:2.2}
 .why-free li{margin-bottom:16px !important}
