@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قلبي اطمأن 2026 — كن غيثاً | TiKiT</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#071a07;--bg2:#050f05;
+--gold:#d4a843;--gold2:#f5d876;
+--green:#1b5e20;--green2:#43a047;--green3:#81c784;
+--white:#f5f5f5;--cream:#fdf8e8;
+--gray:#8a9a8a;--card:#0d1e0d;--card2:#122012
+}
+html,body{height:100%;overflow:hidden;background:linear-gradient(rgba(4,12,4,0.72),rgba(4,12,4,0.72)),url('bg-ramadan.png') center center / cover no-repeat fixed;color:var(--white);font-family:'Inter',sans-serif}
+#progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--green2),var(--green3));z-index:1000;transition:width .4s;box-shadow:0 0 20px var(--green2)}
+#counter{position:fixed;top:14px;right:24px;z-index:1000;font-size:14px;color:var(--green3);font-weight:600;letter-spacing:1px}
+.moon{position:fixed;top:30px;right:60px;font-size:56px;opacity:0.12;z-index:0}
+.lantern{position:fixed;bottom:100px;left:50px;font-size:42px;opacity:0.08;z-index:0}
+.stars{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background-image:radial-gradient(2px 2px at 20px 30px,var(--gold2),transparent),radial-gradient(2px 2px at 40px 70px,var(--gold),transparent),radial-gradient(1px 1px at 90px 40px,var(--gold2),transparent),radial-gradient(2px 2px at 130px 80px,var(--gold),transparent),radial-gradient(1px 1px at 160px 120px,var(--gold2),transparent);background-size:200px 200px;animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:0.6}}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 100px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px);z-index:1}
+.slide.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+.slide h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5.5vw,72px);text-align:center;line-height:1.15;margin-bottom:24px;background:linear-gradient(135deg,var(--green3),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slide h2{font-size:clamp(24px,3.2vw,44px);font-weight:800;margin-bottom:20px;text-align:center;color:var(--cream)}
+.slide h3{font-size:18px;font-weight:700;color:var(--green3);text-transform:uppercase;letter-spacing:5px;margin-bottom:14px;text-align:center}
+.slide p,.slide li{font-size:clamp(16px,1.8vw,22px);line-height:1.8;color:#d0e0d0;max-width:1000px;text-align:center}
+.slide ul{list-style:none;text-align:left;max-width:900px}
+.slide ul li::before{content:'☪ ';color:var(--green3)}
+.slide ul li{margin-bottom:14px}
+.ar{font-family:'Noto Sans Arabic',sans-serif;direction:rtl}
+.gold{color:var(--gold)}.green{color:var(--green2)}.cream{color:var(--cream)}.bold{font-weight:700}
+.tag{display:inline-block;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.tag-gold{background:rgba(212,168,67,.2);color:var(--gold);border:1px solid rgba(212,168,67,.4)}
+.tag-green{background:rgba(67,160,71,.25);color:var(--green3);border:1px solid rgba(67,160,71,.5)}
+.tag-cream{background:rgba(253,248,232,.1);color:var(--cream);border:1px solid rgba(253,248,232,.3)}
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:14px}
+#nav button{background:rgba(4,12,4,0.65);backdrop-filter:blur(8px);border:1px solid rgba(67,160,71,.50);color:var(--green3);width:52px;height:52px;border-radius:50%;cursor:pointer;font-size:24px;transition:.25s}
+#nav button:hover{background:var(--green2);color:#071a07;border-color:var(--green2);box-shadow:0 0 25px rgba(67,160,71,.5)}
+.footer{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;color:#5a6a5a;letter-spacing:2px;text-transform:uppercase}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px;width:100%;max-width:1050px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;width:100%;max-width:1100px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;width:100%;max-width:1100px}
+.card{background:rgba(10,22,10,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(67,160,71,.22);border-radius:16px;padding:32px 26px;text-align:left}
+.card h4{font-size:18px;font-weight:700;margin-bottom:12px;color:var(--cream)}
+.card p{font-size:15px;text-align:left;color:#b8c8b8;line-height:1.7}
+.hadith{background:rgba(6,16,6,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(67,160,71,.35);border-radius:14px;padding:26px 32px;max-width:900px;margin:18px auto}
+.hadith .arabic{font-family:'Noto Sans Arabic',sans-serif;font-size:20px;color:var(--green3);margin-bottom:14px;direction:rtl;text-align:right;line-height:1.6}
+.hadith .source{font-size:13px;color:var(--gray);font-style:italic}
+.hadith p{font-size:16px !important;margin-top:14px !important}
+.stats-row{display:flex;justify-content:center;gap:70px;margin:35px 0}
+.stat{text-align:center}
+.stat .n{font-family:'Playfair Display',serif;font-size:56px;color:var(--green3);line-height:1.1}
+.stat .l{font-size:14px;color:#8a9a8a;margin-top:8px;text-transform:uppercase;letter-spacing:1px}
+.why-free{background:rgba(8,20,8,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(67,160,71,.35);border-radius:16px;padding:32px;max-width:950px;margin:22px auto}
+.why-free h4{color:var(--green3);font-size:20px;margin-bottom:18px;text-align:center}
+.why-free ul{font-size:17px;line-height:2.2}
+.why-free li{margin-bottom:16px !important}
+.calendar{width:100%;max-width:1000px}
+.week{background:var(--card);border-radius:14px;padding:24px;margin-bottom:16px;border:1px solid rgba(67,160,71,.15)}
+.week h4{font-size:16px;font-weight:700;color:var(--green3);margin-bottom:14px}
+.week-row{display:flex;gap:14px;flex-wrap:wrap}
+.day{background:var(--card2);border-radius:10px;padding:14px 16px;min-width:140px;flex:1}
+.day .d{font-size:12px;color:var(--gray);text-transform:uppercase;letter-spacing:1px}
+.day .c{font-size:15px;font-weight:600;color:var(--cream);margin:8px 0 5px}
+.day .t{font-size:12px;color:#8a9a8a}
+.kpi{display:flex;align-items:center;gap:18px;width:100%;max-width:800px;margin:10px 0}
+.kpi-label{width:160px;text-align:right;font-size:15px;font-weight:600;color:#c8d8c8}
+.kpi-bar{flex:1;height:28px;background:rgba(255,255,255,.05);border-radius:14px;overflow:hidden;position:relative}
+.kpi-fill{height:100%;border-radius:14px;background:linear-gradient(90deg,var(--green2),var(--green3));transition:width 1.2s .3s}
+.kpi-val{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#fff}
+.comp-card{background:var(--card);border-radius:16px;padding:30px 24px;text-align:center;border:1px solid rgba(67,160,71,.2)}
+.comp-card:hover{border-color:var(--green3);transform:translateY(-3px);transition:.2s}
+.comp-card.recommended{border:2px solid var(--green3);background:linear-gradient(180deg,rgba(67,160,71,.1),var(--card))}
+.comp-card h4{color:var(--green3);font-size:17px;margin-bottom:8px}
+.comp-card .price{font-family:'Playfair Display',serif;font-size:32px;color:var(--cream);margin:12px 0}
+.comp-card .desc{font-size:14px;color:var(--gray);margin-bottom:18px}
+.comp-card ul{list-style:none;font-size:14px;color:#b8c8b8;text-align:left;line-height:2.2}
+.comp-card li::before{content:'✓ ';color:var(--green3)}
+/* Sheikh photo */
+.sheikh-photo{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid gold;box-shadow:0 0 25px rgba(212,168,67,0.7)}
+/* Branded badge */
+.qalby-badge{position:absolute;top:22px;left:24px;background:linear-gradient(135deg,rgba(43,160,71,.35),rgba(27,94,32,.5));border:1px solid rgba(67,160,71,.6);border-radius:12px;padding:8px 16px;font-family:'Noto Sans Arabic',sans-serif;font-size:14px;font-weight:700;color:var(--green3);direction:rtl;z-index:10;backdrop-filter:blur(6px)}
+/* Comparison columns */
+.compare-col{flex:1;background:rgba(10,22,10,0.72);backdrop-filter:blur(10px);border:1px solid rgba(67,160,71,.25);border-radius:16px;padding:28px 22px}
+.compare-col.left{border-color:rgba(212,168,67,.35)}
+.compare-col h4{font-family:'Noto Sans Arabic',sans-serif;font-size:17px;font-weight:800;margin-bottom:18px;text-align:center;direction:rtl;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
+.compare-col.left h4{color:var(--gold)}
+.compare-col.right h4{color:var(--green3)}
+.compare-col ul{list-style:none;font-family:'Noto Sans Arabic',sans-serif;font-size:14px;color:#c8d8c8;direction:rtl;line-height:2.2}
+.compare-col.left ul li::before{content:'🌟 '}
+.compare-col.right ul li::before{content:'✦ ';color:var(--green3)}
+</style>
+</head>
+<body>
+<div class="moon">☪</div>
+<div class="lantern">🏮</div>
+<div class="stars"></div>
+<div id="progress"></div>
+<div id="counter">1 / 13</div>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide active" data-n="1">
+<div class="qalby-badge">قلبي اطمأن · الموسم 9</div>
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🤲 رسالة رمضان 2026</h3>
+<h1 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;background:linear-gradient(135deg,var(--green3),var(--green2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">قلبي اطمأن</h1>
+<p style="font-size:26px;color:var(--gold);margin-top:12px;font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-weight:800">كن غيثاً لأيتام غزة — الأوان لم يفت</p>
+<p style="font-size:18px;color:var(--green3);margin-top:12px;font-family:'Noto Sans Arabic',sans-serif;direction:rtl">مبادرة جرة التبرع · دعم أيتام غزة</p>
+<div style="margin:16px auto;background:rgba(67,160,71,0.12);border:1px solid rgba(67,160,71,0.5);border-radius:14px;padding:13px 26px;max-width:560px;text-align:center">
+  <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-size:19px;color:var(--green3);font-weight:800;line-height:1.9">⏳ 12 يوماً مضت — 18 يوماً متبقية<br><span style="font-size:15px;color:var(--cream);font-weight:400">العشر الأواخر قادمة · ليلة القدر · لا تفوّتها</span></p>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+<span class="tag tag-green ar" style="font-family:'Noto Sans Arabic',sans-serif">الموسم 9</span>
+<span class="tag tag-gold ar" style="font-family:'Noto Sans Arabic',sans-serif">18 يوماً متبقية</span>
+<span class="tag tag-cream ar" style="font-family:'Noto Sans Arabic',sans-serif">#نجمع_لنغيث</span>
+</div>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 2: ABOUT THE SHOW -->
+<div class="slide" data-n="2">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">✦ عن قلبي اطمأن ✦</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl">ظاهرة اجتماعية عالمية</h2>
+<div class="stats-row">
+  <div class="stat"><div class="n" style="color:var(--green3)">9</div><div class="l ar" style="font-family:'Noto Sans Arabic',sans-serif">مواسم</div></div>
+  <div class="stat"><div class="n" style="color:var(--gold)">2018</div><div class="l">منذ عام</div></div>
+  <div class="stat"><div class="n" style="color:var(--green3)">4</div><div class="l ar" style="font-family:'Noto Sans Arabic',sans-serif">منصات بث</div></div>
+</div>
+<div class="grid2" style="max-width:900px;margin-top:10px">
+  <div class="card" style="text-align:right;direction:rtl;border-color:rgba(67,160,71,.3)">
+    <h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">📺 القنوات والمنصات</h4>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:right;line-height:2.2;font-size:15px">قناة أبوظبي · MBC1<br>تطبيق ADtv · منصة شاهد</p>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:right;font-size:13px;color:var(--gray);margin-top:8px">المنتج: أبوظبي للإعلام</p>
+  </div>
+  <div class="card" style="text-align:right;direction:rtl;border-color:rgba(212,168,67,.25)">
+    <h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--gold)">🌙 موسم 9 — رمضان 2026</h4>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:right;line-height:2;font-size:15px">الثيمة: الزكاة — فريضةٌ من الله<br>المقدم: غيث (شاب إماراتي)</p>
+  </div>
+</div>
+<div class="hadith" style="margin-top:18px;max-width:650px;border-color:rgba(67,160,71,.4)">
+  <div class="arabic" style="color:var(--green3)">"الدنيا لا تزال بخير"</div>
+  <div class="source">شعار البرنامج — منذ 2018 والأثر يتوسع</div>
+</div>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 3: THE CALL -->
+<div class="slide" data-n="3">
+<div class="qalby-badge">كن غيثاً · رمضان 2026</div>
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🌧️ النداء</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-size:clamp(26px,3.8vw,52px);background:linear-gradient(135deg,var(--green3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">أنتَ غيث هذا الرمضان</h2>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-size:19px;color:#d0e0d0;max-width:750px;margin:16px 0 24px;line-height:2">غيث يبحث عن المحتاجين في كل مكان.<br>هذا الرمضان — أيتام غزة ينتظرون.<br>أنت لا تحتاج إلى طائرة. تحتاج إلى <span style="color:var(--green3);font-weight:800">كاميرا وجرة وإيمان.</span></p>
+<div style="display:flex;align-items:center;gap:28px;background:rgba(8,20,8,0.7);border:1px solid rgba(212,168,67,.3);border-radius:16px;padding:24px 32px;max-width:750px">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Sheikh_Zayed_bin_Sultan_Al_Nahyan.jpg/440px-Sheikh_Zayed_bin_Sultan_Al_Nahyan.jpg"
+       alt="الشيخ زايد"
+       style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid gold;box-shadow:0 0 18px rgba(212,168,67,0.6);flex-shrink:0">
+  <div style="text-align:right;direction:rtl">
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;font-size:16px;color:var(--gold);font-style:italic;line-height:1.8">"الرزق رزق الله، والمال مال الله، والأرض أرض الله، والفضل فضل الله، والخلق خلق الله"</p>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;font-size:13px;color:var(--gray);margin-top:8px">— الشيخ زايد بن سلطان آل نهيان · مؤسس الإمارات</p>
+  </div>
+</div>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 4: THE PROBLEM -->
+<div class="slide" data-n="4">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🕊️ القضية</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl">أيتام غزة — الأرقام لا تكذب</h2>
+<div class="stats-row">
+  <div class="stat"><div class="n" style="color:var(--green3)">50K+</div><div class="l ar" style="font-family:'Noto Sans Arabic',sans-serif">يتيم في غزة</div></div>
+  <div class="stat"><div class="n" style="color:var(--gold)">30</div><div class="l ar" style="font-family:'Noto Sans Arabic',sans-serif">يوم تغيّر الحياة</div></div>
+  <div class="stat"><div class="n" style="color:var(--green3)">1</div><div class="l ar" style="font-family:'Noto Sans Arabic',sans-serif">جرة · أثر عظيم</div></div>
+</div>
+<div class="hadith" style="border-color:rgba(67,160,71,.4)">
+  <div class="arabic" style="color:var(--green3)">كَافِلُ الْيَتِيمِ لَهُ أَوْ لِغَيْرِهِ أَنَا وَهُوَ كَهَاتَيْنِ فِي الْجَنَّةِ</div>
+  <div class="source">— صحيح البخاري</div>
+  <p>"Whoever cares for an orphan — I and he will be like this in Paradise" — Prophet Muhammad ﷺ</p>
+</div>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;margin-top:22px;font-size:18px;color:var(--green3)">أنت لا تحتاج تذكرة طائرة لتصل إليهم. رسالتك تكفي. 📱</p>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 5: THE SOLUTION -->
+<div class="slide" data-n="5">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">💡 الحل</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl">برنامج الجرة — القوة في البساطة</h2>
+<div class="grid3" style="margin-top:28px">
+  <div class="card" style="text-align:center;border-color:rgba(67,160,71,.3)">
+    <div style="font-size:40px;margin-bottom:14px">🫙</div>
+    <h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--green3)">ضع الجرة</h4>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">1 درهم يومياً في رمضان — وهنا تبدأ الرحلة</p>
+  </div>
+  <div class="card" style="text-align:center;border-color:rgba(212,168,67,.25)">
+    <div style="font-size:40px;margin-bottom:14px">📱</div>
+    <h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--gold)">كن غيثاً</h4>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">وثّق، شارك، وادعُ متابعيك — كن الغيث الذي تنتظره غزة</p>
+  </div>
+  <div class="card" style="text-align:center;border-color:rgba(67,160,71,.3)">
+    <div style="font-size:40px;margin-bottom:14px">🤲</div>
+    <h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--green3)">الأثر يصل</h4>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">جرتك تذهب مباشرة لأيتام غزة في نهاية رمضان 🕊️</p>
+  </div>
+</div>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;margin-top:28px;font-size:18px;color:var(--green3);font-weight:700">#نجمع_لنغيث · فكرة بسيطة · أثر عظيم</p>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 6: WHY RAMADAN — HADITHS -->
+<div class="slide" data-n="6">
+<h3>☪ The Evidence</h3>
+<h2>Hadiths That Transform Your Perspective</h2>
+<div style="max-width:950px">
+<div class="hadith">
+<div class="arabic">صَدَقَةُ رَمَضَانَ أَفْضَلُ الصَّدَقَةِ</div>
+<div class="source">— Jami At Tirmidhi</div>
+<p>"Charity given in Ramadan is the BEST charity."</p>
+</div>
+<div class="hadith">
+<div class="arabic">وَالصَّدَقَةُ تُطْفِئُ الْخَطِيئَةَ كَمَا يُطْفِئُ الْمَاءُ النَّارَ</div>
+<div class="source">— Jami At Tirmidhi</div>
+<p>"Charity extinguishes sins just as water extinguishes fire."</p>
+</div>
+<div class="hadith">
+<div class="arabic">ظِلُّ الْمُؤْمِنِ يَوْمَ الْقِيَامَةِ صَدَقَتُهُ</div>
+<div class="source">— Musnad Ahmad</div>
+<p>"The shade of the believer on the Day of Resurrection is their charity."</p>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 7: ×70 MULTIPLIER -->
+<div class="slide" data-n="7">
+<h3>✦ The Power of Giving in Ramadan ✦</h3>
+<h2>Why This Month Changes Everything</h2>
+<div class="stats-row">
+<div class="stat"><div class="n" style="color:var(--green3)">×70</div><div class="l">Reward Multiplier</div></div>
+<div class="stat"><div class="n" style="color:var(--gold)">83yr</div><div class="l">Laylatul Qadr</div></div>
+<div class="stat"><div class="n" style="color:var(--green3)">∞</div><div class="l">Barakah</div></div>
+</div>
+<div class="hadith">
+<div class="arabic">كَانَ رَسُولُ اللَّهِ صلى الله عليه وسلم أَجْوَدَ النَّاسِ، وَكَانَ أَجْوَدُ مَا يَكُونُ فِي رَمَضَانَ حِينَ يَلْقَاهُ جِبْرِيلُ</div>
+<div class="source">— Sahih Al Bukhari</div>
+<p>"The Prophet Muhammad ﷺ was the most generous of all people, and he was most generous in Ramadan when Gabriel met him."</p>
+</div>
+</div>
+
+<!-- SLIDE 8: WHY CREATE FOR FREE -->
+<div class="slide" data-n="8">
+<h3>🤲 Why Create for FREE?</h3>
+<h2>Your Content Becomes Sadaqah</h2>
+<div class="why-free">
+<h4>✦ هذا ليس عملاً — هذه عبادة ✦</h4>
+<ul>
+<li><strong>Multiply your rewards</strong> — Every view spreads good, every share multiplies the sadaqah</li>
+<li><strong>Be the role model</strong> — Show your children and followers what Ramadan generosity looks like</li>
+<li><strong>Laylatul Qadr opportunity</strong> — Content shared in these nights = rewards of 83+ years of worship</li>
+<li><strong>Protect your family</strong> — "Charity saves from hellfire" (Bukhari)</li>
+<li><strong>Leave a legacy</strong> — Your content continues giving long after Ramadan ends</li>
+<li><strong>Zero risk, infinite reward</strong> — "Charity does not decrease wealth" (Muslim)</li>
+</ul>
+</div>
+<p style="margin-top:28px;color:var(--green3);font-weight:700;font-size:20px">🎯 كن الغيث الذي ينتظره متابعوك هذا الرمضان.</p>
+</div>
+
+<!-- SLIDE 9: SHOW × YOUR CONTENT -->
+<div class="slide" data-n="9">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🎬 البرنامج × محتواك</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-size:clamp(20px,2.8vw,36px)">9 مواسم بنى غيث فيها الثقة. موسمك أنت يبدأ الآن.</h2>
+<div style="display:flex;gap:24px;width:100%;max-width:1000px;margin-top:28px">
+  <div class="compare-col left">
+    <h4>ما يفعله غيث 🌟</h4>
+    <ul>
+      <li>يسافر لأصعب الأماكن</li>
+      <li>يلتقي المحتاجين وجهاً لوجه</li>
+      <li>يبني جسراً بين المانح والمحتاج</li>
+      <li>يوثّق القصص الإنسانية</li>
+      <li>يُلهم ملايين المشاهدين سنوياً</li>
+    </ul>
+  </div>
+  <div class="compare-col right">
+    <h4>ما يفعله المبدع معنا ✦</h4>
+    <ul>
+      <li>يضع الجرة في بيته</li>
+      <li>يوثّق رحلة العطاء اليومي</li>
+      <li>يُلهم متابعيه بالانضمام</li>
+      <li>يصنع محتوى إنسانياً أصيلاً</li>
+      <li>يترك إرثاً رقمياً في رمضان</li>
+    </ul>
+  </div>
+</div>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;margin-top:22px;font-size:17px;color:var(--gold)">غيث وصل للعالم بكاميرا. أنت تصل لمتابعيك بنفس الطريقة. 📱</p>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 10: COMP MODEL -->
+<div class="slide" data-n="10">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🤝 نماذج الشراكة</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl">اختر طريقتك في العطاء</h2>
+<div class="grid3" style="margin-top:28px">
+<div class="comp-card">
+<h4>Option A — Pure Sadaqah</h4>
+<div class="price">FREE</div>
+<div class="desc">Join us as a volunteer creator</div>
+<ul>
+<li>Full creative freedom</li>
+<li>Creator toolkit (jar + cards)</li>
+<li>Impact report after Ramadan</li>
+<li>Official partnership certificate</li>
+<li>Featured on campaign page</li>
+</ul>
+</div>
+<div class="comp-card recommended">
+<h4>⭐ Option B — Hybrid</h4>
+<div class="price">VOLUNTEER +</div>
+<div class="desc">Base sadaqah + bonuses</div>
+<ul>
+<li>All Option A benefits</li>
+<li>Performance bonuses</li>
+<li>Monthly giveaways</li>
+<li>Featured creator posts</li>
+<li>Priority for future campaigns</li>
+</ul>
+</div>
+<div class="comp-card">
+<h4>Option C — Full Fee</h4>
+<div class="price">AED SET</div>
+<div class="desc">Standard creator rates</div>
+<ul>
+<li>Per-deliverable fees</li>
+<li>Usage rights</li>
+<li>Dedicated account manager</li>
+<li>Campaign merchandise</li>
+<li>Event invitations</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 11: CONTENT GUIDE -->
+<div class="slide" data-n="11">
+<h3 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">🎬 أقوى الأيام قادمة — خطة المحتوى</h3>
+<h2 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl">لا تنتظر — الدفعة الأخيرة تبدأ الآن</h2>
+<div class="grid3" style="margin-top:16px">
+<div class="card" style="text-align:center;border-color:rgba(67,160,71,.3)">
+<h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--green3)">📱 Reels</h4>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">60-90 ثانية · جرتك · رسالتك · شارك الآن</p>
+</div>
+<div class="card" style="text-align:center;border-color:rgba(67,160,71,.3)">
+<h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--green3)">📖 Stories</h4>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">ادعُ متابعيك · "12 days in — the best is still ahead"</p>
+</div>
+<div class="card" style="text-align:center;border-color:rgba(67,160,71,.3)">
+<h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;color:var(--green3)">💬 POV</h4>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;text-align:center;font-size:14px">"متأخر أفضل من لا شيء" — أصيل وشخصي</p>
+</div>
+</div>
+<div class="calendar" style="margin-top:18px">
+<div class="week" style="border-color:rgba(67,160,71,.25)">
+<h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:var(--green3)">⚡ لا تتأخر — الأيام 13-15</h4>
+<div class="week-row">
+<div class="day"><div class="d ar" style="font-family:'Noto Sans Arabic',sans-serif">يوم 13-14</div><div class="c ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">كن غيثاً الآن</div><div class="t ar" style="font-family:'Noto Sans Arabic',sans-serif">"متأخر أفضل من لا شيء" · أعدّ جرتك</div></div>
+<div class="day"><div class="d">Day 15</div><div class="c ar" style="font-family:'Noto Sans Arabic',sans-serif">انتصاف رمضان</div><div class="t">"12 days in — the best is still ahead"</div></div>
+</div>
+</div>
+<div class="week" style="border-color:rgba(67,160,71,.45)">
+<h4 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:var(--green3)">🌙 العشر الأواخر — الأيام 21-30</h4>
+<div class="week-row">
+<div class="day"><div class="d ar" style="font-family:'Noto Sans Arabic',sans-serif">يوم 21</div><div class="c ar" style="font-family:'Noto Sans Arabic',sans-serif">إطلاق العشر</div><div class="t ar" style="font-family:'Noto Sans Arabic',sans-serif">محتوى خاص العشر الأواخر</div></div>
+<div class="day"><div class="d ar" style="font-family:'Noto Sans Arabic',sans-serif">يوم 27</div><div class="c ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">⭐ ليلة القدر</div><div class="t ar" style="font-family:'Noto Sans Arabic',sans-serif">أقصى مستوى عطاء</div></div>
+<div class="day" style="border:1px solid rgba(67,160,71,.4)"><div class="d ar" style="font-family:'Noto Sans Arabic',sans-serif">يوم 29-30</div><div class="c ar" style="font-family:'Noto Sans Arabic',sans-serif;color:var(--green3)">جمع الجرة 🫙</div><div class="t ar" style="font-family:'Noto Sans Arabic',sans-serif">جرتك تذهب لغزة</div></div>
+</div>
+</div>
+</div>
+<p style="margin-top:12px;color:var(--green3);font-weight:700">Hashtag: #نجمع_لنغيث</p>
+</div>
+
+<!-- SLIDE 12: TEAM -->
+<div class="slide" data-n="12">
+<h3>🤲 Your TiKiT Team</h3>
+<h2>Let's Build Barakah Together</h2>
+<div class="grid4" style="margin-top:36px;max-width:1000px">
+  <div class="card" style="text-align:center;padding:32px 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#d4a843,#f5d876);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#0d1f0d;margin:0 auto 16px;box-shadow:0 0 20px rgba(212,168,67,0.4)">A</div>
+    <p style="font-weight:700;font-size:17px;color:var(--cream);margin-bottom:5px">Alaa Al Aisami</p>
+    <p style="font-size:13px;color:var(--gold)">Projects Director</p>
+  </div>
+  <div class="card" style="text-align:center;padding:32px 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1b5e20,#81c784);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#0d1f0d;margin:0 auto 16px;box-shadow:0 0 20px rgba(67,160,71,0.3)">Z</div>
+    <p style="font-weight:700;font-size:17px;color:var(--cream);margin-bottom:5px">Zain</p>
+    <p style="font-size:13px;color:var(--gray)">Team</p>
+  </div>
+  <div class="card" style="text-align:center;padding:32px 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1b5e20,#43a047);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#0d1f0d;margin:0 auto 16px;box-shadow:0 0 20px rgba(67,160,71,0.3)">A</div>
+    <p style="font-weight:700;font-size:17px;color:var(--cream);margin-bottom:5px">Areej</p>
+    <p style="font-size:13px;color:var(--gray)">Team</p>
+  </div>
+  <div class="card" style="text-align:center;padding:32px 20px">
+    <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a3a1a,#4caf50);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#f5f5f5;margin:0 auto 16px;box-shadow:0 0 20px rgba(76,175,80,0.3)">M</div>
+    <p style="font-weight:700;font-size:17px;color:var(--cream);margin-bottom:5px">Mamdouh</p>
+    <p style="font-size:13px;color:var(--gold)">Marketing Director</p>
+  </div>
+</div>
+<div style="margin-top:28px">
+<span class="tag tag-gold">TIKIT AGENCY</span>
+<span class="tag tag-green">DUBAI</span>
+<span class="tag tag-cream">Ramadan 2026</span>
+</div>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<!-- SLIDE 13: CTA -->
+<div class="slide" data-n="13">
+<h1 class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;background:linear-gradient(135deg,var(--green3),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:clamp(22px,3.2vw,46px)">الأوان لم يفت — قلبي اطمأن لأن جرتك ستملأ قلب طفل</h1>
+<div style="background:rgba(67,160,71,0.1);border:1px solid rgba(67,160,71,.5);border-radius:14px;padding:13px 22px;margin:14px auto;max-width:580px;text-align:center">
+  <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;font-size:18px;color:var(--green3);font-weight:800;line-height:2">⏳ 18 يوماً متبقية · العشر الأواخر · ليلة القدر<br><span style="font-size:14px;color:var(--cream);font-weight:400">Don't miss the last window — the best nights are ahead</span></p>
+</div>
+<div style="display:flex;align-items:center;gap:20px;background:rgba(8,20,8,0.7);border:1px solid rgba(67,160,71,.4);border-radius:18px;padding:22px 36px;max-width:650px">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Mohammed_bin_Rashid_Al_Maktoum_at_the_World_Government_Summit_2017_%28cropped%29.jpg/440px-Mohammed_bin_Rashid_Al_Maktoum_at_the_World_Government_Summit_2017_%28cropped%29.jpg"
+       alt="الشيخ محمد"
+       style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid gold;box-shadow:0 0 18px rgba(212,168,67,0.6);flex-shrink:0">
+  <div style="text-align:right;direction:rtl">
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;font-size:16px;color:var(--gold);font-style:italic;line-height:1.8">"القيادة الحقيقية خدمة، لا امتياز"</p>
+    <p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;font-size:12px;color:var(--gray);margin-top:6px">— الشيخ محمد بن راشد آل مكتوم</p>
+  </div>
+</div>
+<div class="hadith" style="max-width:600px;margin-top:14px">
+  <div class="arabic" style="color:var(--green3);font-size:17px">اغتنم ما بقي من رمضانك · ليلة القدر في العشر الأواخر — لا تفوّتها</div>
+</div>
+<div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+  <span class="tag tag-green ar" style="font-family:'Noto Sans Arabic',sans-serif;font-size:14px;padding:8px 18px">كن غيثاً · العشر الأواخر</span>
+  <span class="tag tag-gold" style="font-size:14px;padding:8px 18px">#نجمع_لنغيث</span>
+</div>
+<p class="ar" style="font-family:'Noto Sans Arabic',sans-serif;direction:rtl;margin-top:14px;font-size:17px;color:var(--green3);font-weight:700">الدنيا لا تزال بخير — لأن غيثاً لا يزال يعطي في العشر الأواخر 🌧️</p>
+<div class="footer">TiKiT Agency · Dubai · Ramadan 2026</div>
+</div>
+
+<div id="nav">
+<button onclick="prev()">←</button>
+<button onclick="next()">→</button>
+</div>
+
+<script>
+let current = 1;
+const total = 13;
+function show(n) {
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  document.querySelector(`[data-n="${n}"]`).classList.add('active');
+  document.getElementById('counter').textContent = `${n} / ${total}`;
+  document.getElementById('progress').style.width = `${(n/total)*100}%`;
+  if(n===11) animateKPIs();
+}
+function next() { if(current<total) { current++; show(current); }}
+function prev() { if(current>1) { current--; show(current); }}
+document.addEventListener('keydown', e => { if(e.key==='ArrowRight') next(); if(e.key==='ArrowLeft') prev(); });
+function animateKPIs() {
+  document.querySelectorAll('.kpi-fill').forEach(f => {
+    f.style.width = f.dataset.target + '%';
+  });
+}
+show(1);
+</script>
+</body>
+</html>
