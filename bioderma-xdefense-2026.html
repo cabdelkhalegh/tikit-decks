@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photoderm XDefense SPF50+ &#8212; PR Seeding Campaign 2026 | TiKiT Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#04080f;--coral:#FF6B6B;--blue:#4ECDC4;--white:#FFFFFF;--gray:#8a8a9a;--dark-card:#0d1520;--card-border:#1a2535;--gold:#FFD93D;--pink:#FF69B4}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
+
+.aurora-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora-blob{position:absolute;border-radius:50%;filter:blur(130px);animation:aurora-drift 14s ease-in-out infinite alternate}
+.aurora-blob-1{width:680px;height:680px;background:radial-gradient(circle,rgba(255,107,107,.45) 0%,transparent 70%);top:-250px;left:-180px;opacity:.5;animation-delay:0s}
+.aurora-blob-2{width:560px;height:560px;background:radial-gradient(circle,rgba(78,205,196,.5) 0%,transparent 70%);bottom:-200px;right:-150px;opacity:.45;animation-delay:-5s}
+.aurora-blob-3{width:400px;height:400px;background:radial-gradient(circle,rgba(255,217,61,.35) 0%,transparent 70%);top:38%;left:52%;opacity:.3;animation-delay:-9s}
+@keyframes aurora-drift{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,35px) scale(1.1)}}
+
+.grid-overlay{position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+
+.deck{position:relative;z-index:2;width:100%;height:100%}
+
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:60px 80px;opacity:0;transform:translateX(40px);transition:all .5s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.exit-left{opacity:0;transform:translateX(-40px)}
+
+.conf-badge{position:fixed;top:20px;right:20px;background:rgba(255,107,107,.15);border:1px solid rgba(255,107,107,.4);color:var(--coral);font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:3px;z-index:1000;text-transform:uppercase}
+
+.tikit-footer{position:fixed;bottom:16px;left:30px;font-size:11px;color:var(--gray);z-index:1000;letter-spacing:1px}
+.tikit-footer span{color:var(--coral);font-weight:600}
+
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--coral),var(--blue));transition:width .4s ease;z-index:1001}
+
+.nav{position:fixed;bottom:20px;right:30px;display:flex;align-items:center;gap:12px;z-index:1000}
+.nav button{background:var(--dark-card);border:1px solid var(--card-border);color:var(--white);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.nav button:hover{background:var(--coral);border-color:var(--coral);color:var(--bg)}
+.nav .counter{font-size:12px;color:var(--gray);font-weight:500;min-width:50px;text-align:center}
+
+h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.1;margin-bottom:16px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-weight:700;line-height:1.2;margin-bottom:20px}
+h3{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;margin-bottom:12px;color:var(--blue)}
+
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+.tag-coral{background:rgba(255,107,107,.15);color:var(--coral);border:1px solid rgba(255,107,107,.3)}
+.tag-blue{background:rgba(78,205,196,.15);color:var(--blue);border:1px solid rgba(78,205,196,.3)}
+.tag-gold{background:rgba(255,217,61,.15);color:var(--gold);border:1px solid rgba(255,217,61,.3)}
+
+.subtitle{font-size:clamp(16px,2vw,22px);color:var(--gray);line-height:1.6;max-width:700px;margin-bottom:24px}
+
+.card-grid{display:grid;gap:16px;margin-top:20px}
+.card-grid.cols-2{grid-template-columns:repeat(2,1fr)}
+.card-grid.cols-3{grid-template-columns:repeat(3,1fr)}
+.card-grid.cols-4{grid-template-columns:repeat(4,1fr)}
+.card-grid.cols-5{grid-template-columns:repeat(5,1fr)}
+
+.card{background:var(--dark-card);border:1px solid var(--card-border);border-radius:12px;padding:24px;transition:all .3s}
+.card:hover{border-color:var(--coral);transform:translateY(-2px)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--white)}
+.card p,.card li{font-size:13px;color:var(--gray);line-height:1.6}
+.card ul{list-style:none;padding:0}
+.card ul li::before{content:"&#x25B8; ";color:var(--coral)}
+
+.stat-row{display:flex;gap:20px;margin-top:20px;flex-wrap:wrap}
+.stat{text-align:center;min-width:120px}
+.stat .num{font-family:'Playfair Display',serif;font-size:42px;font-weight:800;background:linear-gradient(135deg,var(--coral),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat .label{font-size:12px;color:var(--gray);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+
+.timeline{margin-top:20px}
+.tl-row{display:flex;align-items:flex-start;gap:16px;margin-bottom:16px}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--coral);margin-top:4px;flex-shrink:0;box-shadow:0 0 12px rgba(255,107,107,.4)}
+.tl-content h4{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px}
+.tl-content p{font-size:13px;color:var(--gray)}
+
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;background:rgba(78,205,196,.1);color:var(--blue);border:1px solid rgba(78,205,196,.25)}
+
+.highlight{color:var(--coral);font-weight:700}
+.highlight-blue{color:var(--blue);font-weight:700}
+
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+table th{text-align:left;padding:10px 14px;background:rgba(255,107,107,.1);color:var(--coral);font-weight:700;border-bottom:1px solid var(--card-border);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+table td{padding:10px 14px;border-bottom:1px solid var(--card-border);color:var(--gray)}
+table tr:hover td{color:var(--white);background:rgba(255,255,255,.02)}
+
+@media(max-width:768px){
+  .slide{padding:30px 24px}
+  .card-grid.cols-2,.card-grid.cols-3,.card-grid.cols-4,.card-grid.cols-5{grid-template-columns:1fr}
+  .stat-row{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora-bg">
+  <div class="aurora-blob aurora-blob-1"></div>
+  <div class="aurora-blob aurora-blob-2"></div>
+  <div class="aurora-blob aurora-blob-3"></div>
+</div>
+<div class="grid-overlay"></div>
+
+<div class="conf-badge">Confidential</div>
+<div class="tikit-footer"><span>TiKiT</span> Agency &#183; Dubai, UAE</div>
+<div class="progress-bar" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: Cover -->
+<div class="slide active" data-slide="0">
+  <span class="tag tag-coral">PR Seeding Campaign 2026</span>
+  <h1>Photoderm XDefense<br>SPF50+</h1>
+  <p class="subtitle">300 creators &#183; TikTok-first &#183; April&#8211;July 2026<br>Authentic product integration that drives real engagement</p>
+  <div class="stat-row">
+    <div class="stat"><div class="num">300</div><div class="label">Creators</div></div>
+    <div class="stat"><div class="num">4</div><div class="label">Months</div></div>
+    <div class="stat"><div class="num">600+</div><div class="label">Content Pieces</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 2: The Opportunity -->
+<div class="slide" data-slide="1">
+  <span class="tag tag-blue">The Opportunity</span>
+  <h2>Why Seeding Works for Bioderma</h2>
+  <p class="subtitle">Last year&#8217;s campaign proved that authentic, routine-based content outperforms scripted unboxings. We&#8217;re scaling that formula.</p>
+  <div class="card-grid cols-3">
+    <div class="card">
+      <h4>&#x1F3AF; Proven Format</h4>
+      <p>Creators who showed <span class="highlight">real daily usage</span> drove 3&#8211;5&#215; more engagement than standard unboxings</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F4F1; TikTok-First</h4>
+      <p>Platform&#8217;s algorithm rewards authentic content. SPF routines are a <span class="highlight-blue">trending format</span> with massive organic reach</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F680; Scale &#215; Diversity</h4>
+      <p>300 creators across <span class="highlight">10 categories</span> &#8212; from fitness to pharmacy, comedy to cuisine</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: Product Overview -->
+<div class="slide" data-slide="2">
+  <span class="tag tag-gold">The Product</span>
+  <h2>Photoderm XDefense Ultra-Fluid SPF50+</h2>
+  <p class="subtitle">The first detox suncare &#8212; protects and repairs</p>
+  <div class="card-grid cols-2">
+    <div class="card">
+      <h4>&#x2600;&#xFE0F; Protection</h4>
+      <ul>
+        <li>SPF 50+ broad spectrum</li>
+        <li>UV rays + visible light + infrared + pollution</li>
+        <li>Cellular Bioprotection&#174; technology</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x1F9F4; Texture &#38; Finish</h4>
+      <ul>
+        <li>Ultra-fluid, dry-touch formula</li>
+        <li>All-day matte finish</li>
+        <li>No white marks &#8212; all skin types</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x1F3A8; Shade Range</h4>
+      <ul>
+        <li>1 invisible shade</li>
+        <li>4 tinted shades for natural finish</li>
+        <li>Perfect for daily wear under makeup</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x1F4A7; Skin Benefits</h4>
+      <ul>
+        <li>8 hours of hydration</li>
+        <li>Detox action against pollution damage</li>
+        <li>Suitable for sensitive skin</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:16px">
+    <span class="pill">@Biodermame</span>
+    <span class="pill">#PhotodermXdefenseReview</span>
+  </div>
+</div>
+
+<!-- SLIDE 4: Creator Strategy -->
+<div class="slide" data-slide="3">
+  <span class="tag tag-coral">Creator Strategy</span>
+  <h2>Diverse Categories, Maximum Reach</h2>
+  <p class="subtitle">Targeting 10 creator verticals to reach every audience segment in the UAE</p>
+  <div class="card-grid cols-5">
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F3CB;&#xFE0F;</div>
+      <h4>Sports &#38; Fitness</h4>
+      <p>Gym, running, outdoor, active lifestyle</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F489;</div>
+      <h4>Pharmacists</h4>
+      <p>Healthcare professionals, clinical trust</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1FA7A;</div>
+      <h4>Derm &#38; Skincare</h4>
+      <p>Experts, science-backed reviews</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F484;</div>
+      <h4>Makeup &#38; Beauty</h4>
+      <p>MUAs, beauty routines, GRWM</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F602;</div>
+      <h4>Comedy &#38; Lifestyle</h4>
+      <p>Entertaining, viral, TikTok-native</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x2708;&#xFE0F;</div>
+      <h4>Travel</h4>
+      <p>Sun exposure, travel routines</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F373;</div>
+      <h4>Chefs &#38; Food</h4>
+      <p>Kitchen heat, surprising crossover</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F3AE;</div>
+      <h4>Gaming</h4>
+      <p>Screen time skincare, Gen-Z reach</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F3AC;</div>
+      <h4>Lifestyle</h4>
+      <p>Daily routines, relatable content</p>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:28px;margin-bottom:8px">&#x1F3C6;</div>
+      <h4>Athletes</h4>
+      <p>Outdoor training, sun protection is essential</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Content Pillars -->
+<div class="slide" data-slide="4">
+  <span class="tag tag-blue">Content Pillars</span>
+  <h2>What Creators Will Make</h2>
+  <p class="subtitle">Every creator delivers 1 Story + 1 Video &#8212; content angles designed for maximum organic reach</p>
+  <div class="card-grid cols-4">
+    <div class="card">
+      <h4>&#x1F484; GRWM</h4>
+      <p>Get Ready With Me routines featuring XDefense as SPF step &#8212; tinted shades under makeup</p>
+    </div>
+    <div class="card">
+      <h4>&#x2B50; Review &#38; Testimonial</h4>
+      <p>Honest product reviews, texture tests, before/after skin feel. Authenticity-first.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F3CB;&#xFE0F; Routine Moments</h4>
+      <p>Gym routine, morning routine, travel routine &#8212; XDefense as the non-negotiable SPF step</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F45C; What&#8217;s In My Bag</h4>
+      <p>Casual format showing daily essentials. XDefense as an organic product feature.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F3A7; ASMR</h4>
+      <p>Satisfying application sounds, texture close-ups. High watch time on TikTok.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F3A8; Makeup Routine</h4>
+      <p>Tinted shade application as base/primer &#8212; natural finish demo</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F32B;&#xFE0F; Pollution Awareness</h4>
+      <p>Educational: what pollution does to skin + how XDefense detoxifies</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F525; Trending Skincare</h4>
+      <p>Riding trending formats &#8212; skincare must-dos, dermatologist-approved picks</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Platform Strategy -->
+<div class="slide" data-slide="5">
+  <span class="tag tag-gold">Platform Strategy</span>
+  <h2>TikTok-First, Instagram Amplified</h2>
+  <div class="card-grid cols-2" style="margin-top:20px">
+    <div class="card" style="border-color:var(--coral)">
+      <h4 style="color:var(--coral);font-size:20px">&#x1F3B5; TikTok &#8212; Primary</h4>
+      <ul>
+        <li>Algorithm rewards authentic, native content</li>
+        <li>Routine/GRWM/ASMR formats dominate discovery</li>
+        <li>Highest organic reach per impression</li>
+        <li>Gen-Z and Millennial audience stronghold</li>
+        <li>Trending audio + hashtag challenges amplify</li>
+      </ul>
+      <div style="margin-top:12px;padding:12px;background:rgba(255,107,107,.08);border-radius:8px">
+        <p style="font-size:12px;color:var(--coral);font-weight:600">Deliverable: 1 TikTok Video per creator</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--blue)">
+      <h4 style="color:var(--blue);font-size:20px">&#x1F4F8; Instagram &#8212; Secondary</h4>
+      <ul>
+        <li>Cross-posting TikTok content as Reels</li>
+        <li>Stories for swipe-up / link engagement</li>
+        <li>Older demographic complement</li>
+        <li>Beauty community is deeply established</li>
+        <li>Strong for product discovery &#38; saves</li>
+      </ul>
+      <div style="margin-top:12px;padding:12px;background:rgba(78,205,196,.08);border-radius:8px">
+        <p style="font-size:12px;color:var(--blue);font-weight:600">Deliverable: 1 Instagram Story per creator</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Creator Tiers -->
+<div class="slide" data-slide="6">
+  <span class="tag tag-coral">Creator Tiers</span>
+  <h2>Tiered Approach for Maximum Impact</h2>
+  <p class="subtitle">Balanced mix of reach and authenticity across macro and micro creators</p>
+  <table>
+    <tr>
+      <th>Tier</th>
+      <th>Follower Range</th>
+      <th>Est. Creators</th>
+      <th>Role</th>
+      <th>Engagement</th>
+    </tr>
+    <tr>
+      <td style="color:var(--gold);font-weight:700">&#x1F451; Macro</td>
+      <td>100K&#8211;500K+</td>
+      <td>20&#8211;30</td>
+      <td>Visibility spikes, brand credibility</td>
+      <td>1&#8211;3%</td>
+    </tr>
+    <tr>
+      <td style="color:var(--coral);font-weight:700">&#x1F525; Mid-Tier</td>
+      <td>30K&#8211;100K</td>
+      <td>70&#8211;100</td>
+      <td>Consistent reach + engagement balance</td>
+      <td>3&#8211;5%</td>
+    </tr>
+    <tr>
+      <td style="color:var(--blue);font-weight:700">&#x1F48E; Micro</td>
+      <td>5K&#8211;30K</td>
+      <td>150&#8211;200</td>
+      <td>High engagement, niche trust, volume</td>
+      <td>5&#8211;10%+</td>
+    </tr>
+  </table>
+  <div class="card" style="margin-top:20px;border-color:var(--gold)">
+    <h4 style="color:var(--gold)">&#x26A0;&#xFE0F; Macro Coverage Note</h4>
+    <p>Larger creators receive PR boxes with no posting obligation. Coverage is not guaranteed but provides strong organic visibility when achieved. Budget is optimized around mid-tier and micro creators where ROI is highest.</p>
+  </div>
+</div>
+
+<!-- SLIDE 8: Execution Timeline -->
+<div class="slide" data-slide="7">
+  <span class="tag tag-blue">Execution Timeline</span>
+  <h2>April &#8211; July 2026</h2>
+  <p class="subtitle">Rolling batches of 50&#8211;100 creators every 2&#8211;3 weeks</p>
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>Week 1&#8211;2 &#183; Late March</h4>
+        <p>Batch 1 profiles submitted (50&#8211;100 names) &#8594; Client review &#38; approval</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:var(--blue)"></div>
+      <div class="tl-content">
+        <h4>April &#183; Batch 1 &#38; 2 Live</h4>
+        <p>PR boxes shipped to approved Batch 1 creators. Batch 2 profiles submitted. Content starts flowing.</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:var(--gold)"></div>
+      <div class="tl-content">
+        <h4>May &#183; Batch 3 &#38; 4</h4>
+        <p>Peak summer content. Outdoor, fitness, and travel creators are ideal. High engagement season for SPF content.</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:var(--pink)"></div>
+      <div class="tl-content">
+        <h4>June &#183; Batch 5 &#38; 6</h4>
+        <p>Continued seeding + performance review. Double down on top-performing categories.</p>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-dot" style="background:var(--coral)"></div>
+      <div class="tl-content">
+        <h4>July &#183; Final Batches + Wrap</h4>
+        <p>Last creator batches. Campaign report: total reach, engagement, top-performing content, creator highlights.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Creator Selection Approach -->
+<div class="slide" data-slide="8">
+  <span class="tag tag-gold">Selection Methodology</span>
+  <h2>How We Find the Right Creators</h2>
+  <div class="card-grid cols-2" style="margin-top:16px">
+    <div class="card">
+      <h4>&#x1F50D; Discovery Process</h4>
+      <ul>
+        <li>TikTok &#38; Instagram native search by category</li>
+        <li>Hashtag mapping: #skincareroutine #spfdaily #grwm #dubaifitness</li>
+        <li>Competitor brand mention analysis</li>
+        <li>Manual profile audits &#8212; no bots, no fake engagement</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x2705; Vetting Criteria</h4>
+      <ul>
+        <li>Engagement rate &#8805; 2% (TikTok) / &#8805; 1.5% (IG)</li>
+        <li>UAE audience &#8805; 15%</li>
+        <li>Content quality &#38; storytelling ability</li>
+        <li>Brand safety &#38; content alignment</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x1F6AB; Exclusion Rules</h4>
+      <ul>
+        <li>185 creators from 2025 campaign excluded</li>
+        <li>No duplicate profiles across batches</li>
+        <li>No creators with competitor exclusivity</li>
+        <li>No purchased followers / suspicious growth</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>&#x1F4CA; Reporting Per Batch</h4>
+      <ul>
+        <li>Name, handle, platform, followers, ER</li>
+        <li>Category &#38; content style</li>
+        <li>Audience demographics (top 3 countries)</li>
+        <li>Sample content links</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: Deliverables Summary -->
+<div class="slide" data-slide="9">
+  <span class="tag tag-coral">Deliverables</span>
+  <h2>What Bioderma Gets</h2>
+  <div class="card-grid cols-2" style="margin-top:20px">
+    <div class="card" style="border-color:var(--coral)">
+      <h4>&#x1F4E6; Campaign Deliverables</h4>
+      <ul>
+        <li>300 verified creator profiles across 10 categories</li>
+        <li>300 TikTok videos / Instagram Reels</li>
+        <li>300 Instagram Stories</li>
+        <li>All content tagged @Biodermame + #PhotodermXdefenseReview</li>
+        <li>Content rights for approved repurposing</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--blue)">
+      <h4>&#x1F4CB; Agency Services</h4>
+      <ul>
+        <li>Full creator sourcing &#38; vetting (10 categories)</li>
+        <li>Batch submissions every 2&#8211;3 weeks</li>
+        <li>Creator outreach &#38; briefing</li>
+        <li>PR box logistics coordination</li>
+        <li>Content tracking &#38; performance monitoring</li>
+        <li>Final campaign report with analytics</li>
+      </ul>
+    </div>
+  </div>
+  <div class="stat-row" style="margin-top:30px;justify-content:center">
+    <div class="stat"><div class="num">300</div><div class="label">Creators</div></div>
+    <div class="stat"><div class="num">600+</div><div class="label">Content Pieces</div></div>
+    <div class="stat"><div class="num">10</div><div class="label">Categories</div></div>
+    <div class="stat"><div class="num">6&#8211;8</div><div class="label">Batches</div></div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Why TiKiT -->
+<div class="slide" data-slide="10">
+  <span class="tag tag-blue">Why TiKiT</span>
+  <h2>Your Campaign Partner</h2>
+  <div class="card-grid cols-3" style="margin-top:20px">
+    <div class="card">
+      <h4>&#x1F310; UAE-Native Network</h4>
+      <p>Deep creator relationships across Dubai, Abu Dhabi, Sharjah, and Northern Emirates. We know who delivers.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F916; AI-Powered Discovery</h4>
+      <p>Proprietary tools for creator matching, audience analysis, and engagement verification. No guesswork.</p>
+    </div>
+    <div class="card">
+      <h4>&#x1F4CA; Proven Track Record</h4>
+      <p>Successfully executed beauty, FMCG, fintech, and lifestyle campaigns at scale in the UAE market.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;border-color:var(--gold);text-align:center;padding:30px">
+    <h4 style="color:var(--gold);font-size:20px;margin-bottom:12px">Ready to Start</h4>
+    <p style="font-size:15px;color:var(--white)">Batch 1 profiles can be submitted within <span class="highlight">5 business days</span> of approval.</p>
+    <div style="margin-top:16px">
+      <span class="pill" style="background:rgba(255,107,107,.1);color:var(--coral);border-color:rgba(255,107,107,.3)">Alaa Al Aisami</span>
+      <span class="pill">TiKiT Marketing Management</span>
+      <span class="pill" style="background:rgba(255,217,61,.1);color:var(--gold);border-color:rgba(255,217,61,.3)">Dubai, UAE</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<nav class="nav">
+  <button onclick="prev()" aria-label="Previous">&#x25C0;</button>
+  <span class="counter" id="counter">1 / 11</span>
+  <button onclick="next()" aria-label="Next">&#x25B6;</button>
+</nav>
+
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let cur=0;
+function show(n){slides.forEach((s,i)=>{s.classList.remove('active','exit-left');if(i===n)s.classList.add('active');else if(i<n)s.classList.add('exit-left')});document.getElementById('counter').textContent=(n+1)+' / '+total;document.getElementById('progress').style.width=((n+1)/total*100)+'%'}
+function next(){if(cur<total-1){cur++;show(cur)}}
+function prev(){if(cur>0){cur--;show(cur)}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')next();if(e.key==='ArrowLeft')prev()});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(d<-50)next();if(d>50)prev()});
+show(0);
+</script>
+</body>
+</html>
