@@ -197,6 +197,15 @@ html,body{background:var(--bg);color:var(--white);font-family:-apple-system,Blin
   body{background:#fff;color:#000}
   .creator-table tbody tr.selected{background:#e8f4ff}
 }
+.mega-badge{display:inline-block;background:rgba(255,80,80,.15);color:#ff5050;border:1px solid rgba(255,80,80,.35);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;margin-top:4px;letter-spacing:.3px;}
+.ksa-badge{display:inline-block;background:rgba(255,170,0,.12);color:#ffaa00;border:1px solid rgba(255,170,0,.3);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:800;margin-top:4px;}
+.tt-primary-badge{display:inline-block;background:rgba(0,255,150,.1);color:#00e887;border:1px solid rgba(0,255,150,.25);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;margin-top:4px;}
+.row-ksa{opacity:.45;}
+.row-ksa td{text-decoration:line-through;color:#555 !important;}
+.row-mega .td-why::after{display:none;}
+.mega-badge{background:rgba(255,80,80,.18);color:#ff5555;border:1px solid rgba(255,80,80,.4);border-radius:6px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.3px;}
+.ksa-badge{background:rgba(255,160,0,.15);color:#ffaa00;border:1px solid rgba(255,160,0,.35);border-radius:6px;padding:2px 9px;font-size:10px;font-weight:800;letter-spacing:.3px;}
+.tt-badge{background:rgba(0,230,120,.1);color:#00e887;border:1px solid rgba(0,230,120,.25);border-radius:6px;padding:2px 9px;font-size:10px;font-weight:700;}
 </style>
 </head>
 <body>
@@ -239,7 +248,7 @@ html,body{background:var(--bg);color:var(--white);font-family:-apple-system,Blin
   <div class="cover-stats">
     <div class="cstat"><div class="n">50</div><div class="l">Batch 1 Creators</div></div>
     <div class="cstat"><div class="n">5</div><div class="l">Categories</div></div>
-    <div class="cstat"><div class="n">UAE + KSA</div><div class="l">Primary Markets</div></div>
+    <div class="cstat"><div class="n">UAE Only</div><div class="l">Primary Markets</div></div>
     <div class="cstat"><div class="n">Apr – Jul</div><div class="l">Campaign Window</div></div>
     <div class="cstat"><div class="n">~300</div><div class="l">Total Scope</div></div>
   </div>
@@ -561,6 +570,50 @@ function clearAll() {
 // Init
 buildTable();
 updateCounts();
+
+// === UAE ONLY + MEGA FLAGS + TIKTOK-FIRST ===
+const KSA_IDS = [13,14,15,18,19];
+const MEGA_IDS = [1,6,11,21,22,25,26,27,28,29,30,31,32,33,36,37,39,40,41,42,43,44,45,46,47,48,49,50];
+const TT_PRIMARY_IDS = [1,5,6,21,22,26,28,29,31,34,40,41,42,43,44,45,46,47,49,50];
+
+function applyFlags() {
+  KSA_IDS.forEach(function(id) {
+    var row = document.getElementById('row-'+id);
+    if (!row) return;
+    row.style.opacity = '0.4';
+    var nameCell = row.querySelector('.td-creator') || row.querySelector('td');
+    if (nameCell && !nameCell.querySelector('.ksa-badge')) {
+      nameCell.insertAdjacentHTML('beforeend', '<div style="margin-top:4px"><span class="ksa-badge">🚫 KSA — Excluded (UAE campaign only)</span></div>');
+    }
+    // Auto-reject
+    var rejectBtn = document.getElementById('reject-'+id);
+    if (rejectBtn && !rejectBtn.classList.contains('active')) { setStatus(id,'rejected',rejectBtn); }
+  });
+
+  MEGA_IDS.forEach(function(id) {
+    var row = document.getElementById('row-'+id);
+    if (!row) return;
+    var nameCell = row.querySelector('.td-creator') || row.querySelector('td');
+    if (nameCell && !nameCell.querySelector('.mega-badge')) {
+      nameCell.insertAdjacentHTML('beforeend', '<div style="margin-top:4px"><span class="mega-badge">⚠️ MEGA — Paid required for UGC</span></div>');
+    }
+  });
+
+  TT_PRIMARY_IDS.forEach(function(id) {
+    var row = document.getElementById('row-'+id);
+    if (!row) return;
+    var nameCell = row.querySelector('.td-creator') || row.querySelector('td');
+    if (nameCell && !nameCell.querySelector('.tt-badge')) {
+      nameCell.insertAdjacentHTML('beforeend', '<div style="margin-top:4px"><span class="tt-badge">🎵 TikTok-first</span></div>');
+    }
+  });
+}
+
+// Run after table builds
+(function() {
+  var origBuildTable = typeof buildTable === 'function' ? buildTable : null;
+  setTimeout(applyFlags, 200);
+})();
 </script>
 </body>
 </html>
