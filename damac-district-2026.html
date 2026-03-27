@@ -88,6 +88,16 @@
         .slide-cover {
             background: radial-gradient(ellipse 100% 80% at 50% 100%, #1A0F00 0%, #0D0A04 40%, #06060A 70%, #08080A 100%);
         }
+        .cover-hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center bottom;
+            opacity: 0.45;
+            z-index: 1;
+            pointer-events: none;
+        }
 
         .slide-skyline {
             position: absolute;
@@ -418,6 +428,11 @@
     <section class="slide slide-cover" data-slide="1">
         <div class="slide-number">01 / 15</div>
 
+        <!-- AI-generated hero photo background -->
+        <img class="cover-hero-img"
+             src="https://cabdelkhalegh.github.io/tikit-decks/images/damac-district-2026/damac-cover-hero.png"
+             alt="" loading="eager"/>
+
         <!-- Floating particles -->
         <div class="slide-particles" id="particles"></div>
 
@@ -553,7 +568,10 @@
         </svg>
 
         <!-- Cover content -->
-        <div class="logo-placeholder">D</div>
+        <div class="logo-placeholder" style="background:none; box-shadow:none; padding:0; border-radius:0; width:110px; height:110px; overflow:hidden;">
+            <img src="https://cabdelkhalegh.github.io/tikit-decks/images/damac-district-2026/damac-brand-badge.png"
+                 alt="DAMAC District" style="width:100%; height:100%; object-fit:cover; border-radius:50%; box-shadow:0 0 40px rgba(201,168,76,0.5);" loading="eager"/>
+        </div>
         <h1>DAMAC District</h1>
         <p class="subtitle">Influencer Marketing Campaign</p>
         <p style="font-size:1.5rem; margin-bottom:1rem; letter-spacing:0.05em;">April 2026 Launch</p>
@@ -587,7 +605,13 @@
     <section class="slide bg-city-grid" data-slide="3">
         <div class="slide-number">03 / 15</div>
         <h2>DAMAC District: The Project</h2>
-        <div class="content-box">
+        <!-- Aerial photo subtle background layer -->
+        <div style="position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;">
+            <img src="https://cabdelkhalegh.github.io/tikit-decks/images/damac-district-2026/damac-aerial-community.png"
+                 alt="" style="width:100%; height:100%; object-fit:cover; opacity:0.12; filter:saturate(0.7);" loading="lazy"/>
+            <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,10,0.6) 0%,rgba(8,8,10,0.85) 100%);"></div>
+        </div>
+        <div class="content-box" style="position:relative; z-index:2;">
             <h3>Live. Work. Play.</h3>
             <p style="margin-bottom:2rem;">A new mixed-use destination at DAMAC Hills redefining modern urban living.</p>
             <div class="grid-2" style="margin-top:2rem;">
@@ -614,6 +638,13 @@
             <p style="margin-top:2rem; text-align:center;"><strong>Units:</strong> 1BR &amp; 2BR Apartments + Office Spaces</p>
             <p style="text-align:center;"><strong>Location:</strong> DAMAC Hills (near Trump International Golf Club)</p>
             <p style="text-align:center;"><strong>Handover:</strong> Post 2026 (Details to be confirmed)</p>
+        </div>
+        <!-- Aerial photo preview -->
+        <div style="position:relative; z-index:2; margin-top:1.5rem; border:1px solid rgba(201,168,76,0.3); border-radius:8px; overflow:hidden; max-width:800px; width:100%;">
+            <img src="https://cabdelkhalegh.github.io/tikit-decks/images/damac-district-2026/damac-aerial-community.png"
+                 alt="DAMAC District aerial view"
+                 style="width:100%; height:200px; object-fit:cover; display:block;" loading="lazy"/>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:0.6rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,0.85));font-size:0.8rem;color:rgba(201,168,76,0.9);letter-spacing:0.08em;text-transform:uppercase;">DAMAC Hills · Mixed-Use District · Artist Impression</div>
         </div>
     </section>
 
