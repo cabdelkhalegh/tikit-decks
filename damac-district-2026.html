@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAMAC District | Influencer Marketing Campaign</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0A0A0A;
+            --gold: #C9A84C;
+            --white: #FFFFFF;
+            --dark-grey: #1A1A1A;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .slide-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        .slide {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            scroll-snap-align: start;
+            background: var(--black);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.3;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--white) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            color: var(--white);
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        p {
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            line-height: 1.7;
+            color: rgba(255,255,255,0.85);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .subtitle {
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            font-weight: 300;
+        }
+
+        .content-box {
+            background: var(--dark-grey);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            padding: 2.5rem;
+            border-radius: 8px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 2rem auto;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+        }
+
+        .card {
+            background: var(--dark-grey);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            padding: 2rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--gold);
+            font-weight: 900;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .list-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        table thead {
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        table th {
+            padding: 1rem;
+            text-align: left;
+            color: var(--gold);
+            font-weight: 600;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        table tr:hover {
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .creator-card {
+            background: var(--dark-grey);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .creator-card h5 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .creator-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin: 0.25rem 0;
+        }
+
+        .cta {
+            background: var(--gold);
+            color: var(--black);
+            padding: 1rem 3rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .cta:hover {
+            background: var(--white);
+            transform: scale(1.05);
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            transform: scale(1.3);
+        }
+
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--gold), rgba(201,168,76,0.5));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--black);
+            margin-bottom: 2rem;
+        }
+
+        @media print {
+            .slide {
+                page-break-after: always;
+                break-after: page;
+            }
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 3rem 1.5rem;
+            }
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .nav-dots {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        
+        <!-- Slide 1: Cover -->
+        <section class="slide" data-slide="1">
+            <div class="slide-number">01 / 15</div>
+            <div class="logo-placeholder">D</div>
+            <h1>DAMAC District</h1>
+            <p class="subtitle">Influencer Marketing Campaign</p>
+            <p style="font-size: 1.5rem; margin-bottom: 1rem;">April 2026 Launch</p>
+            <p style="margin-top: 3rem; opacity: 0.6;">Prepared by: TiKiT Marketing Management</p>
+            <p style="opacity: 0.6;">March 27, 2026</p>
+        </section>
+
+        <!-- Slide 2: About DAMAC -->
+        <section class="slide" data-slide="2">
+            <div class="slide-number">02 / 15</div>
+            <h2>About DAMAC Properties</h2>
+            <div class="content-box">
+                <div class="grid-3">
+                    <div class="stat">
+                        <span class="stat-number">2002</span>
+                        <span class="stat-label">Founded</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">AED 36B</span>
+                        <span class="stat-label">2025 Sales</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">#1</span>
+                        <span class="stat-label">Dubai Private Developer</span>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; font-size: 1.25rem; color: var(--gold);">"Shaping the future of luxury living"</p>
+                <div style="margin-top: 2rem;">
+                    <p><strong>Founded by:</strong> Hussain Sajwani</p>
+                    <p><strong>Headquarters:</strong> Dubai, UAE</p>
+                    <p><strong>Market Position:</strong> Globally recognized luxury real estate developer</p>
+                    <p><strong>2025 Achievement:</strong> AED 36 billion in sales — ranked #1 among Dubai's private developers</p>
+                    <p><strong>Notable 2025 Launch:</strong> DAMAC Islands 2 — AED 11 billion in sales in 5 hours</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: DAMAC District - The Project -->
+        <section class="slide" data-slide="3">
+            <div class="slide-number">03 / 15</div>
+            <h2>DAMAC District: The Project</h2>
+            <div class="content-box">
+                <h3>Live. Work. Play.</h3>
+                <p style="margin-bottom: 2rem;">A new mixed-use destination at DAMAC Hills redefining modern urban living.</p>
+                
+                <div class="grid-2" style="margin-top: 2rem;">
+                    <div>
+                        <h4 style="color: var(--gold); margin-bottom: 1rem;">What It Is</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li class="list-item">2 modern residential towers</li>
+                            <li class="list-item">1 commercial tower</li>
+                            <li class="list-item">Innovative collaborative workspaces</li>
+                            <li class="list-item">Lush green areas & parks</li>
+                            <li class="list-item">Retail, dining, entertainment</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--gold); margin-bottom: 1rem;">Who It's For</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li class="list-item">Young professionals seeking convenience</li>
+                            <li class="list-item">Investors targeting mixed-use ROI</li>
+                            <li class="list-item">Families seeking modern community</li>
+                            <li class="list-item">International buyers (Golden Visa eligible)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem; text-align: center;"><strong>Units:</strong> 1BR & 2BR Apartments + Office Spaces</p>
+                <p style="text-align: center;"><strong>Location:</strong> DAMAC Hills (near Trump International Golf Club)</p>
+                <p style="text-align: center;"><strong>Handover:</strong> Post 2026 (Details to be confirmed)</p>
+            </div>
+        </section>
+
+        <!-- Slide 4: Campaign Objective -->
+        <section class="slide" data-slide="4">
+            <div class="slide-number">04 / 15</div>
+            <h2>Campaign Objective</h2>
+            <div class="content-box">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Drive awareness and consideration for DAMAC District among high-net-worth audiences</h3>
+                
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Target</h4>
+                        <p>HNW audiences across 5 markets: UAE | Russia/CIS | India | UK/US | MENA</p>
+                    </div>
+                    <div class="card">
+                        <h4>Approach</h4>
+                        <p>30 influencers across Investment, Luxury Lifestyle, and Real Estate categories</p>
+                    </div>
+                    <div class="card">
+                        <h4>Outcome</h4>
+                        <p>Authentic content positioning DAMAC District as THE investment opportunity</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem; text-align: center; font-size: 1.1rem;">Generate 9-12M monthly reach through trusted voices in the luxury, investment, and real estate space.</p>
+            </div>
+        </section>
+
+        <!-- Slide 5: Target Markets -->
+        <section class="slide" data-slide="5">
+            <div class="slide-number">05 / 15</div>
+            <h2>Target Markets</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h4>🇦🇪 UAE</h4>
+                    <p><strong>Why:</strong> Local & expat HNW buyers seeking live-work-play convenience</p>
+                    <p><strong>Insight:</strong> Dubai's mixed-use developments attract young professionals and families</p>
+                </div>
+                <div class="card">
+                    <h4>🇷🇺 Russia/CIS</h4>
+                    <p><strong>Why:</strong> 30%+ of luxury purchases; UHNW investors seeking capital preservation</p>
+                    <p><strong>Insight:</strong> Political stability + tax-free ownership + Golden Visa eligibility</p>
+                </div>
+                <div class="card">
+                    <h4>🇮🇳 India</h4>
+                    <p><strong>Why:</strong> #1 foreign investor group; AED 35-40B annual purchases</p>
+                    <p><strong>Insight:</strong> Proximity, strong yields, residency pathways, diaspora community</p>
+                </div>
+                <div class="card">
+                    <h4>🇬🇧 🇺🇸 UK/US</h4>
+                    <p><strong>Why:</strong> Portfolio diversification + tax-free lifestyle + investment ROI</p>
+                    <p><strong>Insight:</strong> Remote work flexibility + luxury living at competitive pricing</p>
+                </div>
+                <div class="card">
+                    <h4>🌍 MENA</h4>
+                    <p><strong>Why:</strong> Regional HNW buyers (Saudi, Qatar, Kuwait, Bahrain, Egypt)</p>
+                    <p><strong>Insight:</strong> Cultural alignment + proximity + established investment patterns</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Content Strategy -->
+        <section class="slide" data-slide="6">
+            <div class="slide-number">06 / 15</div>
+            <h2>Content Strategy</h2>
+            <div class="content-box">
+                <h3 style="text-align: center; margin-bottom: 2rem;">3 Content Pillars</h3>
+                
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>💼 Investment & Entrepreneurship</h4>
+                        <p><strong>Message:</strong> Smart investment + residency + ROI</p>
+                        <p style="margin-top: 1rem;"><strong>Content:</strong> "Why I'm investing", market analysis, Golden Visa explainers, financial breakdowns</p>
+                    </div>
+                    <div class="card">
+                        <h4>✨ Luxury Lifestyle</h4>
+                        <p><strong>Message:</strong> Elevated living + aspirational Dubai lifestyle</p>
+                        <p style="margin-top: 1rem;"><strong>Content:</strong> "A day in my life", amenity showcases, community vibe, aesthetic tours</p>
+                    </div>
+                    <div class="card">
+                        <h4>🏢 Real Estate</h4>
+                        <p><strong>Message:</strong> Prime location + innovative design + DAMAC quality</p>
+                        <p style="margin-top: 1rem;"><strong>Content:</strong> Property walkthroughs, location analysis, developer credibility, off-plan explainers</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem; text-align: center; font-size: 1.1rem;"><strong>Primary Platform:</strong> Instagram (Reels + Stories)</p>
+                <p style="text-align: center;">Short-form video content drives 3-5x higher engagement than static ads</p>
+            </div>
+        </section>
+
+        <!-- Slide 7: Creator Strategy -->
+        <section class="slide" data-slide="7">
+            <div class="slide-number">07 / 15</div>
+            <h2>Creator Strategy</h2>
+            <div class="content-box">
+                <h3>Why Influencers Over Traditional Ads?</h3>
+                <div class="grid-2" style="margin-top: 2rem;">
+                    <div class="card">
+                        <h4>Trust</h4>
+                        <p>70%+ of consumers trust influencer recommendations over brand ads</p>
+                    </div>
+                    <div class="card">
+                        <h4>Authenticity</h4>
+                        <p>Real people sharing real experiences resonate with HNW buyers</p>
+                    </div>
+                    <div class="card">
+                        <h4>Reach</h4>
+                        <p>Top 30 influencers = 9-12M monthly reach across target markets</p>
+                    </div>
+                    <div class="card">
+                        <h4>Engagement</h4>
+                        <p>Video content drives 3-5x higher engagement than static ads</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Tier Mix Rationale</h3>
+                <div class="list-item"><strong>Tier 1 (500K+):</strong> Reach & awareness — 8 influencers = 6-8M monthly reach</div>
+                <div class="list-item"><strong>Tier 2 (100K-500K):</strong> Engagement & consideration — 18 influencers = 2.5-3.5M monthly reach</div>
+                <div class="list-item"><strong>Tier 3 (10K-100K):</strong> Authenticity & niche — 4 influencers = 40-50K monthly reach</div>
+
+                <h3 style="margin-top: 3rem;">HNW Audience Qualification</h3>
+                <p>✓ Age 25-55, affluent, mobile<br>
+                ✓ Professional, polished, aspirational content<br>
+                ✓ High-value engagement (not bots)<br>
+                ✓ Minimum 30% audience in target markets</p>
+            </div>
+        </section>
+
+        <!-- Slide 8: Influencer Longlist Overview -->
+        <section class="slide" data-slide="8">
+            <div class="slide-number">08 / 15</div>
+            <h2>Influencer Longlist Overview</h2>
+            <div class="content-box">
+                <div class="grid-3">
+                    <div class="stat">
+                        <span class="stat-number">30</span>
+                        <span class="stat-label">Influencers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Markets</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">9-12M</span>
+                        <span class="stat-label">Monthly Reach</span>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Tier Breakdown</h3>
+                <div class="grid-3">
+                    <div class="card">
+                        <h4>Tier 1</h4>
+                        <p>8 influencers (500K+)<br>Includes Supercar Blondie (15M), Joelle Mardinian (11.5M), Reem Abou Samra (6.8M)</p>
+                    </div>
+                    <div class="card">
+                        <h4>Tier 2</h4>
+                        <p>18 influencers (100K-500K)<br>Balanced engagement + reach across all markets</p>
+                    </div>
+                    <div class="card">
+                        <h4>Tier 3</h4>
+                        <p>4 influencers (10K-100K)<br>Niche targeting + authentic community engagement</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Market Coverage</h3>
+                <p><strong>UAE:</strong> 10 influencers | <strong>Russia/CIS:</strong> 5 influencers | <strong>India:</strong> 5 influencers | <strong>UK/US:</strong> 7 influencers | <strong>MENA:</strong> 3 influencers</p>
+            </div>
+        </section>
+
+        <!-- Slide 9: Investment & Entrepreneurship Creators -->
+        <section class="slide" data-slide="9">
+            <div class="slide-number">09 / 15</div>
+            <h2>Investment & Entrepreneurship Creators</h2>
+            <p class="subtitle">10 creators | Focus: HNW audience, financial literacy, property investment</p>
+            <div class="content-box" style="max-height: 60vh; overflow-y: auto;">
+                <div class="creator-card">
+                    <h5>Rashed Belhasa (Money Kicks) — @moneykicks</h5>
+                    <p>2.9M followers | Tier 1 | UAE</p>
+                    <p>Rate: AED 100K-150K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Ammar Omar — @ammaromar</h5>
+                    <p>520K followers | Tier 1 | UAE</p>
+                    <p>Rate: AED 80K-120K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Zeina Khoury — @zeinakhoury</h5>
+                    <p>380K followers | Tier 2 | UAE</p>
+                    <p>Rate: AED 45K-60K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>CA Anamika Rana — @ca_anamikarana</h5>
+                    <p>251K followers | Tier 2 | UAE (India focus)</p>
+                    <p>Rate: AED 35K-50K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Karina Meirmann — @karina_meirmann</h5>
+                    <p>154K followers | Tier 2 | UAE (CIS audience 25%)</p>
+                    <p>Rate: AED 25K-40K (TBC)</p>
+                </div>
+                <p style="margin-top: 1rem; text-align: center; opacity: 0.7;">+ 5 more creators (A. Sanad, Firas Al Msaddi, Jigar Sagar, Keerthana Merame, Kartik Iyer)</p>
+            </div>
+        </section>
+
+        <!-- Slide 10: Luxury Lifestyle Creators -->
+        <section class="slide" data-slide="10">
+            <div class="slide-number">10 / 15</div>
+            <h2>Luxury Lifestyle Creators</h2>
+            <p class="subtitle">12 creators | Focus: Aspirational content, cars, travel, fashion, dining</p>
+            <div class="content-box" style="max-height: 60vh; overflow-y: auto;">
+                <div class="creator-card">
+                    <h5>Supercar Blondie — @supercarblondie</h5>
+                    <p>15.2M followers | Tier 1 | UAE (Global reach)</p>
+                    <p>Rate: AED 150K+ (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Reem Abou Samra — @reemabousamra</h5>
+                    <p>6.8M followers | Tier 1 | UAE</p>
+                    <p>Rate: AED 120K-150K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Taim Al Falasi — @taimtheofficial</h5>
+                    <p>2.6M followers | Tier 1 | UAE</p>
+                    <p>Rate: AED 100K-150K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Alanoud Badr — @alanoudbadr</h5>
+                    <p>1.1M followers | Tier 1 | UAE/MENA</p>
+                    <p>Rate: AED 80K-120K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Daria Radionova — @dradionova</h5>
+                    <p>580K followers | Tier 1 (Russian/CIS focus 45%)</p>
+                    <p>Rate: AED 80K-120K (TBC)</p>
+                </div>
+                <p style="margin-top: 1rem; text-align: center; opacity: 0.7;">+ 7 more creators (Gehna Advani, NR Salah, Lion Lindaa, Tatiana Tretyak, Ira Nekrashevich, Nadya, Ari Reid)</p>
+            </div>
+        </section>
+
+        <!-- Slide 11: Real Estate Creators -->
+        <section class="slide" data-slide="11">
+            <div class="slide-number">11 / 15</div>
+            <h2>Real Estate Creators</h2>
+            <p class="subtitle">8 creators | Focus: Property walkthroughs, market insights, investment tips</p>
+            <div class="content-box" style="max-height: 60vh; overflow-y: auto;">
+                <div class="creator-card">
+                    <h5>Joelle Mardinian — @joellemardinian</h5>
+                    <p>11.5M followers | Tier 1 | MENA</p>
+                    <p>Rate: AED 150K+ (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Nojoud Al Rumaihi — @nojoud_alrumaihi</h5>
+                    <p>636K followers | Tier 1 | Saudi Arabia/MENA</p>
+                    <p>Rate: AED 80K-120K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Ari Reid — @arireidproperty</h5>
+                    <p>496K followers | Tier 2 | UK (UAE reach 20%)</p>
+                    <p>Rate: AED 50K-70K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Anna K. Hollingsworth — @annakhollingsworth</h5>
+                    <p>420K followers | Tier 2 | US (UAE reach 15%)</p>
+                    <p>Rate: AED 45K-60K (TBC)</p>
+                </div>
+                <div class="creator-card">
+                    <h5>Elizabeth B. McNulty — @elizabethmcnulty</h5>
+                    <p>310K followers | Tier 2 | US (UAE reach 10%)</p>
+                    <p>Rate: AED 40K-55K (TBC)</p>
+                </div>
+                <p style="margin-top: 1rem; text-align: center; opacity: 0.7;">+ 3 more creators (Alessia Sheglova, Farooq Syed, Alona Lurdes, Patya Magomedova)</p>
+            </div>
+        </section>
+
+        <!-- Slide 12: Deliverables & Timeline -->
+        <section class="slide" data-slide="12">
+            <div class="slide-number">12 / 15</div>
+            <h2>Deliverables & Timeline</h2>
+            <div class="content-box">
+                <h3>Per Creator Deliverables</h3>
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>1x Instagram Reel</h4>
+                        <p>30-60 seconds | High-quality video showcasing DAMAC District | Personal POV / authentic storytelling | CTA: "Link in bio" or DM for inquiries</p>
+                    </div>
+                    <div class="card">
+                        <h4>1-2x Instagram Stories</h4>
+                        <p>24-hour duration | Behind-the-scenes content | Quick property highlights | Swipe-up/link to DAMAC landing page</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Campaign Timeline</h3>
+                <div class="list-item"><strong>Campaign Window:</strong> April 1-7, 2026 (1st week of April)</div>
+                <div class="list-item"><strong>Publishing Strategy:</strong> Staggered across 7 days to maintain momentum</div>
+                <div class="list-item"><strong>Selection Process:</strong> Client selects 15-18 creators from longlist of 30</div>
+
+                <h3 style="margin-top: 3rem;">Campaign Flow</h3>
+                <p><strong>Week 1:</strong> Client approves longlist<br>
+                <strong>Week 2:</strong> TiKiT outreaches 30 creators<br>
+                <strong>Week 3:</strong> Client selects 15-18 finalists<br>
+                <strong>Week 4:</strong> Contracts + briefs issued<br>
+                <strong>Week 5:</strong> Content creation<br>
+                <strong>Week 6:</strong> Review & approval<br>
+                <strong>April 1-7:</strong> Coordinated launch 🚀</p>
+            </div>
+        </section>
+
+        <!-- Slide 13: Investment (Rates) -->
+        <section class="slide" data-slide="13">
+            <div class="slide-number">13 / 15</div>
+            <h2>Investment (Rates)</h2>
+            <div class="content-box">
+                <h3>Market Standard Rates (UAE 2026)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tier</th>
+                            <th>Followers</th>
+                            <th>Rate per Creator (AED)</th>
+                            <th>Count in Longlist</th>
+                            <th>Total Range (AED)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tier 1</td>
+                            <td>500K+</td>
+                            <td>50K-150K</td>
+                            <td>8</td>
+                            <td>400K-1.2M</td>
+                        </tr>
+                        <tr>
+                            <td>Tier 2</td>
+                            <td>100K-500K</td>
+                            <td>15K-50K</td>
+                            <td>18</td>
+                            <td>270K-900K</td>
+                        </tr>
+                        <tr>
+                            <td>Tier 3</td>
+                            <td>10K-100K</td>
+                            <td>3K-15K</td>
+                            <td>4</td>
+                            <td>12K-60K</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-top: 2rem; text-align: center;">Total Estimated Budget</h3>
+                <div class="grid-2" style="margin-top: 1rem;">
+                    <div class="stat">
+                        <span class="stat-number">AED 682K-2.16M</span>
+                        <span class="stat-label">All 30 Creators</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">AED 500K-1.2M</span>
+                        <span class="stat-label">15-18 Selected Creators</span>
+                    </div>
+                </div>
+
+                <p style="margin-top: 2rem; text-align: center; font-size: 0.95rem; opacity: 0.7;"><strong>Note:</strong> All rates TBC pending direct outreach. Actual rates depend on engagement quality, audience demographics, exclusivity, and multi-post packages.</p>
+            </div>
+        </section>
+
+        <!-- Slide 14: Why TiKiT -->
+        <section class="slide" data-slide="14">
+            <div class="slide-number">14 / 15</div>
+            <h2>Why TiKiT Marketing Management</h2>
+            <div class="content-box">
+                <h3>Who We Are</h3>
+                <p>Boutique influencer marketing agency specializing in luxury real estate, lifestyle, and HNW audience campaigns.</p>
+                
+                <div class="grid-3" style="margin-top: 2rem;">
+                    <div class="card">
+                        <h4>Curated</h4>
+                        <p>Every influencer manually verified for HNW audience alignment</p>
+                    </div>
+                    <div class="card">
+                        <h4>Verified</h4>
+                        <p>Cross-checked follower authenticity, engagement quality, brand safety</p>
+                    </div>
+                    <div class="card">
+                        <h4>Results-Driven</h4>
+                        <p>Focus on ROI, not vanity metrics</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">What We Do</h3>
+                <div class="grid-2">
+                    <div class="card">
+                        <h4>🔍 Influencer Discovery</h4>
+                        <p>AI-driven vetting for audience quality, engagement, and brand fit</p>
+                    </div>
+                    <div class="card">
+                        <h4>📊 Campaign Strategy</h4>
+                        <p>Multi-market, multi-tier campaign design</p>
+                    </div>
+                    <div class="card">
+                        <h4>🤝 Creator Management</h4>
+                        <p>End-to-end coordination (outreach, negotiation, briefing, content review)</p>
+                    </div>
+                    <div class="card">
+                        <h4>📈 Performance Tracking</h4>
+                        <p>Real-time analytics on reach, engagement, conversions</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">Our Advantage</h3>
+                <p><strong>Network:</strong> 500+ verified influencers across UAE, MENA, Russia/CIS, India, UK/US<br>
+                <strong>Platform:</strong> TiKiT OS — AI-powered influencer discovery and campaign management<br>
+                <strong>Approach:</strong> Premium agency execution meets tech-driven efficiency</p>
+            </div>
+        </section>
+
+        <!-- Slide 15: Next Steps -->
+        <section class="slide" data-slide="15">
+            <div class="slide-number">15 / 15</div>
+            <h2>Next Steps</h2>
+            <div class="content-box">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Let's Launch DAMAC District</h3>
+                
+                <div class="grid-2" style="margin-top: 2rem;">
+                    <div class="card">
+                        <h4>1. Approve Longlist</h4>
+                        <p>DAMAC reviews 30 influencers → approves for outreach</p>
+                    </div>
+                    <div class="card">
+                        <h4>2. TiKiT Outreach</h4>
+                        <p>Direct contact with 30 creators to confirm availability & rates</p>
+                    </div>
+                    <div class="card">
+                        <h4>3. Final Selection</h4>
+                        <p>DAMAC selects 15-18 creators from shortlist</p>
+                    </div>
+                    <div class="card">
+                        <h4>4. Briefing & Creation</h4>
+                        <p>Briefs issued → creators visit site → content produced</p>
+                    </div>
+                    <div class="card">
+                        <h4>5. Review & Approval</h4>
+                        <p>DAMAC/TiKiT review all content pre-publish</p>
+                    </div>
+                    <div class="card">
+                        <h4>6. Campaign Launch</h4>
+                        <p>April 1-7, 2026 — Coordinated publishing across all creators 🚀</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem;">
+                    <h3 style="color: var(--gold);">Ready to talk?</h3>
+                    <p style="margin: 1rem 0;">Contact: Alaa Alaisami / Mamdouh</p>
+                    <p style="opacity: 0.7;">TiKiT Marketing Management</p>
+                    <button class="cta" onclick="alert('Contact details: [TBC — add email/phone]')">Let's Talk</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots" id="navDots"></div>
+
+    <script>
+        // Navigation system
+        const slides = document.querySelectorAll('.slide');
+        const navDots = document.getElementById('navDots');
+        const slideContainer = document.getElementById('slideContainer');
+
+        // Create navigation dots
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            });
+            navDots.appendChild(dot);
+        });
+
+        // Update active dot on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(slides).indexOf(entry.target);
+                    document.querySelectorAll('.dot').forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides.forEach(slide => observer.observe(slide));
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const activeSlide = document.querySelector('.slide:hover') || 
+                               Array.from(slides).find(slide => {
+                                   const rect = slide.getBoundingClientRect();
+                                   return rect.top >= 0 && rect.top < window.innerHeight / 2;
+                               });
+            const currentIndex = Array.from(slides).indexOf(activeSlide);
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                if (currentIndex < slides.length - 1) {
+                    slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                if (currentIndex > 0) {
+                    slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
