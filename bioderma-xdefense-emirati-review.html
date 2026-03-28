@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioderma XDefense — 🇦🇪 Emirati Creators | TiKiT</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#04080f;--card:#0d1520;--card2:#111827;--border:rgba(255,255,255,.07);--white:#f0f0f0;--gray:#888;--coral:#FF6B6B;--teal:#4ECDC4;--gold:#FFD93D;--green:#27AE60;--red:#FF6B6B;}
+html,body{background:var(--bg);color:var(--white);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6}
+.aurora-bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.aurora-blob{position:absolute;border-radius:50%;filter:blur(130px);animation:aurora-drift 14s ease-in-out infinite alternate}
+.ab1{width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,107,.2) 0%,transparent 70%);top:-200px;left:-150px;opacity:.4}
+.ab2{width:400px;height:400px;background:radial-gradient(circle,rgba(78,205,196,.25) 0%,transparent 70%);bottom:-150px;right:-100px;opacity:.35;animation-delay:-5s}
+.ab3{width:300px;height:300px;background:radial-gradient(circle,rgba(0,100,0,.18) 0%,transparent 70%);top:40%;right:20%;opacity:.3;animation-delay:-9s}
+.grid-ol{position:fixed;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+@keyframes aurora-drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.08)}}
+.topbar{background:rgba(0,61,165,.1);border-bottom:1px solid rgba(78,205,196,.2);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+.tl{font-weight:900;font-size:15px;color:var(--teal)} .tl span{color:#fff;opacity:.5}
+.tn{display:flex;gap:22px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.tn a{color:#666;text-decoration:none}.tn a:hover{color:var(--teal)}
+.be{background:var(--teal);color:#000;border:none;padding:7px 18px;border-radius:16px;font-size:11px;font-weight:800;cursor:pointer}
+.sbar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(22,22,34,.97);border:1px solid rgba(78,205,196,.35);border-radius:20px;padding:14px 28px;display:flex;align-items:center;gap:20px;backdrop-filter:blur(16px);z-index:300;box-shadow:0 8px 32px rgba(0,0,0,.6)}
+.sc{font-size:20px;font-weight:900;color:var(--teal)}.sl2{font-size:12px;color:#666;font-weight:600}
+.sdiv{width:1px;height:28px;background:var(--border)}
+.spills{display:flex;gap:8px}
+.sp{font-size:11px;font-weight:700;padding:4px 12px;border-radius:10px}
+.spa{background:rgba(39,174,96,.15);color:#27AE60;border:1px solid rgba(39,174,96,.3)}
+.sph{background:rgba(255,211,61,.12);color:var(--gold);border:1px solid rgba(255,211,61,.3)}
+.spr{background:rgba(255,107,107,.12);color:var(--red);border:1px solid rgba(255,107,107,.3)}
+.bel{background:var(--green);color:#fff;border:none;padding:8px 20px;border-radius:12px;font-size:11px;font-weight:800;cursor:pointer}
+.bcl{background:rgba(255,255,255,.06);color:#888;border:1px solid rgba(255,255,255,.1);padding:8px 14px;border-radius:12px;font-size:11px;cursor:pointer}
+.cov{text-align:center;padding:60px 32px 40px;border-bottom:1px solid var(--border);position:relative;z-index:2}
+.cbdg{display:inline-block;background:rgba(0,100,0,.2);border:1px solid rgba(0,150,0,.4);border-radius:20px;padding:5px 18px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#4ade80;margin-bottom:18px}
+.cov h1{font-size:clamp(24px,4vw,40px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+.cov h1 em{color:var(--teal);font-style:normal}
+.csub{font-size:14px;color:#888;max-width:560px;margin:0 auto 30px}
+.csts{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.cs .n{font-size:26px;font-weight:900;color:var(--teal)}.cs .l{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.nb{background:rgba(0,100,0,.07);border:1px solid rgba(0,150,0,.22);border-radius:10px;padding:14px 20px;margin:20px auto;font-size:12px;color:#ccc;max-width:1100px;position:relative;z-index:2}
+.nb strong{color:#4ade80}
+.fb{padding:16px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);position:sticky;top:57px;z-index:150}
+.fl2{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#555}
+.cb{border:none;padding:6px 14px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;opacity:.5;transition:.2s}
+.cb.active,.cb:hover{opacity:1}.ca{background:rgba(255,255,255,.08);color:#fff}
+.fs2{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:7px 14px;font-size:12px;color:#fff;outline:none;width:180px;margin-left:auto}
+.fs2:focus{border-color:rgba(78,205,196,.4)}
+.csh{padding:20px 32px 8px;display:flex;align-items:center;gap:12px;border-top:2px solid;margin-top:8px;position:relative;z-index:2}
+.tw{padding:0 32px 16px;overflow-x:auto;position:relative;z-index:2}
+.ct{width:100%;border-collapse:collapse}
+.ct thead th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#444;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.ct tbody tr{border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s}
+.ct tbody tr:hover{background:rgba(255,255,255,.03)}
+.ct tbody tr.selected{background:rgba(78,205,196,.07)}
+.ct td{padding:12px 14px;vertical-align:middle}
+.chk{width:18px;height:18px;border-radius:5px;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;background:transparent;margin:auto;transition:.2s}
+.selected .chk{background:var(--teal);border-color:var(--teal)}
+.chk svg{display:none}.selected .chk svg{display:block}
+.cn{font-weight:700;font-size:13px}
+.hl{color:var(--teal);text-decoration:none;font-weight:700;font-size:12px}.hl:hover{text-decoration:underline}
+.loc{font-size:10px;color:#555;margin-top:2px}
+.pbs{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.pl{font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;text-decoration:none;transition:opacity .2s}.pl:hover{opacity:.75}
+.tt{background:#000;color:#fff;border:1px solid rgba(255,255,255,.15)}
+.ig{background:linear-gradient(135deg,#f09433,#dc2743,#bc1888);color:#fff}
+.yt{background:#FF0000;color:#fff}
+.why{font-size:11px;color:#999;max-width:220px;line-height:1.5}
+.p1{color:#FF6B6B;font-weight:800;font-size:11px}.p2{color:#EA580C;font-weight:800;font-size:11px}
+.ch{color:#27AE60;font-size:10px;font-weight:700}.cm{color:var(--gold);font-size:10px;font-weight:700}
+.cb2{display:inline-block;background:rgba(255,211,61,.1);color:var(--gold);border:1px solid rgba(255,211,61,.25);border-radius:5px;font-size:9px;font-weight:700;padding:1px 6px;margin-top:2px}
+.emb{display:inline-block;background:rgba(0,100,0,.25);color:#4ade80;border:1px solid rgba(0,150,0,.4);border-radius:5px;font-size:9px;font-weight:700;padding:1px 7px;margin-top:2px}
+.gf{background:rgba(233,30,140,.12);color:#E91E8C;border:1px solid rgba(233,30,140,.25);font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;display:inline-block}
+.gm{background:rgba(0,100,200,.15);color:#60a5fa;border:1px solid rgba(0,100,200,.25);font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;display:inline-block}
+.stb{display:flex;gap:4px}
+.sb{border:none;padding:4px 10px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;opacity:.45;transition:.2s}.sb:hover,.sb.active{opacity:1}
+.sa{background:rgba(39,174,96,.15);color:#27AE60;border:1px solid rgba(39,174,96,.3)}.sa.active{background:#27AE60;color:#fff}
+.sh2{background:rgba(255,211,61,.1);color:var(--gold);border:1px solid rgba(255,211,61,.25)}.sh2.active{background:var(--gold);color:#000}
+.sr{background:rgba(255,107,107,.1);color:var(--red);border:1px solid rgba(255,107,107,.25)}.sr.active{background:var(--red);color:#fff}
+.smp{margin:40px 32px;background:var(--card);border-radius:16px;padding:32px;border:1px solid var(--border);position:relative;z-index:2}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:24px}
+.sk{background:var(--card2);border-radius:12px;padding:16px;text-align:center}
+.sk .n{font-size:26px;font-weight:900}.sk .l{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-top:3px}
+.footer{text-align:center;padding:36px;border-top:1px solid var(--border);margin-top:40px;position:relative;z-index:2}
+.foot .fl{font-size:18px;font-weight:900}.foot .fl span{color:var(--teal)}
+.foot .fs{font-size:11px;color:#444;margin-top:5px}
+@media(max-width:900px){.why{display:none}.fs2{width:120px}.tn{display:none}}</style>
+</head>
+<body>
+<div class="aurora-bg"><div class="aurora-blob ab1"></div><div class="aurora-blob ab2"></div><div class="aurora-blob ab3"></div></div>
+<div class="grid-ol"></div>
+<div class="topbar">
+  <div class="tl">TiKiT<span>.</span> × Bioderma — 🇦🇪 Emirati</div>
+  <nav class="tn">
+    <a href="#review">Emirati</a>
+    <a href="#summary">Summary</a>
+    <a href="bioderma-xdefense-batch1-review.html">Batch 1</a>
+    <a href="bioderma-xdefense-batch2-review.html">Batch 2</a>
+    <a href="bioderma-xdefense-2026.html" style="color:var(--coral)">🎬 Deck</a>
+  </nav>
+  <div style="display:flex;gap:8px">
+    <button class="be" onclick="exportApproved()">⬇ Export</button>
+    <button class="be" style="background:rgba(255,255,255,.08);color:#fff" onclick="window.print()">🖨 Print</button>
+  </div>
+</div>
+<div class="sbar">
+  <div><div class="sc" id="sc">0</div><div class="sl2">Selected</div></div>
+  <div class="sdiv"></div>
+  <div class="spills">
+    <div class="sp spa">✅ <span id="cntA">0</span> Approved</div>
+    <div class="sp sph">⏸ <span id="cntH">0</span> Hold</div>
+    <div class="sp spr">❌ <span id="cntR">0</span> Rejected</div>
+  </div>
+  <div class="sdiv"></div>
+  <button class="bel" onclick="exportApproved()">Export List</button>
+  <button class="bcl" onclick="clearAll()">Clear</button>
+</div>
+<div class="cov" id="review">
+  <div class="cbdg">🇦🇪 Emirati National Creators — Additive Batch</div>
+  <h1>Bioderma Photoderm <em>XDefense</em><br>🇦🇪 Emirati Creators</h1>
+  <p class="csub">20 verified Emirati nationals · Additive to Batch 1 + 2 · Nothing removed · All profile links clickable</p>
+  <div class="csts">
+    <div class="cs"><div class="n">20</div><div class="l">Emirati Creators</div></div>
+    <div class="cs"><div class="n">17</div><div class="l">HIGH Confidence</div></div>
+    <div class="cs"><div class="n">3</div><div class="l">MEDIUM — Verify</div></div>
+    <div class="cs"><div class="n">104</div><div class="l">Total Campaign</div></div>
+    <div class="cs"><div class="n">🇦🇪</div><div class="l">All Emirati</div></div>
+  </div>
+</div>
+<div class="nb" style="margin:20px 32px">
+  <strong>🇦🇪 Nationality Verification:</strong> All creators confirmed Emirati national via bio text, Wikipedia, Forbes ME, Gulf News, or Grazia ME. Profiles marked <span style="background:rgba(255,211,61,.1);color:var(--gold);padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700">⚠ Verify</span> need nationality double-check before outreach. 6 non-Emirati creators (Saudi, Syrian, Kuwaiti) excluded despite appearing on UAE lists.
+</div>
+<div class="fb">
+  <span class="fl2">Filter:</span>
+  <button class="cb ca active" onclick="filterCat('all',this)">All (20)</button>
+  <button class="cb" style="background:#FF6B6B22;color:#FF6B6B" onclick="filterCat('sports',this)">🏃 Sports</button>
+<button class="cb" style="background:#E91E8C22;color:#E91E8C" onclick="filterCat('beauty',this)">💄 Beauty</button>
+<button class="cb" style="background:#FFD93D22;color:#FFD93D" onclick="filterCat('lifestyle',this)">🌟 Lifestyle</button>
+<button class="cb" style="background:#F9731622;color:#F97316" onclick="filterCat('food',this)">🍳 Food/Chef</button>
+<button class="cb" style="background:#4ade8022;color:#4ade80" onclick="filterCat('travel',this)">✈️ Travel</button>
+<button class="cb" style="background:#8E44AD22;color:#8E44AD" onclick="filterCat('health',this)">💊 Health</button>
+<button class="cb" style="background:#F4A61B22;color:#F4A61B" onclick="filterCat('fashion',this)">👗 Fashion</button>
+  <input class="fs2" type="text" placeholder="Search..." oninput="searchCreators(this.value)">
+</div>
+
+<div class="csh" data-cat="sports" style="border-color:#FF6B6B">
+  <h3 style="font-size:16px;font-weight:800">🏃 Sports</h3>
+  <span style="background:#FF6B6B22;color:#FF6B6B;border:1px solid #FF6B6B44;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">1 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('sports',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-101" data-id="101" data-cat="sports" onclick="toggleSelect(101,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-101"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Walid Yari</div><div><a href="https://www.tiktok.com/@walidyari" target="_blank" onclick="event.stopPropagation()" class="hl">@walidyari ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@walidyari" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/walidyari/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#FF6B6B22;color:#FF6B6B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🏃 Sports</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">TT 3.4M + IG 1.2M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Emirati strongman/fitness creator. Outdoor athlete, extreme sun exposure = authentic daily SPF need. EHPLabs "Emirati warrior", UAE media licensed.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Media articles + EHPLabs</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-101" onclick="setStatus(101,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-101" onclick="setStatus(101,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-101" onclick="setStatus(101,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="beauty" style="border-color:#E91E8C">
+  <h3 style="font-size:16px;font-weight:800">💄 Beauty</h3>
+  <span style="background:#E91E8C22;color:#E91E8C;border:1px solid #E91E8C44;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">3 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('beauty',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-102" data-id="102" data-cat="beauty" onclick="toggleSelect(102,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-102"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Dr. Mahra Lutfi</div><div><a href="https://www.tiktok.com/@missglobalpeace" target="_blank" onclick="event.stopPropagation()" class="hl">@missglobalpeace ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@missglobalpeace" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/missglobalpeace/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#E91E8C22;color:#E91E8C;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">💄 Beauty</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 11M + TT 2M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">First Miss UAE + Emirati dermatologist. Medical credibility + beauty authority = perfect for XDefense SPF science messaging at 11M reach.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">IG bio explicit + AmraAndElma + Boomerang</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-102" onclick="setStatus(102,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-102" onclick="setStatus(102,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-102" onclick="setStatus(102,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-103" data-id="103" data-cat="beauty" onclick="toggleSelect(103,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-103"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Raghad Fahmi</div><div><a href="https://www.tiktok.com/@itsragoode" target="_blank" onclick="event.stopPropagation()" class="hl">@rragoode ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@itsragoode" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/rragoode/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span> <span class="cb2">⚠ Verify</span></td>
+  <td><span style="background:#E91E8C22;color:#E91E8C;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">💄 Beauty</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">TT 6.9M + IG 5M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Dental student + beauty creator, Forbes 30 Under 30. Massive Gen Z reach. Boomerang.ae lists as Emirati — nationality needs verification.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="cm">⚠ MEDIUM</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Boomerang.ae — VERIFY NATIONALITY</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-103" onclick="setStatus(103,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-103" onclick="setStatus(103,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-103" onclick="setStatus(103,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-105" data-id="105" data-cat="beauty" onclick="toggleSelect(105,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-105"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Wdeema Al Mheiri</div><div><a href="https://www.instagram.com/wdeemajay/" target="_blank" onclick="event.stopPropagation()" class="hl">@wdeemajay ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/wdeemajay/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#E91E8C22;color:#E91E8C;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">💄 Beauty</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 85.9K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Emirati beauty entrepreneur, co-founded The Beauty Society. High-trust micro-influencer for skincare seeding — engaged Emirati audience.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Emirates Woman Emirati Day feature</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-105" onclick="setStatus(105,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-105" onclick="setStatus(105,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-105" onclick="setStatus(105,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="lifestyle" style="border-color:#FFD93D">
+  <h3 style="font-size:16px;font-weight:800">🌟 Lifestyle</h3>
+  <span style="background:#FFD93D22;color:#FFD93D;border:1px solid #FFD93D44;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">4 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('lifestyle',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-107" data-id="107" data-cat="lifestyle" onclick="toggleSelect(107,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-107"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Abdulaziz Al Jasmi (Bin Baz)</div><div><a href="https://www.tiktok.com/@bin_baz" target="_blank" onclick="event.stopPropagation()" class="hl">@bin_baz ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@bin_baz" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/bin_baz/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a><a href="https://www.youtube.com/@binbaz" target="_blank" onclick="event.stopPropagation()" class="pl yt">▶ YouTube</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#FFD93D22;color:#FFD93D;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🌟 Lifestyle</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 5.2M + TT 2M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Dubai-born Emirati comedian (FamousBirthdays, Esquire ME). Comedy lifestyle = relatable SPF humor for Emirati male audience.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">FamousBirthdays + Esquire ME</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-107" onclick="setStatus(107,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-107" onclick="setStatus(107,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-107" onclick="setStatus(107,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-108" data-id="108" data-cat="lifestyle" onclick="toggleSelect(108,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-108"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Majid Al Ansari</div><div><a href="https://www.tiktok.com/@m1yd" target="_blank" onclick="event.stopPropagation()" class="hl">@m1yd ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@m1yd" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/m1yd/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#FFD93D22;color:#FFD93D;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🌟 Lifestyle</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 10M + TT 3M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Born Abu Dhabi (Wikipedia), founder @glaux.ae. Massive Emirati reach at 10M+ — lifestyle comedy allows natural product placement.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Wikipedia: born Abu Dhabi</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-108" onclick="setStatus(108,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-108" onclick="setStatus(108,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-108" onclick="setStatus(108,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-115" data-id="115" data-cat="lifestyle" onclick="toggleSelect(115,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-115"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Balqees Fathi</div><div><a href="https://www.tiktok.com/@balqeesfathi" target="_blank" onclick="event.stopPropagation()" class="hl">@balqeesfathi ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@balqeesfathi" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/balqeesfathi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a><a href="https://www.youtube.com/@balqeesfathi" target="_blank" onclick="event.stopPropagation()" class="pl yt">▶ YouTube</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#FFD93D22;color:#FFD93D;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🌟 Lifestyle</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 16M + YT 1.8M</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Emirati celebrity singer, founder of Bex Beauty (Forbes ME, Wikipedia). Premium ambassador tier — beauty brand founder + 16M audience.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Forbes ME + Wikipedia</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-115" onclick="setStatus(115,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-115" onclick="setStatus(115,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-115" onclick="setStatus(115,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-116" data-id="116" data-cat="lifestyle" onclick="toggleSelect(116,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-116"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Dr. Shatha Alnaqbi</div><div><a href="https://www.tiktok.com/@shatha_allay" target="_blank" onclick="event.stopPropagation()" class="hl">@shatha_allay ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@shatha_allay" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/shatha_allay/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#FFD93D22;color:#FFD93D;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🌟 Lifestyle</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 88.4K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Emirati PhD researcher + entrepreneur (Al Naqbi tribal name, Feedspot). Educated audience = ideal for XDefense SPF science content.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Feedspot Emirati Female list + tribal name</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-116" onclick="setStatus(116,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-116" onclick="setStatus(116,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-116" onclick="setStatus(116,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="food" style="border-color:#F97316">
+  <h3 style="font-size:16px;font-weight:800">🍳 Food/Chef</h3>
+  <span style="background:#F9731622;color:#F97316;border:1px solid #F9731644;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">2 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('food',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-111" data-id="111" data-cat="food" onclick="toggleSelect(111,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-111"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Reza Kiani (Feed Kiani)</div><div><a href="https://www.tiktok.com/@feedkiani" target="_blank" onclick="event.stopPropagation()" class="hl">@feedkiani ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@feedkiani" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/feedkiani/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F9731622;color:#F97316;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🍳 Food/Chef</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 353K + TT 229K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Explicitly Emirati in IG + TikTok bio and website. Outdoor food reviews in UAE heat = natural SPF placement.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">IG bio + TikTok bio + feedkiani.com</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-111" onclick="setStatus(111,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-111" onclick="setStatus(111,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-111" onclick="setStatus(111,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-112" data-id="112" data-cat="food" onclick="toggleSelect(112,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-112"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Mohamed Alhosani (M7md Essa)</div><div><a href="https://www.tiktok.com/@m7md.cooks" target="_blank" onclick="event.stopPropagation()" class="hl">@m7md.cooks ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@m7md.cooks" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/m7md.cooks/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F9731622;color:#F97316;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🍳 Food/Chef</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">TT 2M + IG 735K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Young Emirati chef (IG bio 🇦🇪, Al Hosani tribal name). Gen Z cooking audience + outdoor UAE content = authentic SPF need.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">IG bio 🇦🇪 + Al Hosani family name</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-112" onclick="setStatus(112,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-112" onclick="setStatus(112,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-112" onclick="setStatus(112,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="travel" style="border-color:#4ade80">
+  <h3 style="font-size:16px;font-weight:800">✈️ Travel</h3>
+  <span style="background:#4ade8022;color:#4ade80;border:1px solid #4ade8044;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">2 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('travel',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-109" data-id="109" data-cat="travel" onclick="toggleSelect(109,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-109"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Taim AlFalasi</div><div><a href="https://www.tiktok.com/@taimalfalasi" target="_blank" onclick="event.stopPropagation()" class="hl">@taimalfalasi ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@taimalfalasi" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/taimalfalasi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a><a href="https://www.youtube.com/@taimalfalasi" target="_blank" onclick="event.stopPropagation()" class="pl yt">▶ YouTube</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#4ade8022;color:#4ade80;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">✈️ Travel</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 4.7M + YT 580K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Confirmed Emirati (Gulf News, istitutomarangoni). Travel + food + outdoor lifestyle content = perfect SPF integration.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Gulf News + istitutomarangoni</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-109" onclick="setStatus(109,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-109" onclick="setStatus(109,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-109" onclick="setStatus(109,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-113" data-id="113" data-cat="travel" onclick="toggleSelect(113,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-113"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Peyman Parham Al Awadhi</div><div><a href="https://www.instagram.com/peymanalawadhi/" target="_blank" onclick="event.stopPropagation()" class="hl">@peymanalawadhi ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/peymanalawadhi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#4ade8022;color:#4ade80;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">✈️ Travel</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 620K+</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Emirati filmmaker and storyteller (Facebook bio, Teach ME Mag). Travel + culture outdoor content = constant UV exposure, SPF essential.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Facebook bio + Teach ME Magazine</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-113" onclick="setStatus(113,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-113" onclick="setStatus(113,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-113" onclick="setStatus(113,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="health" style="border-color:#8E44AD">
+  <h3 style="font-size:16px;font-weight:800">💊 Health</h3>
+  <span style="background:#8E44AD22;color:#8E44AD;border:1px solid #8E44AD44;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">1 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('health',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-110" data-id="110" data-cat="health" onclick="toggleSelect(110,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-110"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Dr. Anwar Al Hammadi</div><div><a href="https://www.instagram.com/dr.anwar_alhamadi/" target="_blank" onclick="event.stopPropagation()" class="hl">@dr.anwar_alhamadi ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/dr.anwar_alhamadi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span> <span class="cb2">⚠ Verify</span></td>
+  <td><span style="background:#8E44AD22;color:#8E44AD;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">💊 Health</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 155K+</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gm">♂ Male</span></td>
+  <td class="why">Emirati dermatologist (Khaleej Times). Medical authority for SPF education — Emirati doctor endorsing Bioderma = highest clinical credibility.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="cm">⚠ MEDIUM</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Khaleej Times — verify handle</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-110" onclick="setStatus(110,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-110" onclick="setStatus(110,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-110" onclick="setStatus(110,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="csh" data-cat="fashion" style="border-color:#F4A61B">
+  <h3 style="font-size:16px;font-weight:800">👗 Fashion</h3>
+  <span style="background:#F4A61B22;color:#F4A61B;border:1px solid #F4A61B44;padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700">7 creators</span>
+  <span style="background:rgba(0,100,0,.2);color:#4ade80;border:1px solid rgba(0,150,0,.3);padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">🇦🇪 All Emirati</span>
+  <span style="flex:1"></span>
+  <button style="font-size:10px;font-weight:700;padding:5px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#888;cursor:pointer" onclick="selectAllCat('fashion',this)">Select All</button>
+</div>
+<div class="tw">
+<table class="ct">
+<thead><tr><th></th><th>Creator</th><th>Category</th><th>Reach</th><th>Market</th><th>Gender</th><th>Why XDefense</th><th>Priority</th><th>Confidence</th><th>Nationality Source</th><th>Status</th></tr></thead>
+<tbody>
+<tr id="row-104" data-id="104" data-cat="fashion" onclick="toggleSelect(104,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-104"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Fatma Husam</div><div><a href="https://www.instagram.com/fatmaa/" target="_blank" onclick="event.stopPropagation()" class="hl">@fatmaa ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/fatmaa/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 829K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Confirmed Emirati fashion/beauty creator (Grazia ME, Visionary Mag). Modest fashion + outdoor style content = natural SPF integration.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Grazia ME + thecityceleb.com</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-104" onclick="setStatus(104,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-104" onclick="setStatus(104,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-104" onclick="setStatus(104,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-106" data-id="106" data-cat="fashion" onclick="toggleSelect(106,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-106"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Nouf AlTamimi</div><div><a href="https://www.instagram.com/noufaltamiimi/" target="_blank" onclick="event.stopPropagation()" class="hl">@noufaltamiimi ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/noufaltamiimi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 535.8K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Confirmed Emirati (Grazia ME, Harper Bazaar Arabia). Fashion + lifestyle with outdoor/travel content. Natural SPF integration.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Grazia ME + Harper Bazaar Arabia</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-106" onclick="setStatus(106,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-106" onclick="setStatus(106,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-106" onclick="setStatus(106,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-114" data-id="114" data-cat="fashion" onclick="toggleSelect(114,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-114"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Latifa Al Shamsi</div><div><a href="https://www.tiktok.com/@latifalshamsi" target="_blank" onclick="event.stopPropagation()" class="hl">@latifalshamsi ↗</a></div>
+  <div class="pbs"><a href="https://www.tiktok.com/@latifalshamsi" target="_blank" onclick="event.stopPropagation()" class="pl tt">🎵 TikTok</a><a href="https://www.instagram.com/latifalshamsi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 803K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">First Emirati fashion blogger (Emirates Woman, UAE Stories). Travel + lifestyle outdoor content = SPF as daily essential for Emirati women.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Emirates Woman + UAE Stories</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-114" onclick="setStatus(114,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-114" onclick="setStatus(114,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-114" onclick="setStatus(114,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-117" data-id="117" data-cat="fashion" onclick="toggleSelect(117,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-117"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Waad Al Hammadi</div><div><a href="https://www.instagram.com/waadalhammadi/" target="_blank" onclick="event.stopPropagation()" class="hl">@waadalhammadi ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/waadalhammadi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 41K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Emirati fashion designer (Gulf News, Grazia), co-founder Gabi Dubai. Outdoor fashion shoots = natural SPF angle for Emirati modest fashion.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Gulf News + Grazia ME</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-117" onclick="setStatus(117,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-117" onclick="setStatus(117,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-117" onclick="setStatus(117,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-118" data-id="118" data-cat="fashion" onclick="toggleSelect(118,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-118"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Rafeeah Al Hajsi</div><div><a href="https://www.instagram.com/rafeeaalhajsi/" target="_blank" onclick="event.stopPropagation()" class="hl">@rafeeaalhajsi ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/rafeeaalhajsi/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 451K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">First Emirati model (IG bio: "1st Emirati Model 🇦🇪"). Outdoor photoshoots = SPF essential. Feedspot Emirati Female list confirmed.</td>
+  <td><span class="p1">P1</span></td>
+  <td><span class="ch">✓ HIGH</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">IG bio explicit + Feedspot</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-118" onclick="setStatus(118,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-118" onclick="setStatus(118,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-118" onclick="setStatus(118,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-119" data-id="119" data-cat="fashion" onclick="toggleSelect(119,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-119"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Wazna Falah</div><div><a href="https://www.instagram.com/wazna_falah/" target="_blank" onclick="event.stopPropagation()" class="hl">@wazna_falah ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/wazna_falah/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span> <span class="cb2">⚠ Verify</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 592K</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Protocol/etiquette/lifestyle creator, founder @vpm_uae (Feedspot Emirati list). Premium audience for skincare. Verify nationality before outreach.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="cm">⚠ MEDIUM</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Feedspot Emirati list (verify)</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-119" onclick="setStatus(119,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-119" onclick="setStatus(119,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-119" onclick="setStatus(119,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr>
+<tr id="row-120" data-id="120" data-cat="fashion" onclick="toggleSelect(120,event)">
+  <td style="width:36px;text-align:center"><div class="chk" id="chk-120"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div></td>
+  <td><div class="cn">Jawaher Al Suwaidi</div><div><a href="https://www.instagram.com/jawaherals/" target="_blank" onclick="event.stopPropagation()" class="hl">@jawaherals ↗</a></div>
+  <div class="pbs"><a href="https://www.instagram.com/jawaherals/" target="_blank" onclick="event.stopPropagation()" class="pl ig">📸 Instagram</a></div>
+  <div class="loc">📍 UAE 🇦🇪</div><span class="emb">🇦🇪 Emirati</span> <span class="cb2">⚠ Verify</span></td>
+  <td><span style="background:#F4A61B22;color:#F4A61B;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700">👗 Fashion</span></td>
+  <td style="font-size:12px;font-weight:600;color:#fff">IG 50K+</td>
+  <td style="font-size:12px;color:#ccc">UAE 🇦🇪</td>
+  <td><span class="gf">♀ Female</span></td>
+  <td class="why">Emirati fashion entrepreneur (Grazia ME), founder By Jawaher. Al Suwaidi family name. Modest wear + outdoor lifestyle audience.</td>
+  <td><span class="p2">P2</span></td>
+  <td><span class="cm">⚠ MEDIUM</span></td>
+  <td style="font-size:10px;color:#666;max-width:110px;line-height:1.4">Grazia ME — verify exact handle</td>
+  <td onclick="event.stopPropagation()" style="min-width:130px">
+    <div class="stb">
+      <button class="sb sa" id="approve-120" onclick="setStatus(120,'approved',this)">✅</button>
+      <button class="sb sh2" id="hold-120" onclick="setStatus(120,'hold',this)">⏸</button>
+      <button class="sb sr" id="reject-120" onclick="setStatus(120,'rejected',this)">❌</button>
+    </div>
+  </td>
+</tr></tbody></table></div>
+<div class="smp" id="summary">
+  <h3 style="font-size:18px;font-weight:800;margin-bottom:20px">📊 Emirati Batch — Review Summary</h3>
+  <div class="sg">
+    <div class="sk"><div class="n" style="color:var(--teal)" id="st">0</div><div class="l">Total Reviewed</div></div>
+    <div class="sk"><div class="n" style="color:#27AE60" id="sa2">0</div><div class="l">✅ Approved</div></div>
+    <div class="sk"><div class="n" style="color:var(--gold)" id="sh3">0</div><div class="l">⏸ On Hold</div></div>
+    <div class="sk"><div class="n" style="color:var(--red)" id="sr2">0</div><div class="l">❌ Rejected</div></div>
+    <div class="sk"><div class="n" style="color:#555" id="sp2">20</div><div class="l">Pending</div></div>
+  </div>
+  <h4 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#27AE60;margin-bottom:12px">✅ Approved Creators</h4>
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead><tr style="color:#444"><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase">Creator</th><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase">Handle</th><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase">Category</th><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase">Reach</th><th style="padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase">Confidence</th></tr></thead>
+    <tbody id="atb"><tr><td colspan="5" style="color:#444;text-align:center;padding:20px">No creators approved yet.</td></tr></tbody>
+  </table>
+</div>
+<div style="text-align:center;padding:36px;border-top:1px solid var(--border);margin-top:40px;position:relative;z-index:2">
+  <div style="font-size:18px;font-weight:900">TiKiT<span style="color:var(--teal)">.</span></div>
+  <div style="font-size:11px;color:#444;margin-top:5px">🇦🇪 Emirati Creators · Bioderma XDefense · Additive Batch · March 2026 · Confidential</div>
+  <div style="margin-top:10px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+    <a href="bioderma-xdefense-batch1-review.html" style="color:var(--teal);font-size:12px;font-weight:700">← Batch 1</a>
+    <a href="bioderma-xdefense-batch2-review.html" style="color:var(--teal);font-size:12px;font-weight:700">← Batch 2</a>
+    <a href="bioderma-xdefense-2026.html" style="color:var(--coral);font-size:12px;font-weight:700">🎬 Full Deck</a>
+  </div>
+</div>
+<script>
+const CREATORS = [{"id":101,"cat":"sports","name":"Walid Yari","handle":"@walidyari","ttUrl":"https://www.tiktok.com/@walidyari","igUrl":"https://www.instagram.com/walidyari/","ytUrl":"","platform":"TT 3.4M + IG 1.2M","reach":"TikTok 3.4M / IG 1.2M","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Emirati strongman/fitness creator. Outdoor athlete, extreme sun exposure = authentic daily SPF need. EHPLabs \"Emirati warrior\", UAE media licensed.","natSource":"Media articles + EHPLabs"},{"id":102,"cat":"beauty","name":"Dr. Mahra Lutfi","handle":"@missglobalpeace","ttUrl":"https://www.tiktok.com/@missglobalpeace","igUrl":"https://www.instagram.com/missglobalpeace/","ytUrl":"","platform":"IG 11M + TT 2M","reach":"IG 11M / TikTok 2M","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"First Miss UAE + Emirati dermatologist. Medical credibility + beauty authority = perfect for XDefense SPF science messaging at 11M reach.","natSource":"IG bio explicit + AmraAndElma + Boomerang"},{"id":103,"cat":"beauty","name":"Raghad Fahmi","handle":"@rragoode","ttUrl":"https://www.tiktok.com/@itsragoode","igUrl":"https://www.instagram.com/rragoode/","ytUrl":"","platform":"TT 6.9M + IG 5M","reach":"TikTok 6.9M / IG 5M","priority":"P1","confirm":true,"gender":"F","market":"UAE 🇦🇪","why":"Dental student + beauty creator, Forbes 30 Under 30. Massive Gen Z reach. Boomerang.ae lists as Emirati — nationality needs verification.","natSource":"Boomerang.ae — VERIFY NATIONALITY"},{"id":104,"cat":"fashion","name":"Fatma Husam","handle":"@fatmaa","ttUrl":"","igUrl":"https://www.instagram.com/fatmaa/","ytUrl":"","platform":"IG 829K","reach":"Instagram 829K","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Confirmed Emirati fashion/beauty creator (Grazia ME, Visionary Mag). Modest fashion + outdoor style content = natural SPF integration.","natSource":"Grazia ME + thecityceleb.com"},{"id":105,"cat":"beauty","name":"Wdeema Al Mheiri","handle":"@wdeemajay","ttUrl":"","igUrl":"https://www.instagram.com/wdeemajay/","ytUrl":"","platform":"IG 85.9K","reach":"Instagram 85.9K","priority":"P2","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Emirati beauty entrepreneur, co-founded The Beauty Society. High-trust micro-influencer for skincare seeding — engaged Emirati audience.","natSource":"Emirates Woman Emirati Day feature"},{"id":106,"cat":"fashion","name":"Nouf AlTamimi","handle":"@noufaltamiimi","ttUrl":"","igUrl":"https://www.instagram.com/noufaltamiimi/","ytUrl":"","platform":"IG 535.8K","reach":"Instagram 535.8K","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Confirmed Emirati (Grazia ME, Harper Bazaar Arabia). Fashion + lifestyle with outdoor/travel content. Natural SPF integration.","natSource":"Grazia ME + Harper Bazaar Arabia"},{"id":107,"cat":"lifestyle","name":"Abdulaziz Al Jasmi (Bin Baz)","handle":"@bin_baz","ttUrl":"https://www.tiktok.com/@bin_baz","igUrl":"https://www.instagram.com/bin_baz/","ytUrl":"https://www.youtube.com/@binbaz","platform":"IG 5.2M + TT 2M","reach":"IG 5.2M / TikTok 2M","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Dubai-born Emirati comedian (FamousBirthdays, Esquire ME). Comedy lifestyle = relatable SPF humor for Emirati male audience.","natSource":"FamousBirthdays + Esquire ME"},{"id":108,"cat":"lifestyle","name":"Majid Al Ansari","handle":"@m1yd","ttUrl":"https://www.tiktok.com/@m1yd","igUrl":"https://www.instagram.com/m1yd/","ytUrl":"","platform":"IG 10M + TT 3M","reach":"IG 10M / TikTok 3M","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Born Abu Dhabi (Wikipedia), founder @glaux.ae. Massive Emirati reach at 10M+ — lifestyle comedy allows natural product placement.","natSource":"Wikipedia: born Abu Dhabi"},{"id":109,"cat":"travel","name":"Taim AlFalasi","handle":"@taimalfalasi","ttUrl":"https://www.tiktok.com/@taimalfalasi","igUrl":"https://www.instagram.com/taimalfalasi/","ytUrl":"https://www.youtube.com/@taimalfalasi","platform":"IG 4.7M + YT 580K","reach":"IG 4.7M / YT 580K","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Confirmed Emirati (Gulf News, istitutomarangoni). Travel + food + outdoor lifestyle content = perfect SPF integration.","natSource":"Gulf News + istitutomarangoni"},{"id":110,"cat":"health","name":"Dr. Anwar Al Hammadi","handle":"@dr.anwar_alhamadi","ttUrl":"","igUrl":"https://www.instagram.com/dr.anwar_alhamadi/","ytUrl":"","platform":"IG 155K+","reach":"Instagram ~155K","priority":"P2","confirm":true,"gender":"M","market":"UAE 🇦🇪","why":"Emirati dermatologist (Khaleej Times). Medical authority for SPF education — Emirati doctor endorsing Bioderma = highest clinical credibility.","natSource":"Khaleej Times — verify handle"},{"id":111,"cat":"food","name":"Reza Kiani (Feed Kiani)","handle":"@feedkiani","ttUrl":"https://www.tiktok.com/@feedkiani","igUrl":"https://www.instagram.com/feedkiani/","ytUrl":"","platform":"IG 353K + TT 229K","reach":"IG 353K / TikTok 229K","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Explicitly Emirati in IG + TikTok bio and website. Outdoor food reviews in UAE heat = natural SPF placement.","natSource":"IG bio + TikTok bio + feedkiani.com"},{"id":112,"cat":"food","name":"Mohamed Alhosani (M7md Essa)","handle":"@m7md.cooks","ttUrl":"https://www.tiktok.com/@m7md.cooks","igUrl":"https://www.instagram.com/m7md.cooks/","ytUrl":"","platform":"TT 2M + IG 735K","reach":"TikTok 2M / IG 735K","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Young Emirati chef (IG bio 🇦🇪, Al Hosani tribal name). Gen Z cooking audience + outdoor UAE content = authentic SPF need.","natSource":"IG bio 🇦🇪 + Al Hosani family name"},{"id":113,"cat":"travel","name":"Peyman Parham Al Awadhi","handle":"@peymanalawadhi","ttUrl":"","igUrl":"https://www.instagram.com/peymanalawadhi/","ytUrl":"","platform":"IG 620K+","reach":"Instagram 620K+","priority":"P1","confirm":false,"gender":"M","market":"UAE 🇦🇪","why":"Emirati filmmaker and storyteller (Facebook bio, Teach ME Mag). Travel + culture outdoor content = constant UV exposure, SPF essential.","natSource":"Facebook bio + Teach ME Magazine"},{"id":114,"cat":"fashion","name":"Latifa Al Shamsi","handle":"@latifalshamsi","ttUrl":"https://www.tiktok.com/@latifalshamsi","igUrl":"https://www.instagram.com/latifalshamsi/","ytUrl":"","platform":"IG 803K","reach":"Instagram 803K","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"First Emirati fashion blogger (Emirates Woman, UAE Stories). Travel + lifestyle outdoor content = SPF as daily essential for Emirati women.","natSource":"Emirates Woman + UAE Stories"},{"id":115,"cat":"lifestyle","name":"Balqees Fathi","handle":"@balqeesfathi","ttUrl":"https://www.tiktok.com/@balqeesfathi","igUrl":"https://www.instagram.com/balqeesfathi/","ytUrl":"https://www.youtube.com/@balqeesfathi","platform":"IG 16M + YT 1.8M","reach":"IG 16M / YT 1.8M","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Emirati celebrity singer, founder of Bex Beauty (Forbes ME, Wikipedia). Premium ambassador tier — beauty brand founder + 16M audience.","natSource":"Forbes ME + Wikipedia"},{"id":116,"cat":"lifestyle","name":"Dr. Shatha Alnaqbi","handle":"@shatha_allay","ttUrl":"https://www.tiktok.com/@shatha_allay","igUrl":"https://www.instagram.com/shatha_allay/","ytUrl":"","platform":"IG 88.4K","reach":"Instagram 88.4K","priority":"P2","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Emirati PhD researcher + entrepreneur (Al Naqbi tribal name, Feedspot). Educated audience = ideal for XDefense SPF science content.","natSource":"Feedspot Emirati Female list + tribal name"},{"id":117,"cat":"fashion","name":"Waad Al Hammadi","handle":"@waadalhammadi","ttUrl":"","igUrl":"https://www.instagram.com/waadalhammadi/","ytUrl":"","platform":"IG 41K","reach":"Instagram ~41K","priority":"P2","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"Emirati fashion designer (Gulf News, Grazia), co-founder Gabi Dubai. Outdoor fashion shoots = natural SPF angle for Emirati modest fashion.","natSource":"Gulf News + Grazia ME"},{"id":118,"cat":"fashion","name":"Rafeeah Al Hajsi","handle":"@rafeeaalhajsi","ttUrl":"","igUrl":"https://www.instagram.com/rafeeaalhajsi/","ytUrl":"","platform":"IG 451K","reach":"Instagram 451K","priority":"P1","confirm":false,"gender":"F","market":"UAE 🇦🇪","why":"First Emirati model (IG bio: \"1st Emirati Model 🇦🇪\"). Outdoor photoshoots = SPF essential. Feedspot Emirati Female list confirmed.","natSource":"IG bio explicit + Feedspot"},{"id":119,"cat":"fashion","name":"Wazna Falah","handle":"@wazna_falah","ttUrl":"","igUrl":"https://www.instagram.com/wazna_falah/","ytUrl":"","platform":"IG 592K","reach":"Instagram 592K","priority":"P2","confirm":true,"gender":"F","market":"UAE 🇦🇪","why":"Protocol/etiquette/lifestyle creator, founder @vpm_uae (Feedspot Emirati list). Premium audience for skincare. Verify nationality before outreach.","natSource":"Feedspot Emirati list (verify)"},{"id":120,"cat":"fashion","name":"Jawaher Al Suwaidi","handle":"@jawaherals","ttUrl":"","igUrl":"https://www.instagram.com/jawaherals/","ytUrl":"","platform":"IG 50K+","reach":"Instagram ~50K","priority":"P2","confirm":true,"gender":"F","market":"UAE 🇦🇪","why":"Emirati fashion entrepreneur (Grazia ME), founder By Jawaher. Al Suwaidi family name. Modest wear + outdoor lifestyle audience.","natSource":"Grazia ME — verify exact handle"}];
+const CAT_COLORS = {"sports":"#FF6B6B","beauty":"#E91E8C","lifestyle":"#FFD93D","food":"#F97316","travel":"#4ade80","health":"#8E44AD","fashion":"#F4A61B"};
+const CAT_LABELS = {"sports":"🏃 Sports","beauty":"💄 Beauty","lifestyle":"🌟 Lifestyle","food":"🍳 Food/Chef","travel":"✈️ Travel","health":"💊 Health","fashion":"👗 Fashion"};
+const CAT_SECTIONS = ["sports","beauty","lifestyle","food","travel","health","fashion"];
+let statuses = {};
+function toggleSelect(id,e){document.getElementById('row-'+id).classList.toggle('selected');updateCounts();}
+function selectAllCat(cat,btn){
+  const rows=document.querySelectorAll('[data-cat="'+cat+'"][data-id]');
+  const all=Array.from(rows).every(r=>r.classList.contains('selected'));
+  rows.forEach(r=>{if(all)r.classList.remove('selected');else r.classList.add('selected');});
+  btn.textContent=all?'Select All':'Deselect All';updateCounts();
+}
+function setStatus(id,status,btn){
+  const prev=statuses[id];
+  if(prev===status){statuses[id]=null;['approve','hold','reject'].forEach(t=>{const b=document.getElementById(t+'-'+id);if(b)b.classList.remove('active');});}
+  else{statuses[id]=status;['approve','hold','reject'].forEach(t=>{const b=document.getElementById(t+'-'+id);if(b)b.classList.remove('active');});btn.classList.add('active');document.getElementById('row-'+id).classList.add('selected');}
+  updateCounts();updateApprovedTable();
+}
+function filterCat(cat,btn){
+  document.querySelectorAll('.cb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  CAT_SECTIONS.forEach(c=>{
+    const h=document.querySelector('.csh[data-cat="'+c+'"]');
+    const w=h?h.nextElementSibling:null;
+    const show=(cat==='all'||c===cat);
+    if(h)h.style.display=show?'':'none';if(w)w.style.display=show?'':'none';
+  });
+}
+function searchCreators(q){
+  const query=q.toLowerCase();
+  document.querySelectorAll('tr[data-id]').forEach(row=>{
+    const id=parseInt(row.dataset.id);const c=CREATORS.find(x=>x.id===id);if(!c)return;
+    const match=c.name.toLowerCase().includes(query)||c.handle.toLowerCase().includes(query)||c.why.toLowerCase().includes(query);
+    row.style.display=match?'':'none';
+  });
+}
+function updateCounts(){
+  const sel=document.querySelectorAll('tr[data-id].selected');
+  document.getElementById('sc').textContent=sel.length;
+  const a=Object.values(statuses).filter(s=>s==='approved').length;
+  const h=Object.values(statuses).filter(s=>s==='hold').length;
+  const r=Object.values(statuses).filter(s=>s==='rejected').length;
+  document.getElementById('cntA').textContent=a;document.getElementById('cntH').textContent=h;document.getElementById('cntR').textContent=r;
+  document.getElementById('sa2').textContent=a;document.getElementById('sh3').textContent=h;document.getElementById('sr2').textContent=r;
+  document.getElementById('st').textContent=a+h+r;document.getElementById('sp2').textContent=20-(a+h+r);
+}
+function updateApprovedTable(){
+  const tbody=document.getElementById('atb');
+  const approved=CREATORS.filter(c=>statuses[c.id]==='approved');
+  if(!approved.length){tbody.innerHTML='<tr><td colspan="5" style="color:#444;text-align:center;padding:20px">No creators approved yet.</td></tr>';return;}
+  tbody.innerHTML=approved.map(c=>'<tr><td style="font-weight:700;color:#fff">'+c.name+' 🇦🇪</td><td><a href="'+(c.ttUrl||c.igUrl||'#')+'" target="_blank" style="color:var(--teal);text-decoration:none">'+c.handle+' ↗</a></td><td><span style="background:'+CAT_COLORS[c.cat]+'22;color:'+CAT_COLORS[c.cat]+';padding:1px 7px;border-radius:5px;font-size:10px;font-weight:700">'+CAT_LABELS[c.cat]+'</span></td><td style="color:#ccc">'+c.reach+'</td><td><span class="'+(c.confirm?'cm':'ch')+'">'+(c.confirm?'⚠ VERIFY':'✓ HIGH')+'</span></td></tr>').join('');
+}
+function exportApproved(){
+  const list=[...CREATORS.filter(c=>statuses[c.id]==='approved').map(c=>({...c,status:'APPROVED'})),...CREATORS.filter(c=>statuses[c.id]==='hold').map(c=>({...c,status:'HOLD'}))];
+  if(!list.length){alert('No creators approved or on hold yet.');return;}
+  const rows=[['Name','Handle','Category','Reach','Market','Gender','Priority','Confidence','Nationality Source','Status']];
+  list.forEach(c=>rows.push([c.name,c.handle,CAT_LABELS[c.cat],c.reach,c.market,c.gender,c.priority,c.confirm?'MEDIUM':'HIGH',c.natSource,c.status]));
+  const csv=rows.map(r=>r.map(v=>'"'+v+'"').join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='bioderma-emirati-shortlist.csv';a.click();URL.revokeObjectURL(url);
+}
+function clearAll(){if(!confirm('Clear all?'))return;statuses={};document.querySelectorAll('tr[data-id]').forEach(r=>r.classList.remove('selected'));document.querySelectorAll('.sb').forEach(b=>b.classList.remove('active'));updateCounts();updateApprovedTable();}
+updateCounts();</script>
+</body>
+</html>
