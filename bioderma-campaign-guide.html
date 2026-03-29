@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioderma XDefense — Campaign Guide | TiKiT</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--pink:#E91E8C;--blue:#0066CC;--bg:#F5F6F8;--white:#fff;--border:#E9ECEF;--text:#1a1a1a;--muted:#666}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.7}
+.topbar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.logo{font-weight:900;font-size:15px}.logo em{color:var(--pink);font-style:normal}.logo span{color:var(--blue)}
+.nav{display:flex;gap:24px}
+.nav a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:600}.nav a:hover{color:var(--pink)}
+.hero{background:linear-gradient(135deg,#fff,#FFF0F7);border-bottom:1px solid var(--border);padding:56px 40px 48px;text-align:center}
+.hero-badge{display:inline-block;background:#FCE4EC;border:1px solid #F48FB1;border-radius:20px;padding:5px 18px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--pink);margin-bottom:16px}
+.hero h1{font-size:clamp(24px,4vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;color:var(--text)}
+.hero h1 em{color:var(--pink);font-style:normal}
+.hero p{font-size:15px;color:var(--muted);max-width:560px;margin:0 auto 28px}
+.quick-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.ql{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:.2s}
+.ql-pink{background:var(--pink);color:#fff}.ql-pink:hover{background:#C2185B}
+.ql-blue{background:var(--blue);color:#fff}.ql-blue:hover{background:#004BA0}
+.ql-outline{background:var(--white);color:var(--text);border:1px solid var(--border)}.ql-outline:hover{border-color:var(--pink);color:var(--pink)}
+/* LAYOUT */
+.container{max-width:960px;margin:0 auto;padding:40px 24px}
+/* SECTION */
+.section{margin-bottom:48px}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.section-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.section-icon.pink{background:#FCE4EC}
+.section-icon.blue{background:#E3F2FD}
+.section-icon.green{background:#E8F5E9}
+.section-icon.purple{background:#F3E5F5}
+.section-icon.orange{background:#FFF3E0}
+.section h2{font-size:20px;font-weight:800;color:var(--text)}
+.section .subtitle{font-size:13px;color:var(--muted);margin-top:2px}
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+.card h3{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p{font-size:13px;color:var(--muted);line-height:1.7}
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--pink);color:#fff;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-content h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.step-content p{font-size:13px;color:var(--muted);line-height:1.7}
+.step-content ul{margin-top:8px;padding-left:16px}
+.step-content li{font-size:13px;color:var(--muted);margin-bottom:4px}
+/* LINKS TABLE */
+.links-table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.links-table th{background:#F8F9FA;padding:10px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;border-bottom:1px solid var(--border)}
+.links-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.links-table tr:last-child td{border-bottom:none}
+.links-table a{color:var(--blue);text-decoration:none;font-weight:600;word-break:break-all}.links-table a:hover{text-decoration:underline}
+.badge-pink{background:#FCE4EC;color:var(--pink);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-blue{background:#E3F2FD;color:var(--blue);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-green{background:#E8F5E9;color:#2E7D32;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+/* STATUS PIPELINE */
+.pipeline{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:12px}
+.pip-step{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.pip-arrow{color:#ccc;font-size:14px}
+/* OUTREACH TEMPLATE */
+.template-block{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+.template-header{padding:12px 20px;background:#F8F9FA;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;justify-content:space-between}
+.template-header h4{font-size:13px;font-weight:700}
+.template-body{padding:20px}
+.template-en{background:#F8F9FA;border-radius:8px;padding:16px;font-size:13px;line-height:1.8;color:var(--text);white-space:pre-line;font-family:inherit;border-left:3px solid var(--blue)}
+.template-ar{background:#FFF8F0;border-radius:8px;padding:16px;font-size:14px;line-height:1.9;color:var(--text);white-space:pre-line;font-family:inherit;border-left:3px solid var(--pink);direction:rtl;text-align:right}
+.copy-btn{border:1px solid var(--border);background:var(--white);padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted)}
+.copy-btn:hover{border-color:var(--pink);color:var(--pink)}
+.lang-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.lang-en{background:#E3F2FD;color:var(--blue)}
+.lang-ar{background:#FFF3E0;color:#E65100}
+/* RULES BOX */
+.rules-box{background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:16px 20px;margin-top:16px}
+.rules-box h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E65100;margin-bottom:10px}
+.rules-box ol{padding-left:16px}
+.rules-box li{font-size:13px;color:var(--text);margin-bottom:6px}
+/* HOW-TO */
+.howto-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:0}
+.howto-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px}
+.howto-card h4{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.howto-card ul{padding-left:14px}
+.howto-card li{font-size:12px;color:var(--muted);margin-bottom:5px}
+/* FOOTER */
+footer{text-align:center;padding:40px;border-top:1px solid var(--border);margin-top:40px;background:var(--white)}
+@media(max-width:700px){.howto-grid{grid-template-columns:1fr}.hero{padding:40px 20px 36px}.quick-links{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">TiKiT<em>.</em> × <span>Bioderma</span> — Campaign Guide</div>
+  <nav class="nav">
+    <a href="#links">Links</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#tracker">Tracker</a>
+    <a href="#outreach">Outreach</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">TiKiT Marketing Management — Confidential</div>
+  <h1>Bioderma Photoderm <em>XDefense</em><br>Campaign Playbook</h1>
+  <p>Everything you need to run the campaign — from sharing the deck to tracking live posts. All tools are live. All links are clickable.</p>
+  <div class="quick-links">
+    <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-2026.html" target="_blank" class="ql ql-pink">🎬 Presentation</a>
+    <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-master-review.html" target="_blank" class="ql ql-blue">📋 Creator Review</a>
+    <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-tracker/" target="_blank" class="ql ql-outline">⚙️ Agency Tracker</a>
+    <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-tracker/?view=client" target="_blank" class="ql ql-outline">👁️ Client View</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- SECTION 1: ALL LINKS -->
+<div class="section" id="links">
+  <div class="section-header">
+    <div class="section-icon blue">🔗</div>
+    <div><h2>All Campaign Links</h2><div class="subtitle">Live on GitHub Pages — share as needed</div></div>
+  </div>
+  <table class="links-table">
+    <thead><tr><th>Asset</th><th>URL</th><th>Who Gets It</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Presentation Deck</strong><br><span style="font-size:11px;color:var(--muted)">12 slides</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-2026.html" target="_blank">bioderma-xdefense-2026.html ↗</a></td>
+        <td><span class="badge-blue">Client</span></td>
+        <td>Campaign overview, strategy, creator categories</td>
+      </tr>
+      <tr>
+        <td><strong>Master Creator Review</strong><br><span style="font-size:11px;color:var(--muted)">All 95 creators — one page</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-master-review.html" target="_blank">bioderma-xdefense-master-review.html ↗</a></td>
+        <td><span class="badge-blue">Client</span> <span class="badge-pink">Agency</span></td>
+        <td>Browse all creators by batch/category, open their profiles</td>
+      </tr>
+      <tr>
+        <td><strong>Live Campaign Tracker</strong><br><span style="font-size:11px;color:var(--muted)">Agency — full edit access</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-tracker/" target="_blank">bioderma-tracker/ ↗</a></td>
+        <td><span class="badge-pink">Agency only</span></td>
+        <td>Manage outreach, shipping, content links, fees, notes</td>
+      </tr>
+      <tr>
+        <td><strong>Client Approval Tracker</strong><br><span style="font-size:11px;color:var(--muted)">Client — read + approve only</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-tracker/?view=client" target="_blank">bioderma-tracker/?view=client ↗</a></td>
+        <td><span class="badge-blue">Client</span></td>
+        <td>Client shortlists creators, sees content once live</td>
+      </tr>
+      <tr>
+        <td><strong>Batch 1 Review</strong><br><span style="font-size:11px;color:var(--muted)">40 creators</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-batch1-review.html" target="_blank">batch1-review.html ↗</a></td>
+        <td><span class="badge-pink">Agency</span></td>
+        <td>Detailed review of Batch 1</td>
+      </tr>
+      <tr>
+        <td><strong>Batch 2 Review</strong><br><span style="font-size:11px;color:var(--muted)">32 creators</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-batch2-review.html" target="_blank">batch2-review.html ↗</a></td>
+        <td><span class="badge-pink">Agency</span></td>
+        <td>Detailed review of Batch 2</td>
+      </tr>
+      <tr>
+        <td><strong>Emirati Creators</strong><br><span style="font-size:11px;color:var(--muted)">23 verified Emirati ♀</span></td>
+        <td><a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-emirati-review.html" target="_blank">emirati-review.html ↗</a></td>
+        <td><span class="badge-pink">Agency</span></td>
+        <td>Emirati nationals batch — all female ≤700K</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 2: WORKFLOW -->
+<div class="section" id="workflow">
+  <div class="section-header">
+    <div class="section-icon pink">📋</div>
+    <div><h2>Campaign Workflow</h2><div class="subtitle">Step-by-step — from deck to live posts</div></div>
+  </div>
+
+  <div class="card">
+    <h3>🗓️ Campaign Status Pipeline</h3>
+    <div class="pipeline">
+      <span class="pip-step" style="background:#E3F2FD;color:#1565C0">Shortlisted</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#FFF8E1;color:#E65100">Contacted</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#E8F5E9;color:#2E7D32">Confirmed</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#F3E5F5;color:#6A1B9A">Box Shipped</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#E0F2F1;color:#00695C">Delivered</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#1B5E20;color:#fff">Posted ✓</span><span class="pip-arrow">→</span>
+      <span class="pip-step" style="background:#004D40;color:#fff">Completed</span>
+    </div>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted)">Also tracked: Follow-Up 1/2 · Declined · No Response · Did Not Post · Delivery Failed</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Share Deck + Creator Review with Client</h4>
+        <p>Send Bioderma both links: the presentation deck for campaign overview, and the client approval tracker to review creators.</p>
+        <ul>
+          <li>📎 Deck: <code>bioderma-xdefense-2026.html</code></li>
+          <li>📋 Client tracker: <code>bioderma-tracker/?view=client</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Client Reviews & Approves Creators</h4>
+        <p>Bioderma opens the client tracker. For each creator they see the name, handle, profile links, batch, category, and reach. They click <strong>✅ Approve</strong> or <strong>❌ Reject</strong> — every click saves instantly to the database. TiKiT sees approvals in real time on the agency tracker.</p>
+        <ul>
+          <li>Client can filter by batch, category, or approval state</li>
+          <li>Client can export their shortlist as CSV (⬇ Export My Shortlist)</li>
+          <li>SLA: client approvals within 48 hours of receiving the link</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>TiKiT Starts Outreach on Approved Creators</h4>
+        <p>On the agency tracker, filter by "✅ Approved by Client" to see the shortlist. Send the initial DM to each creator using the outreach templates below. Update their status to <strong>Contacted</strong> by clicking the 📤 Contact button on their row.</p>
+        <ul>
+          <li>Day 0: Initial DM → status = Contacted</li>
+          <li>Day 3: No reply → Follow-Up 1</li>
+          <li>Day 7: No reply → Follow-Up 2</li>
+          <li>Day 10: Archive → status = No Response</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Creator Accepts → Collect Details</h4>
+        <p>When a creator agrees: click ✅ Accept button → status becomes Confirmed. Click on the row to expand and fill in their shipping address. Log the contacted_by field with your name.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Ship the PR Box</h4>
+        <p>Dispatch the box → click 📦 Ship button → status becomes Dispatched. Enter the courier tracking number in the expanded row. When delivered, click 📬 Delivered.</p>
+        <ul>
+          <li>SLA: dispatch within 48h of receiving address</li>
+          <li>SLA: UAE delivery in 2 business days (Aramex/Fetchr)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Content Goes Live → Add Video Links</h4>
+        <p>When a creator posts, click 🎬 Posted and expand their row to paste up to <strong>4 content links</strong> (TikTok, Instagram Reel, Story, etc.). The client view shows these links as clickable ▶ Post 1 / Post 2 etc. Click 🏁 Complete when all deliverables are done.</p>
+        <div class="rules-box">
+          <h4>⚠️ Gentle Nudge Rule — Do Not Break</h4>
+          <ol>
+            <li>Day 3 after delivery: "Hope the box arrived safely! No pressure at all 😊"</li>
+            <li><strong>Never</strong> ask "when will you post?" or "have you tried it yet?"</li>
+            <li>If they post later than expected — celebrate it. Never complain.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: HOW TO USE THE TRACKER -->
+<div class="section" id="tracker">
+  <div class="section-header">
+    <div class="section-icon green">⚙️</div>
+    <div><h2>How to Use the Tracker</h2><div class="subtitle">Full feature walkthrough — agency and client views</div></div>
+  </div>
+
+  <div class="howto-grid" style="margin-bottom:20px">
+    <div class="howto-card">
+      <h4>⚙️ Agency View (Full Access)</h4>
+      <ul>
+        <li><strong>Stats bar</strong> — live counts: Total, Contacted, Confirmed, Shipped, Posted, Client Approved</li>
+        <li><strong>Filters</strong> — filter by Batch (B1/B2/Emirati), Status, Client Approval, Category, or search by name/handle</li>
+        <li><strong>Creator row</strong> — shows: name, reach, handles (clickable IG/TT links), batch, category, campaign status, client approval badge, fee, content links</li>
+        <li><strong>Quick action buttons</strong> — 📤 Contact, ✅ Accept, ❌ Decline, 📦 Ship, 📬 Delivered, 🎬 Posted, 🏁 Complete</li>
+        <li><strong>Click any row</strong> — expands inline edit panel: outreach info, shipping address, tracking number, dates, 4 content link slots, internal notes</li>
+        <li><strong>Client Approval column</strong> — shows ✅ Approved / ❌ Rejected / ⏳ Pending per creator based on client's selections</li>
+        <li><strong>Export CSV</strong> — downloads full data with all columns</li>
+        <li><strong>+ Add Creator</strong> — manually add a creator not in the original list</li>
+      </ul>
+    </div>
+    <div class="howto-card">
+      <h4>👁️ Client View (Bioderma)</h4>
+      <ul>
+        <li><strong>Shortlist summary bar</strong> — shows how many approved / rejected / pending at a glance</li>
+        <li><strong>Per-creator approval buttons</strong> — ✅ Approve or ❌ Reject. Saves instantly to database. Green row = approved, red = rejected.</li>
+        <li><strong>Filter</strong> — by batch, approval state, category, or search</li>
+        <li><strong>Handles are clickable</strong> — 📸 IG and 🎵 TT buttons open creator profiles in new tab</li>
+        <li><strong>Content links appear automatically</strong> — once TiKiT logs video links, client sees ▶ Post 1 / ▶ Post 2 etc.</li>
+        <li><strong>Export My Shortlist</strong> — downloads approved creators as CSV</li>
+        <li><strong>No sensitive data</strong> — fees, tracking numbers, internal notes are hidden</li>
+        <li><strong>No editing</strong> — client can only approve/reject and export</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 Approval Summary Bar (both views)</h3>
+    <p>Both the agency and client views show a live summary at the top: how many creators are approved, rejected, or still pending review. This updates the moment anyone clicks an approval button — no refresh needed.</p>
+    <p style="margin-top:8px">The agency stats bar also shows a <strong>"✅ Client OK"</strong> counter so TiKiT can see at a glance how many creators have been signed off on.</p>
+  </div>
+</div>
+
+<!-- SECTION 4: OUTREACH TEMPLATES -->
+<div class="section" id="outreach">
+  <div class="section-header">
+    <div class="section-icon purple">✉️</div>
+    <div><h2>Outreach Templates</h2><div class="subtitle">Copy-ready DMs — English + Arabic. Gifting campaign, no fee.</div></div>
+  </div>
+
+  <div class="rules-box" style="margin-bottom:24px">
+    <h4>📌 Usage Rules Before Sending</h4>
+    <ol>
+      <li><strong>Always personalize</strong> — replace [Name] with their first name only. Never "Dear Influencer."</li>
+      <li><strong>Match their language</strong> — check their recent content. Arabic creator → Arabic message.</li>
+      <li><strong>Send timing</strong> — 10 AM–1 PM or 7 PM–10 PM Dubai time. Never Friday midday or late night.</li>
+      <li><strong>Instagram DM first</strong> — if they're primarily TikTok, try IG first anyway (higher open rate). TikTok DM as backup.</li>
+      <li><strong>This is gifting</strong> — never say "collaboration," "partnership," or "paid." The word is always "gift" or "PR box."</li>
+    </ol>
+  </div>
+
+  <!-- Initial Message -->
+  <div style="margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text)">📤 Initial Message — Day 0</div>
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Initial DM — English</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-en">EN</span>
+        <button class="copy-btn" onclick="copyText('tpl-en-1')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-en" id="tpl-en-1">Hi [First Name]! 👋
+
+I'm [Your Name] from TiKiT Agency — we work with Bioderma in the UAE.
+
+We've been following your content and we think you'd love their new Photoderm XDefense Ultra-Fluid SPF50+ ☀️
+
+It's lightweight, no white cast, and built for the UAE sun — honestly perfect for your lifestyle.
+
+We'd love to send you a PR gift box — no obligations at all. If you love it and feel like sharing with your audience, amazing. If not, it's still yours to enjoy!
+
+Would you be interested? I can send more details right away 📦</div>
+    </div>
+  </div>
+
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Initial DM — Arabic</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-ar">AR</span>
+        <button class="copy-btn" onclick="copyText('tpl-ar-1')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-ar" id="tpl-ar-1">هاي [الاسم]! 👋
+
+أنا [اسمك] من وكالة TiKiT — نشتغل مع Bioderma في الإمارات.
+
+شايفين محتواك وحاسين إنك بتحبين منتجهم الجديد Photoderm XDefense Ultra-Fluid SPF50+ ☀️
+
+خفيف، ما يخلي لون أبيض، ومصمم لشمس الإمارات — صراحة مثالي لأسلوب حياتك.
+
+نبي نرسلك هدية من بيوديرما — بدون أي التزامات. إذا حبيتيه وودك تشاركين تجربتك، يسعدنا. وإذا لا — استمتعي فيه! 🎁
+
+تحبين نرسلك التفاصيل؟ 📦</div>
+    </div>
+  </div>
+
+  <!-- Follow-Up 1 -->
+  <div style="margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--text)">🔁 Follow-Up #1 — Day 3 (no reply)</div>
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Follow-Up 1 — English</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-en">EN</span>
+        <button class="copy-btn" onclick="copyText('tpl-en-2')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-en" id="tpl-en-2">Hey [First Name]! Just following up on my message 😊
+
+We're putting together our next wave of Bioderma PR boxes and would love to include you.
+
+The product is Photoderm XDefense SPF50+ — super lightweight, no white cast, and works beautifully under makeup (or without!).
+
+100% gifted, zero obligations. Just let me know if you'd like one sent your way! ☀️</div>
+    </div>
+  </div>
+
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Follow-Up 1 — Arabic</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-ar">AR</span>
+        <button class="copy-btn" onclick="copyText('tpl-ar-2')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-ar" id="tpl-ar-2">هلا [الاسم]! 😊 حبيت أرجع عليكِ بخصوص رسالتي السابقة.
+
+نجهز الدفعة الجاية من بوكسات بيوديرما ونبي نضيفك معنا.
+
+Photoderm XDefense SPF50+ — خفيف جداً، ما يخلي لون أبيض، وتحتيه يقدر يمشي المكياج أو من غيره.
+
+هدية كاملة، صفر التزامات 🙌 قوليلي إذا تبين نرسلك! ☀️</div>
+    </div>
+  </div>
+
+  <!-- Follow-Up 2 -->
+  <div style="margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--text)">🔁 Follow-Up #2 — Day 7 (Final)</div>
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Follow-Up 2 — English (Final)</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-en">EN</span>
+        <button class="copy-btn" onclick="copyText('tpl-en-3')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-en" id="tpl-en-3">Hi [First Name] — last message from me, I promise! 🙂
+
+Totally understand if the timing isn't right. No worries at all.
+
+If you'd ever like to try Bioderma products in the future, we'd love to keep you on our list — just reach out anytime.
+
+Wishing you an amazing week ahead! ☀️</div>
+    </div>
+  </div>
+
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Follow-Up 2 — Arabic (Final)</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-ar">AR</span>
+        <button class="copy-btn" onclick="copyText('tpl-ar-3')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-ar" id="tpl-ar-3">هاي [الاسم]، آخر رسالة مني أعدك! 🙂
+
+أتفهم تماماً إذا التوقيت مو مناسب، ما في أي إشكال.
+
+إذا حبيتي تجربين منتجات بيوديرما بالمستقبل، يسعدنا نضيفك في قائمتنا — راسليني أي وقت.
+
+أتمنالك أسبوع رائع! ☀️</div>
+    </div>
+  </div>
+
+  <!-- Post-delivery nudge -->
+  <div style="margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--text)">📬 Post-Delivery Check-In — Day 3 after delivery</div>
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Delivery Check-In — English</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-en">EN</span>
+        <button class="copy-btn" onclick="copyText('tpl-en-4')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-en" id="tpl-en-4">Hey [First Name]! Just wanted to make sure your Bioderma box arrived safely 📦
+
+Hope you love it! No pressure at all — just enjoy it 😊 ☀️</div>
+    </div>
+  </div>
+
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Delivery Check-In — Arabic</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-ar">AR</span>
+        <button class="copy-btn" onclick="copyText('tpl-ar-4')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-ar" id="tpl-ar-4">هلا [الاسم]! حبيت أتأكد إن بوكس بيوديرما وصلك بسلامة 📦
+
+أتمنى تعجبك! ما في أي ضغط — استمتعي فيه 😊 ☀️</div>
+    </div>
+  </div>
+
+  <!-- Thanks for posting -->
+  <div style="margin:24px 0 8px;font-size:13px;font-weight:700;color:var(--text)">🎬 After They Post — Thank You</div>
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Thank You for Posting — English</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-en">EN</span>
+        <button class="copy-btn" onclick="copyText('tpl-en-5')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-en" id="tpl-en-5">Oh wow, [First Name]! Your post is absolutely gorgeous 😍☀️
+
+We love how you featured Photoderm XDefense — and your audience is going to love the recommendation!
+
+Bioderma will be so happy to see this. Thank you so much for sharing — it means a lot to us 💛
+
+We'd love to stay in touch for future Bioderma drops. You're definitely on our VIP list! 🌟</div>
+    </div>
+  </div>
+
+  <div class="template-block">
+    <div class="template-header">
+      <h4>Thank You for Posting — Arabic</h4>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="lang-badge lang-ar">AR</span>
+        <button class="copy-btn" onclick="copyText('tpl-ar-5')">Copy</button>
+      </div>
+    </div>
+    <div class="template-body">
+      <div class="template-ar" id="tpl-ar-5">يا [الاسم] والله المحتوى رهيب! 😍☀️
+
+حبينا أسلوبك في تقديم Photoderm XDefense — ومتابعينك بيفيدون من توصيتك كثير!
+
+بيوديرما بتفرح لما تشوف هذا. شكراً من قلبنا على مشاركتك — يعني لنا الكثير 💛
+
+نبي نبقى على تواصل معك للإطلاقات الجاية. أنت حتماً في قائمة VIP لدينا! 🌟</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <div style="font-size:16px;font-weight:900">TiKiT<span style="color:var(--pink)">.</span> × <span style="color:var(--blue)">Bioderma</span></div>
+  <div style="font-size:12px;color:var(--muted);margin-top:6px">Photoderm XDefense PR Seeding · April–July 2026 · TiKiT Marketing Management · Confidential</div>
+</footer>
+
+<script>
+function copyText(id) {
+  const el = document.getElementById(id)
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btn = el.closest('.template-block').querySelector('.copy-btn')
+    btn.textContent = '✓ Copied!'
+    btn.style.color = '#2E7D32'
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = '' }, 2000)
+  })
+}
+</script>
+</body>
+</html>
