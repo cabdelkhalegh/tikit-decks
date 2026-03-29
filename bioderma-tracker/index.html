@@ -399,12 +399,20 @@ function renderCards() {
     const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt">🎵 TT</a>` : ''
     const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
     const contentLinksHtml = contentLinks.map((l,i)=>`<a href="${l}" target="_blank" class="pl pl-content">▶ Post ${i+1}</a>`).join('')
-    // Client approval row — shown in both views
-    const approvalRow = IS_CLIENT ? `
-      <div class="card-approval-row">
-        <button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅ Approve</button>
-        <button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌ Reject</button>
-      </div>` : ''
+    // Client approval row — active only while SHORTLISTED, locked after outreach starts
+    const _isLocked = IS_CLIENT && c.status !== 'SHORTLISTED'
+    const approvalRow = IS_CLIENT ? (
+      _isLocked
+        ? `<div class="card-approval-row" style="padding:8px 16px 12px">
+            <div style="width:100%;text-align:center;font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--light)">
+              ${c.client_approved === true ? '✅ Approved' : c.client_approved === false ? '❌ Rejected' : '⏳ Pending'} <span style="font-size:10px;color:#aaa;margin-left:6px">· locked (outreach started)</span>
+            </div>
+           </div>`
+        : `<div class="card-approval-row">
+            <button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅ Approve</button>
+            <button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌ Reject</button>
+           </div>`
+    ) : ''
     // Agency quick actions
     const agencyActions = IS_CLIENT ? '' : buildQuickActions(c)
     // Agency expand
@@ -501,8 +509,11 @@ function renderTable() {
     const feeHtml = c.fee_agreed_aed ? `<strong>${c.fee_agreed_aed}</strong>` : c.fee_quoted_aed ? `${c.fee_quoted_aed}` : '—'
     const aActive = c.client_approved === true ? 'active' : ''
     const rActive = c.client_approved === false ? 'active' : ''
+    const isLocked = IS_CLIENT && c.status !== 'SHORTLISTED'
     const approvalCell = IS_CLIENT
-      ? `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>`
+      ? (isLocked
+          ? (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
+          : `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>`)
       : (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
     const rowClass = c.client_approved === true ? 'row-approved' : c.client_approved === false ? 'row-rejected' : ''
     const agencyActions = IS_CLIENT ? '' : `<td class="agency-col" onclick="event.stopPropagation()">${buildQuickActions(c)}</td>`
