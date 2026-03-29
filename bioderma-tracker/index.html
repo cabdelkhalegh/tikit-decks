@@ -690,8 +690,144 @@ body.client-view .agency-col{display:none!important}
 th.bulk-col,td.bulk-col{width:36px;text-align:center}
 body.client-view .bulk-col{display:none!important}
 </style>
+
+<!-- ══════════════════════════════════════════
+     BIODERMA v2 — AMBER PREMIUM SKIN
+     Overrides the cold dark theme above with
+     warm Bioderma amber/orange/pink palette
+     + UV halo + floating orbs + logo topbar
+     + shimmer title + category avatars
+     ══════════════════════════════════════════ -->
+<style>
+/* Warm dark background */
+body.client-view {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,140,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,180,0,0.05) 0%, transparent 65%),
+    #0A0805 !important;
+}
+
+/* UV sun halo rotating rays */
+body.client-view::before {
+  content: "" !important;
+  position: fixed !important;
+  top: -15% !important;
+  left: 50% !important;
+  transform: translateX(-50%) rotate(0deg) !important;
+  width: 140vw !important;
+  height: 140vw !important;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg, rgba(255,140,0,0.05) 18deg, transparent 36deg,
+    rgba(233,30,140,0.04) 54deg, transparent 72deg,
+    rgba(255,180,0,0.05) 90deg, transparent 108deg,
+    rgba(255,100,50,0.04) 126deg, transparent 144deg,
+    rgba(233,30,140,0.04) 162deg, transparent 180deg,
+    rgba(255,140,0,0.05) 198deg, transparent 216deg,
+    rgba(255,180,0,0.04) 234deg, transparent 252deg,
+    rgba(233,30,140,0.04) 270deg, transparent 288deg,
+    rgba(255,140,0,0.04) 306deg, transparent 324deg,
+    rgba(233,30,140,0.03) 342deg, transparent 360deg
+  ) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  animation: halo-spin 55s linear infinite !important;
+  opacity: 0.65 !important;
+}
+@keyframes halo-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* Warm floating orbs */
+.cv-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; animation:float-orb 24s infinite ease-in-out; }
+.cv-orb-1 { width:420px; height:420px; background:rgba(255,140,0,0.12); top:-150px; left:-120px; animation-delay:0s; }
+.cv-orb-2 { width:320px; height:320px; background:rgba(233,30,140,0.10); bottom:5%; right:-80px; animation-delay:-8s; }
+.cv-orb-3 { width:260px; height:260px; background:rgba(255,180,50,0.08); top:40%; left:60%; animation-delay:-16s; }
+@keyframes float-orb { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-35px) scale(1.06)} 66%{transform:translate(-18px,22px) scale(0.94)} }
+
+/* Frosted amber topbar */
+body.client-view .topbar {
+  background: rgba(3,7,18,0.88) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-bottom: 1px solid rgba(255,140,0,0.2) !important;
+  box-shadow: 0 1px 0 rgba(255,140,0,0.25), 0 4px 32px rgba(0,0,0,0.6) !important;
+  height: 56px !important;
+}
+/* Show logo images, hide text logo in client view */
+body.client-view .logo { display: none !important; }
+body.client-view #view-badge { display: none !important; }
+#logo-imgs { display: none; align-items: center; gap: 10px; }
+body.client-view #logo-imgs { display: flex !important; }
+#logo-imgs img { height: 24px; width: auto; object-fit: contain; }
+#logo-imgs .logo-sep { color: rgba(255,255,255,0.25); font-size: 18px; font-weight: 300; }
+/* Mobile: shrink logos */
+@media(max-width:640px) {
+  body.client-view #layout-toggle { display: none !important; }
+  body.client-view [title="Refresh"] { display: none !important; }
+  body.client-view .tbr > .btn-outline { display: none !important; }
+  body.client-view .topbar { height: 48px !important; padding: 0 14px !important; }
+  #logo-imgs img { height: 20px !important; }
+}
+
+/* Shimmer hero title — amber palette */
+body.client-view .client-hero h1 {
+  background: linear-gradient(135deg, #FF8C00 0%, #E91E8C 35%, #FFB300 65%, #FF6B35 100%) !important;
+  background-size: 300% 300% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: shimmer-title 5s ease infinite !important;
+}
+@keyframes shimmer-title {
+  0%   { background-position: 0% 50% }
+  50%  { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+
+/* Category-colored avatar rings */
+body.client-view [data-cat="sport"]     .card-avatar { background: linear-gradient(135deg,#FF6B35,#E91E8C) !important; box-shadow: 0 0 14px rgba(255,107,53,0.45) !important; }
+body.client-view [data-cat="pharma"]    .card-avatar { background: linear-gradient(135deg,#0066CC,#00BCD4) !important; box-shadow: 0 0 14px rgba(0,102,204,0.45) !important; }
+body.client-view [data-cat="beauty"]    .card-avatar { background: linear-gradient(135deg,#E91E8C,#7C3AED) !important; box-shadow: 0 0 14px rgba(233,30,140,0.45) !important; }
+body.client-view [data-cat="derm"]      .card-avatar { background: linear-gradient(135deg,#00897B,#0066CC) !important; box-shadow: 0 0 14px rgba(0,137,123,0.45) !important; }
+body.client-view [data-cat="lifestyle"] .card-avatar { background: linear-gradient(135deg,#7C3AED,#E91E8C) !important; box-shadow: 0 0 14px rgba(124,58,237,0.45) !important; }
+body.client-view [data-cat="travel"]    .card-avatar { background: linear-gradient(135deg,#0066CC,#FF6B35) !important; box-shadow: 0 0 14px rgba(0,102,204,0.4) !important; }
+body.client-view [data-cat="food"]      .card-avatar { background: linear-gradient(135deg,#FF9800,#E91E8C) !important; box-shadow: 0 0 14px rgba(255,152,0,0.45) !important; }
+body.client-view [data-cat="fashion"]   .card-avatar { background: linear-gradient(135deg,#E91E8C,#FF4081) !important; box-shadow: 0 0 14px rgba(233,30,140,0.45) !important; }
+body.client-view [data-cat="fitness"]   .card-avatar { background: linear-gradient(135deg,#F44336,#FF6B35) !important; box-shadow: 0 0 14px rgba(244,67,54,0.45) !important; }
+body.client-view [data-cat="mom"]       .card-avatar { background: linear-gradient(135deg,#9C27B0,#E91E8C) !important; box-shadow: 0 0 14px rgba(156,39,176,0.45) !important; }
+
+/* Card hover lift — warm pink glow */
+body.client-view .creator-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 48px rgba(233,30,140,0.22), 0 4px 16px rgba(0,0,0,0.5) !important;
+  border-color: rgba(255,140,0,0.3) !important;
+}
+
+/* Amber stat glows */
+body.client-view .stat.green .n { color:#00E676 !important; text-shadow: 0 0 24px rgba(0,230,118,0.65) !important; }
+body.client-view .stat.blue .n  { color:#64B5F6 !important; text-shadow: 0 0 24px rgba(100,181,246,0.55) !important; }
+body.client-view .stat.orange .n{ color:#FFB74D !important; text-shadow: 0 0 24px rgba(255,183,77,0.55) !important; }
+body.client-view .stat.purple .n{ color:#CE93D8 !important; text-shadow: 0 0 24px rgba(206,147,216,0.5) !important; }
+
+/* Progress ring colours — warm */
+#ring-approved  { stroke: #00E676 !important; }
+#ring-progress  { stroke: #FFB74D !important; }
+#ring-posted    { stroke: #E91E8C !important; }
+
+/* ── CLIENT TOPBAR MOBILE CLEANUP ── */
+body.client-view #view-badge { display: none !important; }
+</style>
 </head>
 <body>
+
+<!-- Floating orbs (client view only) -->
+<div class="cv-orb cv-orb-1" style="display:none" id="orb1"></div>
+<div class="cv-orb cv-orb-2" style="display:none" id="orb2"></div>
+<div class="cv-orb cv-orb-3" style="display:none" id="orb3"></div>
 
 <!-- WELCOME OVERLAY (client first-visit) -->
 <div id="welcome-overlay">
@@ -717,9 +853,15 @@ body.client-view .bulk-col{display:none!important}
 </div>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center;min-width:0">
-    <div class="logo">TiKiT<em class="x">.</em><span style="display:none" id="logo-x"> × <span class="blue">Bioderma</span></span></div>
+  <div style="display:flex;align-items:center;min-width:0;gap:10px">
+    <div class="logo">TiKiT<em class="x">.</em></div>
     <span class="badge" id="view-badge">Agency</span>
+    <!-- Premium logos shown in client view -->
+    <div id="logo-imgs">
+      <img src="assets/tikit-logo.png" alt="TiKiT" style="filter:brightness(0) invert(1) opacity(0.9)">
+      <span class="logo-sep">×</span>
+      <img src="assets/bioderma-logo.png" alt="Bioderma" style="filter:brightness(0) invert(1) opacity(0.85)">
+    </div>
   </div>
   <div class="tbr">
     <button class="btn btn-outline" onclick="refreshData()" style="padding:8px 10px;font-size:12px" title="Refresh">🔄</button>
@@ -909,7 +1051,10 @@ if (IS_CLIENT) {
   document.getElementById('approval-summary').style.display = 'block'
   document.getElementById('approval-title').textContent = '📋 Creator Review & Campaign Tracker'
   document.getElementById('approval-subtitle').textContent = 'Approve or reject proposed creators (SHORTLISTED). Once outreach starts, track each creator\'s status live.'
-  document.getElementById('logo-x').style.display = 'inline'
+  // Show premium orbs
+  ;['orb1','orb2','orb3'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='block'; })
+  // Show Report button
+  const rb = document.getElementById('report-btn'); if(rb) rb.style.display='inline-flex';
 
   // Auto-detect: phone vs desktop — apply compact layout class on desktop
   function detectLayout() {
