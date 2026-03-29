@@ -175,6 +175,338 @@ body.client-view .agency-col{display:none!important}
 .mf input,.mf select{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);outline:none;background:var(--white)}
 .mf input:focus,.mf select:focus{border-color:var(--pink)}
 </style>
+
+<!-- ═══ CLIENT VIEW — PREMIUM GLASSMORPHISM ═══ -->
+<style>
+/* ── DARK GRADIENT BACKGROUND ── */
+body.client-view{
+  background:linear-gradient(135deg,#0A0F1E 0%,#1a1040 50%,#0d1a3a 100%);
+  color:#E8E8F0;
+  min-height:100vh;
+  position:relative;
+}
+body.client-view::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(233,30,140,.08) 0%,transparent 60%),
+             radial-gradient(ellipse 60% 50% at 80% 80%,rgba(0,102,204,.06) 0%,transparent 50%);
+}
+
+/* ── TOPBAR GLASS ── */
+body.client-view .topbar{
+  background:rgba(15,15,35,.75);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  box-shadow:0 4px 30px rgba(0,0,0,.4);
+}
+body.client-view .logo{color:#fff}
+body.client-view .badge-client{background:rgba(233,30,140,.15);color:#F472B6;border:1px solid rgba(233,30,140,.3)}
+body.client-view .btn-outline{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1)}
+body.client-view .btn-outline:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── CAMPAIGN HERO (client only) ── */
+.client-hero{
+  display:none;position:relative;z-index:1;
+  text-align:center;padding:40px 20px 28px;
+}
+body.client-view .client-hero{display:block}
+.client-hero h1{
+  font-size:28px;font-weight:900;letter-spacing:-.5px;line-height:1.2;
+  background:linear-gradient(135deg,#F472B6,#E91E8C,#A855F7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.client-hero .hero-sub{
+  font-size:14px;color:rgba(255,255,255,.45);margin-top:8px;font-weight:500;letter-spacing:.3px;
+}
+.client-hero .hero-line{
+  width:60px;height:2px;margin:16px auto 0;
+  background:linear-gradient(90deg,transparent,#E91E8C,transparent);border-radius:2px;
+}
+
+/* ── STATS BAR — GLOWING GLASS ── */
+body.client-view .stats{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);
+  padding:16px 20px;gap:10px;
+  grid-template-columns:repeat(3,1fr);
+}
+body.client-view .stat{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:14px 10px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+body.client-view .stat .n{font-size:26px;color:#F472B6;text-shadow:0 0 20px rgba(233,30,140,.3)}
+body.client-view .stat .l{color:rgba(255,255,255,.4);font-size:10px}
+body.client-view .stat.green .n{color:#4ADE80;text-shadow:0 0 20px rgba(74,222,128,.3)}
+body.client-view .stat.blue .n{color:#60A5FA;text-shadow:0 0 20px rgba(96,165,250,.3)}
+body.client-view .stat.purple .n{color:#C084FC;text-shadow:0 0 20px rgba(192,132,252,.3)}
+body.client-view .stat.orange .n{color:#FB923C;text-shadow:0 0 20px rgba(251,146,60,.3)}
+
+/* Client stats: show only 3 key metrics */
+body.client-view .stats{grid-template-columns:repeat(3,1fr)}
+body.client-view .stat:nth-child(n+4){display:none}
+body.client-view .stat:nth-child(1) .l::after{content:''}
+body.client-view .stat:nth-child(2) .n{color:#4ADE80;text-shadow:0 0 20px rgba(74,222,128,.4)}
+body.client-view .stat:nth-child(3) .n{color:#60A5FA;text-shadow:0 0 20px rgba(96,165,250,.3)}
+
+/* ── APPROVAL SUMMARY — GLASS PANEL ── */
+body.client-view .approval-summary{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);border-left:none;border-right:none;
+  padding:20px;
+}
+body.client-view .approval-summary h3{color:#fff;font-size:15px}
+body.client-view .approval-summary .sub{color:rgba(255,255,255,.4)}
+body.client-view .approval-counts{gap:10px}
+body.client-view .apcount{
+  background:rgba(255,255,255,.06);border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);padding:12px 8px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+body.client-view .apcount .n{font-size:24px}
+body.client-view .apcount.approved .n{color:#4ADE80;text-shadow:0 0 16px rgba(74,222,128,.4)}
+body.client-view .apcount.rejected .n{color:#F87171;text-shadow:0 0 16px rgba(248,113,113,.4)}
+body.client-view .apcount.pending .n{color:rgba(255,255,255,.35)}
+body.client-view .apcount .l{color:rgba(255,255,255,.35)}
+body.client-view .export-approved-btn{
+  background:linear-gradient(135deg,#4ADE80,#22C55E);color:#fff;border:none;
+  border-radius:12px;font-weight:700;padding:14px;
+  box-shadow:0 0 20px rgba(74,222,128,.2);transition:box-shadow .2s,transform .15s;
+}
+body.client-view .export-approved-btn:active{transform:scale(.97)}
+
+/* ── FILTERS — GLASS ── */
+body.client-view .filters{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 16px;
+}
+body.client-view .filter-row select,
+body.client-view .filter-row input{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:#E8E8F0;border-radius:10px;
+}
+body.client-view .filter-row select:focus,
+body.client-view .filter-row input:focus{border-color:rgba(233,30,140,.5);box-shadow:0 0 12px rgba(233,30,140,.15)}
+body.client-view .filter-row select option{background:#1a1040;color:#E8E8F0}
+body.client-view .filter-clear{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5)}
+
+/* ── HIDE TABLE IN CLIENT VIEW — CARDS ONLY ── */
+body.client-view .table-view{display:none!important}
+body.client-view .cards-container{display:flex!important}
+
+/* ── GLASS CARDS ── */
+body.client-view .cards-container{
+  position:relative;z-index:1;padding:16px;gap:14px;
+}
+body.client-view .creator-card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .2s ease,box-shadow .2s ease;
+  overflow:visible;
+}
+body.client-view .creator-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+}
+body.client-view .creator-card.card-approved{
+  background:rgba(74,222,128,.06);
+  border-color:rgba(74,222,128,.2);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 20px rgba(74,222,128,.06);
+}
+body.client-view .creator-card.card-rejected{
+  background:rgba(248,113,113,.05);
+  border-color:rgba(248,113,113,.15);
+}
+
+/* Card inner */
+body.client-view .card-header{padding:16px 18px}
+body.client-view .card-avatar{
+  background:linear-gradient(135deg,#E91E8C,#A855F7);
+  box-shadow:0 0 16px rgba(233,30,140,.25);
+  width:46px;height:46px;font-size:17px;
+}
+body.client-view .card-name{color:#fff;font-size:16px;font-weight:800}
+body.client-view .card-handle{color:rgba(255,255,255,.4)}
+body.client-view .card-meta .bb1{background:rgba(233,30,140,.15);color:#F472B6;border:none}
+body.client-view .card-meta .bb2{background:rgba(96,165,250,.15);color:#60A5FA;border:none}
+body.client-view .card-meta .bbem{background:rgba(74,222,128,.15);color:#4ADE80;border:none}
+body.client-view .card-meta span{color:rgba(255,255,255,.4)!important}
+
+/* Card right — approval badges */
+body.client-view .cap-approved{
+  background:rgba(74,222,128,.15);color:#4ADE80;border:1px solid rgba(74,222,128,.25);
+  box-shadow:0 0 10px rgba(74,222,128,.15);
+}
+body.client-view .cap-rejected{
+  background:rgba(248,113,113,.12);color:#F87171;border:1px solid rgba(248,113,113,.2);
+  box-shadow:0 0 10px rgba(248,113,113,.1);
+}
+body.client-view .cap-pending{
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.1);
+}
+
+/* ── STATUS PILLS — GLOWING ── */
+body.client-view .sp{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:none;font-weight:700}
+body.client-view .sp-SHORTLISTED{background:rgba(96,165,250,.15);color:#60A5FA;box-shadow:0 0 10px rgba(96,165,250,.15)}
+body.client-view .sp-CONTACTED,
+body.client-view .sp-FOLLOW_UP_1,
+body.client-view .sp-FOLLOW_UP_2{background:rgba(251,146,60,.15);color:#FB923C;box-shadow:0 0 10px rgba(251,146,60,.15)}
+body.client-view .sp-CONFIRMED,
+body.client-view .sp-DETAILS_COLLECTED,
+body.client-view .sp-BOX_ASSEMBLED,
+body.client-view .sp-BRIEF_SENT{background:rgba(74,222,128,.15);color:#4ADE80;box-shadow:0 0 10px rgba(74,222,128,.15)}
+body.client-view .sp-DECLINED,
+body.client-view .sp-NO_RESPONSE,
+body.client-view .sp-DID_NOT_POST,
+body.client-view .sp-DELIVERY_FAILED{background:rgba(248,113,113,.15);color:#F87171;box-shadow:0 0 10px rgba(248,113,113,.15)}
+body.client-view .sp-DISPATCHED,
+body.client-view .sp-IN_TRANSIT{background:rgba(192,132,252,.15);color:#C084FC;box-shadow:0 0 10px rgba(192,132,252,.15)}
+body.client-view .sp-DELIVERED,
+body.client-view .sp-AWAITING_CONTENT{background:rgba(45,212,191,.15);color:#2DD4BF;box-shadow:0 0 10px rgba(45,212,191,.15)}
+body.client-view .sp-POSTED{background:rgba(74,222,128,.2);color:#4ADE80;box-shadow:0 0 14px rgba(74,222,128,.25)}
+body.client-view .sp-COMPLETED{background:rgba(45,212,191,.2);color:#2DD4BF;box-shadow:0 0 14px rgba(45,212,191,.25)}
+
+/* ── CONTENT LINKS — GLOWING PLAY BUTTONS ── */
+body.client-view .card-links{padding:4px 18px 14px}
+body.client-view .pl{
+  border-radius:10px;font-weight:700;
+  transition:transform .15s,box-shadow .15s;
+}
+body.client-view .pl:active{transform:scale(.95)}
+body.client-view .pl-ig{
+  background:linear-gradient(135deg,rgba(240,148,51,.8),rgba(220,39,67,.8));
+  box-shadow:0 0 12px rgba(220,39,67,.2);
+}
+body.client-view .pl-tt{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#fff;
+  box-shadow:0 0 12px rgba(255,255,255,.05);
+}
+body.client-view .pl-content{
+  background:linear-gradient(135deg,rgba(233,30,140,.7),rgba(168,85,247,.7));
+  color:#fff;font-size:13px;padding:8px 16px;border-radius:10px;
+  box-shadow:0 0 16px rgba(233,30,140,.2);
+  animation:contentPulse 3s ease-in-out infinite;
+}
+@keyframes contentPulse{
+  0%,100%{box-shadow:0 0 16px rgba(233,30,140,.2)}
+  50%{box-shadow:0 0 24px rgba(233,30,140,.35)}
+}
+
+/* ── APPROVAL BUTTONS — PREMIUM PILLS ── */
+body.client-view .card-approval-row{padding:4px 18px 18px;gap:10px}
+body.client-view .cab-approve{
+  background:rgba(74,222,128,.1);color:#4ADE80;
+  border:1px solid rgba(74,222,128,.25);border-radius:12px;
+  padding:12px 20px;font-size:14px;font-weight:700;
+  transition:all .2s;
+}
+body.client-view .cab-approve:hover{
+  background:rgba(74,222,128,.18);box-shadow:0 0 20px rgba(74,222,128,.2);
+}
+body.client-view .cab-approve.active,
+body.client-view .cab-approve:active{
+  background:linear-gradient(135deg,#4ADE80,#22C55E);color:#fff;
+  border-color:#4ADE80;
+  box-shadow:0 0 24px rgba(74,222,128,.35);
+}
+body.client-view .cab-reject{
+  background:rgba(248,113,113,.08);color:#F87171;
+  border:1px solid rgba(248,113,113,.2);border-radius:12px;
+  padding:12px 20px;font-size:14px;font-weight:700;
+  transition:all .2s;
+}
+body.client-view .cab-reject:hover{
+  background:rgba(248,113,113,.15);box-shadow:0 0 20px rgba(248,113,113,.15);
+}
+body.client-view .cab-reject.active,
+body.client-view .cab-reject:active{
+  background:linear-gradient(135deg,#F87171,#EF4444);color:#fff;
+  border-color:#F87171;
+  box-shadow:0 0 24px rgba(248,113,113,.3);
+}
+
+/* ── LOCKED STATUS ROW (client, beyond SHORTLISTED) ── */
+body.client-view .card-approval-row div[style*="background:#E3F2FD"],
+body.client-view .card-approval-row div[style*="background:#E8F5E9"],
+body.client-view .card-approval-row div[style*="background:#FFEBEE"]{
+  background:rgba(255,255,255,.06)!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:10px!important;
+  color:rgba(255,255,255,.7)!important;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+
+/* ── PAGINATION — GLASS ── */
+body.client-view .pagination{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.03);border-top:1px solid rgba(255,255,255,.06);
+}
+body.client-view .pgb{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);
+}
+body.client-view .pgb.active{
+  background:linear-gradient(135deg,#E91E8C,#A855F7);border-color:transparent;color:#fff;
+  box-shadow:0 0 16px rgba(233,30,140,.3);
+}
+body.client-view .pgi{color:rgba(255,255,255,.3)}
+
+/* ── EMPTY STATE ── */
+body.client-view .empty-state{color:rgba(255,255,255,.3)}
+
+/* ── TOAST OVERRIDE ── */
+body.client-view #toast{
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-radius:14px;
+}
+
+/* ── RIPPLE ANIMATION ON APPROVAL ── */
+@keyframes approveRipple{
+  0%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}
+  70%{box-shadow:0 0 0 14px rgba(74,222,128,0)}
+  100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}
+}
+@keyframes rejectRipple{
+  0%{box-shadow:0 0 0 0 rgba(248,113,113,.4)}
+  70%{box-shadow:0 0 0 14px rgba(248,113,113,0)}
+  100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}
+}
+body.client-view .cab-approve.active{animation:approveRipple .5s ease-out}
+body.client-view .cab-reject.active{animation:rejectRipple .5s ease-out}
+
+/* ── CARD ENTRANCE ANIMATION ── */
+@keyframes cardFadeIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+body.client-view .creator-card{
+  animation:cardFadeIn .35s ease-out both;
+}
+body.client-view .creator-card:nth-child(2){animation-delay:.05s}
+body.client-view .creator-card:nth-child(3){animation-delay:.1s}
+body.client-view .creator-card:nth-child(4){animation-delay:.15s}
+body.client-view .creator-card:nth-child(5){animation-delay:.2s}
+body.client-view .creator-card:nth-child(n+6){animation-delay:.25s}
+
+/* ── SCROLLBAR ── */
+body.client-view::-webkit-scrollbar{width:6px}
+body.client-view::-webkit-scrollbar-track{background:transparent}
+body.client-view::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+
+/* ── DESKTOP TWEAKS ── */
+@media(min-width:768px){
+  body.client-view .cards-container{display:flex!important;max-width:600px;margin:0 auto;padding:20px}
+  body.client-view .table-view{display:none!important}
+  body.client-view .stats{max-width:600px;margin:0 auto;grid-template-columns:repeat(3,1fr)}
+  body.client-view .approval-summary{max-width:600px;margin:0 auto}
+  body.client-view .filters{max-width:600px;margin:0 auto}
+  body.client-view .pagination{max-width:600px;margin:0 auto}
+  .client-hero{padding:52px 20px 32px}
+  .client-hero h1{font-size:34px}
+}
+</style>
 </head>
 <body>
 
@@ -190,6 +522,13 @@ body.client-view .agency-col{display:none!important}
     <!-- TESTING ONLY — set SHOW_RESET_BTN=false before production -->
     <button id="reset-test-btn" class="btn agency-col" onclick="resetTestData()" style="padding:8px 10px;font-size:12px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80">🔁 Reset</button>
   </div>
+</div>
+
+<!-- CLIENT HERO (visible only in client-view) -->
+<div class="client-hero">
+  <h1>Bioderma XDefense<br>Review Program 2026</h1>
+  <p class="hero-sub">Creator Campaign Dashboard</p>
+  <div class="hero-line"></div>
 </div>
 
 <!-- STATS -->
