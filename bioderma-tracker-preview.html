@@ -858,7 +858,16 @@ body.client-view .filters input:focus {
   box-shadow: 0 0 0 3px rgba(233,30,140,0.12) !important;
 }
 body.client-view .filters select option { background: #0A0F1E; color: #fff; }
-</style>
+
+/* ── CLIENT TOPBAR MOBILE CLEANUP ── */
+body.client-view #view-badge { display: none !important; }
+@media(max-width:640px) {
+  body.client-view #layout-toggle { display: none !important; }
+  body.client-view [title="Refresh"] { display: none !important; }
+  body.client-view .tbr > .btn-outline { display: none !important; }
+  body.client-view .topbar { height:48px !important; padding:0 14px !important; }
+  body.client-view #logo-imgs img { height:20px !important; }
+}</style>
 </head>
 <body>
 
