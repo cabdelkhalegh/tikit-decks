@@ -183,17 +183,33 @@ body.client-view .agency-col{display:none!important}
 /* Background */
 body.client-view {
   background:
-    radial-gradient(ellipse at 15% 15%, rgba(233,30,140,0.1) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 80%, rgba(0,102,204,0.09) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.06) 0%, transparent 65%),
-    #030712;
+    radial-gradient(ellipse at 20% 10%, rgba(255,140,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,180,0,0.05) 0%, transparent 65%),
+    #0A0805;
+  position: relative;
+}
+/* Product bottle background — centered, ghosted */
+body.client-view::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 90vw);
+  height: min(780px, 135vw);
+  background: url("bioderma-tracker/assets/product-xdefense.png") center/contain no-repeat;
+  opacity: 0.045;
+  pointer-events: none;
+  z-index: 0;
+  filter: saturate(0.4) brightness(1.8);
 }
 
 /* Floating orbs */
 .cv-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; animation:float-orb 24s infinite ease-in-out; }
-.cv-orb-1 { width:420px; height:420px; background:rgba(233,30,140,0.1); top:-150px; left:-120px; animation-delay:0s; }
-.cv-orb-2 { width:320px; height:320px; background:rgba(0,102,204,0.09); bottom:5%; right:-80px; animation-delay:-8s; }
-.cv-orb-3 { width:260px; height:260px; background:rgba(124,58,237,0.07); top:40%; left:60%; animation-delay:-16s; }
+.cv-orb-1 { width:420px; height:420px; background:rgba(255,140,0,0.12); top:-150px; left:-120px; animation-delay:0s; }
+.cv-orb-2 { width:320px; height:320px; background:rgba(233,30,140,0.10); bottom:5%; right:-80px; animation-delay:-8s; }
+.cv-orb-3 { width:260px; height:260px; background:rgba(255,180,50,0.08); top:40%; left:60%; animation-delay:-16s; }
 @keyframes float-orb { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-35px) scale(1.06)} 66%{transform:translate(-18px,22px) scale(0.94)} }
 
 /* Topbar */
@@ -208,7 +224,7 @@ body.client-view .topbar {
 
 /* Hero shimmer title */
 body.client-view .client-hero h1 {
-  background: linear-gradient(135deg, #E91E8C 0%, #A855F7 35%, #0066CC 65%, #E91E8C 100%);
+  background: linear-gradient(135deg, #FF8C00 0%, #E91E8C 35%, #FFB300 65%, #FF6B35 100%);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -716,17 +732,33 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
 /* Background */
 body.client-view {
   background:
-    radial-gradient(ellipse at 15% 15%, rgba(233,30,140,0.1) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 80%, rgba(0,102,204,0.09) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.06) 0%, transparent 65%),
-    #030712;
+    radial-gradient(ellipse at 20% 10%, rgba(255,140,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,180,0,0.05) 0%, transparent 65%),
+    #0A0805;
+  position: relative;
+}
+/* Product bottle background — centered, ghosted */
+body.client-view::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, 90vw);
+  height: min(780px, 135vw);
+  background: url("bioderma-tracker/assets/product-xdefense.png") center/contain no-repeat;
+  opacity: 0.045;
+  pointer-events: none;
+  z-index: 0;
+  filter: saturate(0.4) brightness(1.8);
 }
 
 /* Floating orbs */
 .cv-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; animation:float-orb 24s infinite ease-in-out; }
-.cv-orb-1 { width:420px; height:420px; background:rgba(233,30,140,0.1); top:-150px; left:-120px; animation-delay:0s; }
-.cv-orb-2 { width:320px; height:320px; background:rgba(0,102,204,0.09); bottom:5%; right:-80px; animation-delay:-8s; }
-.cv-orb-3 { width:260px; height:260px; background:rgba(124,58,237,0.07); top:40%; left:60%; animation-delay:-16s; }
+.cv-orb-1 { width:420px; height:420px; background:rgba(255,140,0,0.12); top:-150px; left:-120px; animation-delay:0s; }
+.cv-orb-2 { width:320px; height:320px; background:rgba(233,30,140,0.10); bottom:5%; right:-80px; animation-delay:-8s; }
+.cv-orb-3 { width:260px; height:260px; background:rgba(255,180,50,0.08); top:40%; left:60%; animation-delay:-16s; }
 @keyframes float-orb { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-35px) scale(1.06)} 66%{transform:translate(-18px,22px) scale(0.94)} }
 
 /* Topbar */
@@ -741,7 +773,7 @@ body.client-view .topbar {
 
 /* Hero shimmer title */
 body.client-view .client-hero h1 {
-  background: linear-gradient(135deg, #E91E8C 0%, #A855F7 35%, #0066CC 65%, #E91E8C 100%);
+  background: linear-gradient(135deg, #FF8C00 0%, #E91E8C 35%, #FFB300 65%, #FF6B35 100%);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
