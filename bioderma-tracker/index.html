@@ -506,6 +506,56 @@ body.client-view::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border
   .client-hero{padding:52px 20px 32px}
   .client-hero h1{font-size:34px}
 }
+
+/* ── CLIENT VIEW: DESKTOP GRID (≥900px or pointer device) ── */
+@media(min-width:900px){
+  body.client-view .cards-container{
+    display:grid!important;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    max-width:1100px;
+    margin:0 auto;
+    padding:24px 32px;
+  }
+  body.client-view .creator-card{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+  }
+  body.client-view .client-hero{
+    padding:60px 40px 40px;
+    text-align:center;
+  }
+  body.client-view .client-hero h1{font-size:42px}
+  body.client-view .stats{max-width:1100px;margin:0 auto}
+  body.client-view .approval-summary{max-width:1100px;margin:0 auto}
+  body.client-view .filters{max-width:1100px;margin:0 auto}
+  body.client-view .pagination{max-width:1100px;margin:0 auto}
+}
+
+@media(min-width:1400px){
+  body.client-view .cards-container{
+    grid-template-columns:repeat(3,1fr);
+    max-width:1400px;
+  }
+  body.client-view .stats{max-width:1400px}
+  body.client-view .approval-summary{max-width:1400px}
+  body.client-view .filters{max-width:1400px}
+  body.client-view .pagination{max-width:1400px}
+}
+
+/* Force phone layout override */
+body.client-view.client-force-phone .cards-container{
+  display:flex!important;
+  flex-direction:column!important;
+  grid-template-columns:unset!important;
+  max-width:520px!important;
+  margin:0 auto!important;
+}
+body.client-view.client-force-phone .stats,
+body.client-view.client-force-phone .approval-summary,
+body.client-view.client-force-phone .filters,
+body.client-view.client-force-phone .pagination{max-width:520px!important;margin:0 auto!important}
 </style>
 </head>
 <body>
@@ -659,6 +709,42 @@ if (IS_CLIENT) {
   document.getElementById('approval-title').textContent = '📋 Creator Review & Campaign Tracker'
   document.getElementById('approval-subtitle').textContent = 'Approve or reject proposed creators (SHORTLISTED). Once outreach starts, track each creator\'s status live.'
   document.getElementById('logo-x').style.display = 'inline'
+
+  // Auto-detect: phone vs desktop — apply compact layout class on desktop
+  function detectLayout() {
+    const isTouch = window.matchMedia('(hover:none) and (pointer:coarse)').matches
+    const isWide = window.innerWidth >= 900
+    if (isWide && !isTouch) {
+      document.body.classList.add('client-desktop')
+    } else {
+      document.body.classList.remove('client-desktop')
+    }
+  }
+  detectLayout()
+  window.addEventListener('resize', detectLayout)
+
+  // Layout toggle button (injected into topbar)
+  const tbr = document.querySelector('.tbr')
+  if (tbr) {
+    const toggleBtn = document.createElement('button')
+    toggleBtn.id = 'layout-toggle'
+    toggleBtn.className = 'btn btn-outline'
+    toggleBtn.style.cssText = 'padding:7px 11px;font-size:13px;display:flex;align-items:center;gap:5px'
+    toggleBtn.innerHTML = window.innerWidth >= 900 ? '📱 Phone' : '🖥️ Desktop'
+    toggleBtn.title = 'Toggle layout'
+    toggleBtn.onclick = () => {
+      const isDesktop = document.body.classList.toggle('client-force-desktop')
+      document.body.classList.toggle('client-force-phone', !isDesktop)
+      toggleBtn.innerHTML = isDesktop ? '📱 Phone' : '🖥️ Desktop'
+      // Override media query breakpoint
+      if (isDesktop) {
+        document.body.classList.add('client-desktop')
+      } else {
+        document.body.classList.remove('client-desktop')
+      }
+    }
+    tbr.insertBefore(toggleBtn, tbr.firstChild)
+  }
 } else {
   document.getElementById('view-badge').className = 'badge badge-agency'
   document.getElementById('approval-summary').style.display = 'block'
