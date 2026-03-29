@@ -317,8 +317,8 @@ if (IS_CLIENT) {
   document.getElementById('view-badge').textContent = 'Bioderma Review'
   document.getElementById('view-badge').className = 'badge badge-client'
   document.getElementById('approval-summary').style.display = 'block'
-  document.getElementById('approval-title').textContent = '📋 Your Creator Shortlist'
-  document.getElementById('approval-subtitle').textContent = 'TiKiT has proposed these creators for your review. Tap ✅ Approve or ❌ Reject on each one — saves instantly.'
+  document.getElementById('approval-title').textContent = '📋 Creator Review & Campaign Tracker'
+  document.getElementById('approval-subtitle').textContent = 'Approve or reject proposed creators (SHORTLISTED). Once outreach starts, track each creator\'s status live.'
   document.getElementById('logo-x').style.display = 'inline'
 } else {
   document.getElementById('view-badge').className = 'badge badge-agency'
@@ -406,14 +406,27 @@ function renderCards() {
     const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt">🎵 TT</a>` : ''
     const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
     const contentLinksHtml = contentLinks.map((l,i)=>`<a href="${l}" target="_blank" class="pl pl-content">▶ Post ${i+1}</a>`).join('')
-    // Client approval row — active only while SHORTLISTED, locked after outreach starts
+    // Client view: show approval buttons (SHORTLISTED) or status progress track (beyond)
     const _isLocked = IS_CLIENT && c.status !== 'SHORTLISTED'
+    const CLIENT_STATUS_LABELS = {
+      CONTACTED:'📤 Contacted', FOLLOW_UP_1:'📤 Follow-Up', FOLLOW_UP_2:'📤 Follow-Up 2',
+      CONFIRMED:'✅ Creator confirmed', DETAILS_COLLECTED:'📋 Details collected',
+      BOX_ASSEMBLED:'📦 Box being prepared', BRIEF_SENT:'📄 Brief sent',
+      DISPATCHED:'🚚 Box shipped', IN_TRANSIT:'🚚 In transit',
+      DELIVERED:'📬 Box delivered', AWAITING_CONTENT:'⏳ Awaiting post',
+      POSTED:'🎬 Video posted', COMPLETED:'🏁 Campaign complete',
+      DECLINED:'❌ Creator declined', NO_RESPONSE:'🔇 No response',
+      DID_NOT_POST:'⚠️ Did not post', DELIVERY_FAILED:'⚠️ Delivery issue'
+    }
+    const _clientDecision = c.client_approved === true ? '✅ Approved by you' : c.client_approved === false ? '❌ Rejected by you' : '⏳ Pending your decision'
+    const _statusLabel = CLIENT_STATUS_LABELS[c.status] || c.status
     const approvalRow = IS_CLIENT ? (
       _isLocked
-        ? `<div class="card-approval-row" style="padding:8px 16px 12px">
-            <div style="width:100%;text-align:center;font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--light)">
-              ${c.client_approved === true ? '✅ Approved' : c.client_approved === false ? '❌ Rejected' : '⏳ Pending'} <span style="font-size:10px;color:#aaa;margin-left:6px">· locked (outreach started)</span>
+        ? `<div class="card-approval-row" style="padding:8px 16px 14px;display:flex;flex-direction:column;gap:6px">
+            <div style="width:100%;font-size:12px;font-weight:700;padding:9px 12px;border-radius:8px;background:${c.status==='DECLINED'||c.status==='NO_RESPONSE'||c.status==='DID_NOT_POST'?'#FFEBEE':c.status==='POSTED'||c.status==='COMPLETED'?'#E8F5E9':'#E3F2FD'};color:${c.status==='DECLINED'||c.status==='NO_RESPONSE'||c.status==='DID_NOT_POST'?'#C62828':c.status==='POSTED'||c.status==='COMPLETED'?'#2E7D32':'#1565C0'}">
+              ${_statusLabel}
             </div>
+            <div style="font-size:11px;color:#aaa;text-align:right">${_clientDecision}</div>
            </div>`
         : `<div class="card-approval-row">
             <button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅ Approve</button>
@@ -517,9 +530,20 @@ function renderTable() {
     const aActive = c.client_approved === true ? 'active' : ''
     const rActive = c.client_approved === false ? 'active' : ''
     const isLocked = IS_CLIENT && c.status !== 'SHORTLISTED'
+    const DT_CLIENT_STATUS = {
+      CONTACTED:'📤 Contacted', FOLLOW_UP_1:'📤 Follow-Up', FOLLOW_UP_2:'📤 Follow-Up 2',
+      CONFIRMED:'✅ Confirmed', DETAILS_COLLECTED:'📋 Details', BOX_ASSEMBLED:'📦 Preparing',
+      BRIEF_SENT:'📄 Brief sent', DISPATCHED:'🚚 Shipped', IN_TRANSIT:'🚚 Transit',
+      DELIVERED:'📬 Delivered', AWAITING_CONTENT:'⏳ Awaiting',
+      POSTED:'🎬 Posted', COMPLETED:'🏁 Done',
+      DECLINED:'❌ Creator declined', NO_RESPONSE:'🔇 No response',
+      DID_NOT_POST:'⚠️ Did not post', DELIVERY_FAILED:'⚠️ Delivery issue'
+    }
+    const _dtStatusColor = (s) => ['DECLINED','NO_RESPONSE','DID_NOT_POST','DELIVERY_FAILED'].includes(s)?'#C62828':['POSTED','COMPLETED'].includes(s)?'#2E7D32':'#1565C0'
+    const _dtStatusBg   = (s) => ['DECLINED','NO_RESPONSE','DID_NOT_POST','DELIVERY_FAILED'].includes(s)?'#FFEBEE':['POSTED','COMPLETED'].includes(s)?'#E8F5E9':'#E3F2FD'
     const approvalCell = IS_CLIENT
       ? (isLocked
-          ? (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
+          ? `<div style="font-size:11px;font-weight:700;padding:5px 8px;border-radius:6px;background:${_dtStatusBg(c.status)};color:${_dtStatusColor(c.status)};white-space:nowrap">${DT_CLIENT_STATUS[c.status]||c.status}</div>`
           : `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>`)
       : (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
     const rowClass = c.client_approved === true ? 'row-approved' : c.client_approved === false ? 'row-rejected' : ''
