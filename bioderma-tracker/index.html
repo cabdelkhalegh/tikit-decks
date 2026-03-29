@@ -888,14 +888,10 @@ function renderCards() {
 function buildQuickActions(c) {
   const s = c.status
   let btns = ''
-  // SHORTLISTED: always show Contact regardless of agency_approved state
-  // agency_approved=false means agency hasn't pushed to client yet, but they can still contact directly
-  if (s==='SHORTLISTED') {
+  // SHORTLISTED: Contact only shows if agency approved (true) or pending (null)
+  // agency_approved=false = rejected by agency → no contact button
+  if (s==='SHORTLISTED' && c.agency_approved !== false) {
     btns+=`<button class="actb act-c" onclick="qs(${c.id},'CONTACTED')">📤 Contact</button>`
-    // If agency rejected this creator, show a restore button
-    if (c.agency_approved === false) {
-      btns+=`<button class="actb" style="background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8" onclick="setAgencyApproval(${c.id},true)" title="Add to client shortlist">➕ Propose to client</button>`
-    }
   }
   if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) {
     btns+=`<button class="actb act-a" onclick="qs(${c.id},'CONFIRMED')">✅ Confirmed</button>`
