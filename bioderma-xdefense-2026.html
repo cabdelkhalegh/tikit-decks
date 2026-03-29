@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -30,12 +30,29 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);over
 .tikit-footer{position:fixed;bottom:16px;left:30px;font-size:11px;color:var(--gray);z-index:1000;letter-spacing:1px}
 .tikit-footer span{color:var(--coral);font-weight:600}
 
+/* Client view: Powered by TiKiT badge */
+.powered-badge{position:fixed;bottom:16px;left:30px;font-size:11px;color:var(--gray);z-index:1000;letter-spacing:1px;display:none}
+.powered-badge span{color:var(--coral);font-weight:600}
+
 .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--coral),var(--blue));transition:width .4s ease;z-index:1001}
 
-.nav{position:fixed;bottom:20px;right:30px;display:flex;align-items:center;gap:12px;z-index:1000}
-.nav button{background:var(--dark-card);border:1px solid var(--card-border);color:var(--white);width:40px;height:40px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.nav button:hover{background:var(--coral);border-color:var(--coral);color:var(--bg)}
-.nav .counter{font-size:12px;color:var(--gray);font-weight:500;min-width:50px;text-align:center}
+/* Navigation — large, prominent */
+.nav{position:fixed;bottom:20px;right:30px;display:flex;align-items:center;gap:14px;z-index:1000}
+.nav button{background:rgba(13,21,32,.85);border:1px solid rgba(255,107,107,.35);color:var(--white);width:52px;height:52px;border-radius:12px;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.nav button:hover{background:var(--coral);border-color:var(--coral);color:var(--bg);transform:scale(1.08)}
+.nav button:active{transform:scale(.95)}
+.nav .counter{font-size:14px;color:var(--white);font-weight:600;min-width:60px;text-align:center;background:rgba(13,21,32,.7);padding:6px 12px;border-radius:8px;border:1px solid var(--card-border);backdrop-filter:blur(8px)}
+
+/* Slide dots */
+.slide-dots{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:1000}
+.slide-dots .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.slide-dots .dot.active{background:var(--coral);border-color:var(--coral);transform:scale(1.2);box-shadow:0 0 8px rgba(255,107,107,.5)}
+.slide-dots .dot:hover{background:rgba(255,107,107,.5);border-color:var(--coral)}
+
+/* Share button (agency view only) */
+.share-btn{position:fixed;top:20px;left:20px;background:rgba(78,205,196,.12);border:1px solid rgba(78,205,196,.35);color:var(--blue);font-size:12px;font-weight:700;letter-spacing:.5px;padding:8px 18px;border-radius:8px;cursor:pointer;z-index:1000;transition:all .2s;display:none}
+.share-btn:hover{background:rgba(78,205,196,.25);border-color:var(--blue);transform:translateY(-1px)}
+.share-btn.copied{background:rgba(78,205,196,.25);color:#4ade80;border-color:#4ade80}
 
 h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.1;margin-bottom:16px}
 h2{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-weight:700;line-height:1.2;margin-bottom:20px}
@@ -87,6 +104,9 @@ table tr:hover td{color:var(--white);background:rgba(255,255,255,.02)}
   .slide{padding:30px 24px}
   .card-grid.cols-2,.card-grid.cols-3,.card-grid.cols-4,.card-grid.cols-5{grid-template-columns:1fr}
   .stat-row{justify-content:center}
+  .nav button{width:46px;height:46px;font-size:18px}
+  .slide-dots .dot{width:8px;height:8px}
+  .share-btn{font-size:11px;padding:6px 14px}
 }
 </style>
 </head>
@@ -99,9 +119,13 @@ table tr:hover td{color:var(--white);background:rgba(255,255,255,.02)}
 </div>
 <div class="grid-overlay"></div>
 
-<div class="conf-badge">Confidential</div>
-<div class="tikit-footer"><span>TiKiT</span> Agency &#183; Dubai, UAE</div>
+<div class="conf-badge" id="confBadge">Confidential</div>
+<div class="tikit-footer" id="tikitFooter"><span>TiKiT</span> Agency &#183; Dubai, UAE</div>
+<div class="powered-badge" id="poweredBadge">Powered by <span>TiKiT</span></div>
 <div class="progress-bar" id="progress"></div>
+
+<!-- Share with Client button (agency view only) -->
+<button class="share-btn" id="shareBtn" onclick="shareClientLink()">&#x1F517; Share with Client</button>
 
 <div class="deck" id="deck">
 
@@ -561,10 +585,6 @@ table tr:hover td{color:var(--white);background:rgba(255,255,255,.02)}
       <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-xdefense-emirati-review.html" target="_blank" style="display:inline-block;background:rgba(0,100,0,.2);border:1px solid rgba(0,150,0,.4);color:#4ade80;font-size:12px;font-weight:700;padding:8px 18px;border-radius:8px;text-decoration:none;letter-spacing:.3px">&#x1F1E6;&#x1F1EA; Open Emirati Review &#x2197;</a>
     </div>
   </div>
-  <!-- placeholder to close outer divs properly --
-      </div>
-    </div>
-  </div>
   <div class="card" style="margin-top:16px;border-color:var(--gold);padding:16px 20px">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <div>
@@ -581,20 +601,100 @@ table tr:hover td{color:var(--white);background:rgba(255,255,255,.02)}
 </div>
 </div>
 
-<nav class="nav">
+<!-- Slide dots navigation -->
+<div class="slide-dots" id="slideDots"></div>
+
+<nav class="nav" id="navBar">
   <button onclick="prev()" aria-label="Previous">&#x25C0;</button>
-  <span class="counter" id="counter">1 / 11</span>
+  <span class="counter" id="counter">1 / 12</span>
   <button onclick="next()" aria-label="Next">&#x25B6;</button>
 </nav>
 
 <script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let cur=0;
-function show(n){slides.forEach((s,i)=>{s.classList.remove('active','exit-left');if(i===n)s.classList.add('active');else if(i<n)s.classList.add('exit-left')});document.getElementById('counter').textContent=(n+1)+' / '+total;document.getElementById('progress').style.width=((n+1)/total*100)+'%'}
+const slides=document.querySelectorAll('.slide'),total=slides.length;
+let cur=0;
+const isClientView=new URLSearchParams(window.location.search).get('view')==='client';
+
+// Build slide dots
+const dotsContainer=document.getElementById('slideDots');
+for(let i=0;i<total;i++){
+  const dot=document.createElement('span');
+  dot.className='dot'+(i===0?' active':'');
+  dot.addEventListener('click',()=>{cur=i;show(cur)});
+  dotsContainer.appendChild(dot);
+}
+
+function show(n){
+  slides.forEach((s,i)=>{
+    s.classList.remove('active','exit-left');
+    if(i===n)s.classList.add('active');
+    else if(i<n)s.classList.add('exit-left');
+  });
+  document.getElementById('counter').textContent=(n+1)+' / '+total;
+  document.getElementById('progress').style.width=((n+1)/total*100)+'%';
+  // Update dots
+  const dots=dotsContainer.querySelectorAll('.dot');
+  dots.forEach((d,i)=>{d.classList.toggle('active',i===n)});
+}
+
 function next(){if(cur<total-1){cur++;show(cur)}}
 function prev(){if(cur>0){cur--;show(cur)}}
+
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')next();if(e.key==='ArrowLeft')prev()});
-let tx=0;document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(d<-50)next();if(d>50)prev()});
-show(0);
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX});
+document.addEventListener('touchend',e=>{const d=e.changedTouches[0].screenX-tx;if(d<-50)next();if(d>50)prev()});
+
+// Client view logic
+if(isClientView){
+  // Hide confidential badge
+  document.getElementById('confBadge').style.display='none';
+  // Hide agency footer, show powered badge
+  document.getElementById('tikitFooter').style.display='none';
+  document.getElementById('poweredBadge').style.display='block';
+  // Hide share button
+  document.getElementById('shareBtn').style.display='none';
+}else{
+  // Agency view — show share button
+  document.getElementById('shareBtn').style.display='block';
+}
+
+// Share with Client function
+function shareClientLink(){
+  const btn=document.getElementById('shareBtn');
+  const url=new URL(window.location.href);
+  url.searchParams.set('view','client');
+  navigator.clipboard.writeText(url.toString()).then(()=>{
+    btn.textContent='✓ Link copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent='🔗 Share with Client';
+      btn.classList.remove('copied');
+    },2000);
+  }).catch(()=>{
+    // Fallback for older browsers
+    const ta=document.createElement('textarea');
+    ta.value=url.toString();
+    ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent='✓ Link copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent='🔗 Share with Client';
+      btn.classList.remove('copied');
+    },2000);
+  });
+}
+
+// Handle hash-based navigation on load
+if(window.location.hash){
+  const h=parseInt(window.location.hash.replace('#',''),10);
+  if(!isNaN(h)&&h>=0&&h<total){cur=h;show(cur)}
+}
+
+show(cur);
 </script>
 </body>
 </html>
