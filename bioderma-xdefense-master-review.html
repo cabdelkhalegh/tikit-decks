@@ -5946,37 +5946,26 @@ function _dbToSt(val){if(val===true)return 'approved';if(val===false)return 'rej
 
 async function _loadFromSupabase(){
   try{
-    const{data,error}=await _supa.from('bioderma_creators').select('id,client_approved')
+    // DB IDs = master review IDs + 1 (DB: 1001-1095, MR: 1000-1094)
+    // This is a deterministic offset — no name matching needed
+    const{data,error}=await _supa.from('bioderma_creators').select('id,client_approved').order('id')
     if(error)throw error
-    // id in DB = sequential 1-95; id in ALL = 1000-1094 — map by position
-    // safer: match by name — but DB id and ALL id are different ranges
-    // ALL ids are 1000+, DB ids are 1-95 sequential
-    // Need to map: ALL[i].id (1000+) → DB row by name match
-    const byName={}
-    data.forEach(r=>byName[r.id]=r.client_approved)
-    // Build a name→DB id map
-    const nameToDbId={}
-    data.forEach(r=>{
-      // We'll reload with name too
-    })
-    // Re-fetch with name
-    const{data:rows}=await _supa.from('bioderma_creators').select('id,name,client_approved')
-    if(!rows)return
-    const dbByName={}
-    rows.forEach(r=>dbByName[r.name.toLowerCase().trim()]=r)
+    if(!data||!data.length)return
+    // Build DB id → approval map
+    const dbMap={}
+    data.forEach(r=>dbMap[r.id]=r.client_approved)
+    // Wire each creator: c._dbId = c.id + 1
     ALL.forEach(c=>{
-      const dbRow=dbByName[c.name.toLowerCase().trim()]
-      if(dbRow){
-        c._dbId=dbRow.id
-        const s=_dbToSt(dbRow.client_approved)
-        if(s){
-          st[c.id]=s
-          _applyBtnState(c.id,s)
-        }
+      c._dbId=c.id+1
+      const dbVal=dbMap[c._dbId]
+      const s=_dbToSt(dbVal)
+      if(s){
+        st[c.id]=s
+        _applyBtnState(c.id,s)
       }
     })
     uc();uat()
-    showMRToast('✅ Loaded from database')
+    showMRToast('✅ Selections loaded')
   }catch(e){
     showMRToast('⚠️ Could not load saved selections — working offline',true)
   }
@@ -6009,14 +5998,10 @@ async function ss(id,status,btn){
   st[id]=newStatus
   _applyBtnState(id,newStatus)
   uc();uat()
-  // Find DB id for this creator
-  const creator=ALL.find(c=>c.id===id)
-  if(!creator||!creator._dbId){
-    showMRToast('⚠️ Creator not linked to DB — refresh to retry',true)
-    return
-  }
+  // DB id = MR id + 1 (deterministic offset)
+  const dbId=id+1
   const dbVal=_stToDb(newStatus)
-  const{error}=await _supa.from('bioderma_creators').update({client_approved:dbVal,updated_at:new Date().toISOString()}).eq('id',creator._dbId)
+  const{error}=await _supa.from('bioderma_creators').update({client_approved:dbVal,updated_at:new Date().toISOString()}).eq('id',dbId)
   if(error){
     // Rollback
     st[id]=prev
@@ -6038,14 +6023,16 @@ function clr(){if(!confirm('Clear all selections?'))return;st={};document.queryS
 uc();
 
 // ── SUPABASE REALTIME: auto-sync changes across sessions ──
+// DB id = MR id + 1, so MR id = DB id - 1
 _supa.channel('mr-realtime')
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'bioderma_creators'},payload=>{
     const row=payload.new
-    const creator=ALL.find(c=>c._dbId===row.id)
+    const mrId=row.id-1  // convert DB id → MR id
+    const creator=ALL.find(c=>c.id===mrId)
     if(!creator)return
     const s=_dbToSt(row.client_approved)
-    st[creator.id]=s
-    _applyBtnState(creator.id,s)
+    st[mrId]=s
+    _applyBtnState(mrId,s)
     uc();uat()
   })
   .subscribe()
