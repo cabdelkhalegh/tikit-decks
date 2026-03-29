@@ -1,609 +1,1122 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bioderma XDefense — Campaign Tracker | TiKiT</title>
+<title>Bioderma XDefense — Campaign Tracker</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --pink:#E91E8C;--blue:#0066CC;--bg:#F5F6F8;--white:#fff;
-  --border:#E9ECEF;--text:#1a1a1a;--muted:#666;--light:#F8F9FA;
-  --s-shortlisted:#E3F2FD;--sc-shortlisted:#1565C0;
-  --s-contacted:#FFF8E1;--sc-contacted:#F57C00;
-  --s-followup:#FFF3E0;--sc-followup:#E65100;
-  --s-confirmed:#E8F5E9;--sc-confirmed:#2E7D32;
-  --s-declined:#FFEBEE;--sc-declined:#C62828;
-  --s-noresp:#F5F5F5;--sc-noresp:#757575;
-  --s-shipped:#F3E5F5;--sc-shipped:#6A1B9A;
-  --s-delivered:#E0F2F1;--sc-delivered:#00695C;
-  --s-posted:#1B5E20;--sc-posted:#fff;
-  --s-completed:#004D40;--sc-completed:#fff;
-}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5}
-/* TOPBAR */
-.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.logo{font-weight:900;font-size:14px}.logo em{color:var(--pink);font-style:normal}
-.logo span{color:var(--blue)}
-.view-badge{background:var(--pink);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
-.view-badge.client{background:var(--blue)}
-.topbar-right{display:flex;gap:8px;align-items:center}
-.btn{border:none;padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
-.btn-primary{background:var(--pink);color:#fff}.btn-primary:hover{background:#C2185B}
-.btn-sec{background:var(--white);color:var(--muted);border:1px solid var(--border)}.btn-sec:hover{border-color:var(--pink);color:var(--pink)}
-/* STATS */
-.stats{display:flex;gap:12px;padding:16px 24px;background:var(--white);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap}
-.stat{background:var(--light);border-radius:10px;padding:12px 18px;min-width:110px;border:1px solid var(--border)}
-.stat .n{font-size:22px;font-weight:900;color:var(--pink)}.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
-.stat.blue .n{color:var(--blue)}
-.stat.green .n{color:#2E7D32}
-.stat.purple .n{color:#6A1B9A}
-/* FILTERS */
-.filters{display:flex;gap:8px;padding:12px 24px;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
-.filters select,.filters input{border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--text);background:var(--white);outline:none}
-.filters select:focus,.filters input:focus{border-color:var(--pink)}
-.filters input{width:200px}
-.filter-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
-/* TABLE */
-.table-wrap{overflow-x:auto;padding:16px 24px}
-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:12px}
-thead tr{background:var(--light);border-bottom:2px solid var(--border)}
-th{padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
-tbody tr:hover{background:#FFF5F8}
-tbody tr.expanded{background:#FFF5F8}
-td{padding:10px 12px;vertical-align:middle}
-/* STATUS PILLS */
-.status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
-.sp-SHORTLISTED{background:var(--s-shortlisted);color:var(--sc-shortlisted)}
-.sp-CONTACTED{background:var(--s-contacted);color:var(--sc-contacted)}
-.sp-FOLLOW_UP_1,.sp-FOLLOW_UP_2{background:var(--s-followup);color:var(--sc-followup)}
-.sp-CONFIRMED,.sp-DETAILS_COLLECTED,.sp-BOX_ASSEMBLED,.sp-BRIEF_SENT{background:var(--s-confirmed);color:var(--sc-confirmed)}
-.sp-DECLINED,.sp-DELIVERY_FAILED{background:var(--s-declined);color:var(--sc-declined)}
-.sp-NO_RESPONSE,.sp-DID_NOT_POST{background:var(--s-noresp);color:var(--sc-noresp)}
-.sp-DISPATCHED,.sp-IN_TRANSIT{background:var(--s-shipped);color:var(--sc-shipped)}
-.sp-DELIVERED,.sp-AWAITING_CONTENT{background:var(--s-delivered);color:var(--sc-delivered)}
-.sp-POSTED{background:var(--s-posted);color:var(--sc-posted)}
-.sp-COMPLETED{background:var(--s-completed);color:var(--sc-completed)}
-/* LINKS INSIDE TABLE */
-.creator-link{color:var(--blue);text-decoration:none;font-weight:600}.creator-link:hover{text-decoration:underline}
-.platform-btn{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-decoration:none;margin-right:3px}
-.pb-ig{background:linear-gradient(135deg,#f09433,#dc2743);color:#fff}
-.pb-tt{background:#000;color:#fff}
-.batch-b1{background:#FCE4EC;color:#C2185B;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
-.batch-b2{background:#E3F2FD;color:#1565C0;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
-.batch-em{background:#E8F5E9;color:#2E7D32;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
-/* EXPANDED ROW */
-.expand-row td{padding:0}
-.expand-panel{background:#FAFAFA;border-bottom:2px solid var(--border);padding:16px 20px;display:none}
-.expand-panel.open{display:block}
-.expand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-.field-group{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px}
-.field-group h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px}
-.field-row{display:flex;flex-direction:column;margin-bottom:8px}
-.field-row label{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:3px}
-.field-row input,.field-row select,.field-row textarea{border:1px solid var(--border);border-radius:5px;padding:6px 8px;font-size:12px;color:var(--text);outline:none;background:var(--white)}
-.field-row input:focus,.field-row select:focus,.field-row textarea:focus{border-color:var(--pink)}
-.field-row textarea{resize:vertical;min-height:60px}
-.content-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.content-link-item{display:flex;gap:6px;align-items:center}
-.content-link-item input{flex:1}
-.content-link-item a{color:var(--blue);font-size:11px;white-space:nowrap}
-.save-btn{background:var(--pink);color:#fff;border:none;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px}
-.save-btn:hover{background:#C2185B}
-/* ACTION BUTTONS */
-.action-btns{display:flex;gap:4px;flex-wrap:wrap}
-.act-btn{border:none;padding:4px 9px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
-.act-contact{background:#FFF8E1;color:#F57C00;border:1px solid #FFE082}
-.act-accept{background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7}
-.act-ship{background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8}
-.act-post{background:var(--s-posted);color:#fff;border:none}
-.act-done{background:var(--s-completed);color:#fff;border:none}
-/* PAGINATION */
-.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;background:var(--white);border-top:1px solid var(--border)}
-.page-btn{border:1px solid var(--border);background:var(--white);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer}
-.page-btn.active{background:var(--pink);color:#fff;border-color:var(--pink)}
-.page-btn:hover:not(.active){border-color:var(--pink);color:var(--pink)}
-.page-info{font-size:12px;color:var(--muted)}
-/* LOADING */
-.loading{text-align:center;padding:40px;color:var(--muted);font-size:14px}
-.empty{text-align:center;padding:40px;color:var(--muted)}
-/* CLIENT-ONLY hides */
-body.client-view .agency-only{display:none!important}
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:12px;padding:24px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto}
-.modal h3{font-size:16px;font-weight:800;margin-bottom:16px}
-.modal-close{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);margin-top:-4px}
-@media(max-width:768px){.stats{gap:8px}.stat{min-width:90px;padding:10px 12px}.filters input{width:140px}.expand-grid{grid-template-columns:1fr}.content-links{grid-template-columns:1fr}}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F5F6F8; color: #1a1a2e; font-size: 14px; }
+  a { color: #0066CC; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* HEADER */
+  .header { background: #fff; border-bottom: 2px solid #E91E8C; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo { width: 36px; height: 36px; background: #E91E8C; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 16px; }
+  .header-title h1 { font-size: 17px; font-weight: 700; color: #1a1a2e; }
+  .header-title p { font-size: 11px; color: #888; margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .view-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .view-badge.agency { background: #E91E8C; color: #fff; }
+  .view-badge.client { background: #0066CC; color: #fff; }
+  .btn { padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
+  .btn-primary { background: #E91E8C; color: #fff; }
+  .btn-primary:hover { background: #c8177a; }
+  .btn-secondary { background: #f0f2f5; color: #333; }
+  .btn-secondary:hover { background: #e0e3e8; }
+  .btn-blue { background: #0066CC; color: #fff; }
+  .btn-blue:hover { background: #0055aa; }
+  .btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 4px; }
+
+  /* STATS BAR */
+  .stats-bar { display: flex; gap: 12px; padding: 14px 20px; overflow-x: auto; background: #fff; border-bottom: 1px solid #eee; }
+  .stat-card { background: #F5F6F8; border-radius: 8px; padding: 10px 16px; min-width: 110px; text-align: center; flex-shrink: 0; border: 1px solid #e8eaed; }
+  .stat-card .stat-val { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+  .stat-card .stat-lbl { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .stat-card.pink .stat-val { color: #E91E8C; }
+  .stat-card.green .stat-val { color: #2E7D32; }
+  .stat-card.blue .stat-val { color: #0066CC; }
+  .stat-card.orange .stat-val { color: #F57C00; }
+
+  /* FILTER BAR */
+  .filter-bar { display: flex; gap: 10px; padding: 12px 20px; flex-wrap: wrap; align-items: center; background: #fff; border-bottom: 1px solid #eee; }
+  .filter-bar select, .filter-bar input { padding: 7px 10px; border: 1px solid #dde1e7; border-radius: 6px; font-size: 13px; background: #F5F6F8; color: #333; outline: none; }
+  .filter-bar select:focus, .filter-bar input:focus { border-color: #E91E8C; background: #fff; }
+  .filter-bar input[type=text] { min-width: 200px; flex: 1; }
+  .filter-group { display: flex; align-items: center; gap: 6px; }
+  .filter-group label { font-size: 11px; font-weight: 600; color: #666; text-transform: uppercase; }
+
+  /* TABLE WRAPPER */
+  .table-wrapper { padding: 16px 20px; overflow-x: auto; }
+  .table-card { background: #fff; border-radius: 10px; border: 1px solid #e8eaed; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { background: #f8f9fb; padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e8eaed; white-space: nowrap; position: sticky; top: 60px; z-index: 10; }
+  tbody tr { border-bottom: 1px solid #f0f2f5; transition: background 0.1s; }
+  tbody tr:hover { background: #fafbff; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 8px 12px; vertical-align: middle; }
+  .td-name { font-weight: 600; color: #1a1a2e; white-space: nowrap; }
+  .td-handle { color: #0066CC; font-size: 12px; white-space: nowrap; }
+  .td-reach { font-size: 12px; color: #555; white-space: nowrap; }
+  .td-cat { font-size: 11px; background: #F0F4FF; color: #0066CC; padding: 2px 8px; border-radius: 12px; white-space: nowrap; }
+  .td-batch { font-size: 11px; font-weight: 700; }
+  .td-batch.B1 { color: #E91E8C; }
+  .td-batch.B2 { color: #7B1FA2; }
+  .td-batch.EM { color: #0066CC; }
+  .td-fee { font-size: 12px; color: #2E7D32; font-weight: 600; }
+  .td-actions { display: flex; gap: 4px; flex-wrap: nowrap; white-space: nowrap; }
+
+  /* STATUS PILLS */
+  .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .s-Shortlisted { background: #E3F2FD; color: #1565C0; }
+  .s-Contacted { background: #FFF8E1; color: #F57C00; }
+  .s-No-Response { background: #FAFAFA; color: #999; border: 1px solid #ddd; }
+  .s-Declined { background: #FFEBEE; color: #C62828; }
+  .s-Accepted { background: #E8F5E9; color: #2E7D32; }
+  .s-Brief-Sent { background: #E8F5E9; color: #388E3C; }
+  .s-Box-Shipped { background: #F3E5F5; color: #7B1FA2; }
+  .s-Box-Received { background: #E0F2F1; color: #00695C; }
+  .s-Posted { background: #E8F5E9; color: #1B5E20; font-weight: 700; }
+  .s-Verified { background: #E8F5E9; color: #1B5E20; }
+  .s-Completed { background: #1B5E20; color: #fff; }
+
+  /* INLINE EDIT */
+  .editable { cursor: pointer; border-radius: 4px; padding: 2px 4px; transition: background 0.1s; }
+  .editable:hover { background: #fff0f6; outline: 1px dashed #E91E8C; }
+  .inline-input { border: 1px solid #E91E8C; border-radius: 4px; padding: 3px 6px; font-size: 12px; width: 100%; min-width: 80px; outline: none; }
+  .inline-select { border: 1px solid #E91E8C; border-radius: 4px; padding: 3px 6px; font-size: 12px; outline: none; background: #fff; }
+
+  /* CONTENT LINKS */
+  .content-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .content-link-dot { width: 8px; height: 8px; background: #2E7D32; border-radius: 50%; display: inline-block; }
+  .link-chip { display: inline-flex; align-items: center; gap: 3px; background: #E8F5E9; color: #2E7D32; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 12px; padding: 24px; width: 480px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .modal-header h3 { font-size: 16px; font-weight: 700; }
+  .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: #888; }
+  .modal-close:hover { color: #333; }
+  .modal-body { display: flex; flex-direction: column; gap: 12px; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group label { font-size: 12px; font-weight: 600; color: #555; }
+  .form-group input { padding: 8px 10px; border: 1px solid #dde1e7; border-radius: 6px; font-size: 13px; outline: none; }
+  .form-group input:focus { border-color: #E91E8C; }
+
+  /* PAGINATION */
+  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #fff; border-top: 1px solid #eee; }
+  .page-info { font-size: 12px; color: #888; }
+  .page-btns { display: flex; gap: 6px; }
+  .page-btn { padding: 5px 12px; border: 1px solid #dde1e7; border-radius: 4px; background: #fff; cursor: pointer; font-size: 12px; }
+  .page-btn:hover { background: #f0f2f5; }
+  .page-btn.active { background: #E91E8C; color: #fff; border-color: #E91E8C; }
+  .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* CLIENT VIEW SPECIFIC */
+  .client-header { background: linear-gradient(135deg, #E91E8C 0%, #c8177a 100%); color: #fff; padding: 20px 24px; }
+  .client-header h1 { font-size: 22px; font-weight: 800; }
+  .client-header p { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+  .client-stats { display: flex; gap: 16px; padding: 16px 20px; background: #fff; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+  .client-stat { text-align: center; flex: 1; min-width: 80px; }
+  .client-stat .val { font-size: 28px; font-weight: 800; color: #E91E8C; }
+  .client-stat .lbl { font-size: 10px; color: #888; text-transform: uppercase; }
+
+  /* TOAST */
+  .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
+  .toast { background: #1a1a2e; color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 13px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); animation: slideIn 0.2s ease; max-width: 300px; }
+  .toast.success { background: #2E7D32; }
+  .toast.error { background: #C62828; }
+  @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+  /* LOADING */
+  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 500; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+  .loading-overlay.visible { display: flex; }
+  .spinner { width: 36px; height: 36px; border: 3px solid #f0f0f0; border-top-color: #E91E8C; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 14px; color: #888; }
+
+  /* EMPTY STATE */
+  .empty-state { padding: 60px 20px; text-align: center; color: #888; }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .header-title p { display: none; }
+    .stats-bar { gap: 8px; padding: 10px 12px; }
+    .stat-card { min-width: 90px; padding: 8px 12px; }
+    .filter-bar { padding: 10px 12px; }
+    .table-wrapper { padding: 10px 12px; }
+    .td-actions { flex-direction: column; }
+    .header-right .btn-secondary { display: none; }
+  }
+
+  /* NOTES TOOLTIP */
+  .notes-preview { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: #666; cursor: pointer; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f0f2f5; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+  /* SORT INDICATORS */
+  thead th.sortable { cursor: pointer; user-select: none; }
+  thead th.sortable:hover { background: #eef0f5; }
+  thead th.sorted-asc::after { content: ' ▲'; font-size: 9px; }
+  thead th.sorted-desc::after { content: ' ▼'; font-size: 9px; }
+
+  /* EMIRATI BADGE */
+  .emirati-badge { background: #E3F2FD; color: #1565C0; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+
+  /* ROW STATUS HIGHLIGHT */
+  tr.row-Completed td:first-child { border-left: 3px solid #1B5E20; }
+  tr.row-Posted td:first-child { border-left: 3px solid #2E7D32; }
+  tr.row-Declined td:first-child { border-left: 3px solid #C62828; }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo">TiKiT<em>.</em> × <span>Bioderma</span> XDefense — Campaign Tracker</div>
-  <div class="topbar-right">
-    <span class="view-badge" id="view-badge">Agency View</span>
-    <button class="btn btn-sec" onclick="exportCSV()">⬇ Export</button>
-    <button class="btn btn-primary agency-only" onclick="showAddModal()">+ Add Creator</button>
-  </div>
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">Loading campaign data...</div>
 </div>
 
-<div class="stats" id="stats-bar">
-  <div class="stat"><div class="n" id="s-total">—</div><div class="l">Total</div></div>
-  <div class="stat"><div class="n" id="s-shortlisted">—</div><div class="l">Shortlisted</div></div>
-  <div class="stat blue"><div class="n" id="s-contacted">—</div><div class="l">Contacted</div></div>
-  <div class="stat green"><div class="n" id="s-confirmed">—</div><div class="l">Confirmed</div></div>
-  <div class="stat purple"><div class="n" id="s-shipped">—</div><div class="l">Shipped</div></div>
-  <div class="stat green"><div class="n" id="s-posted">—</div><div class="l">Posted</div></div>
-  <div class="stat"><div class="n" id="s-completed">—</div><div class="l">Completed</div></div>
-  <div class="stat blue agency-only"><div class="n" id="s-declined">—</div><div class="l">Declined</div></div>
-</div>
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
-<div class="filters">
-  <span class="filter-label">Filter:</span>
-  <select id="f-batch" onchange="applyFilters()">
-    <option value="">All Batches</option>
-    <option value="B1">Batch 1</option>
-    <option value="B2">Batch 2</option>
-    <option value="EM">🇦🇪 Emirati</option>
-  </select>
-  <select id="f-status" onchange="applyFilters()">
-    <option value="">All Statuses</option>
-    <option value="SHORTLISTED">Shortlisted</option>
-    <option value="CONTACTED">Contacted</option>
-    <option value="FOLLOW_UP_1">Follow-Up 1</option>
-    <option value="FOLLOW_UP_2">Follow-Up 2</option>
-    <option value="CONFIRMED">Confirmed</option>
-    <option value="DETAILS_COLLECTED">Details Collected</option>
-    <option value="BOX_ASSEMBLED">Box Assembled</option>
-    <option value="DISPATCHED">Dispatched</option>
-    <option value="IN_TRANSIT">In Transit</option>
-    <option value="DELIVERED">Delivered</option>
-    <option value="AWAITING_CONTENT">Awaiting Content</option>
-    <option value="POSTED">Posted</option>
-    <option value="COMPLETED">Completed</option>
-    <option value="DECLINED">Declined</option>
-    <option value="NO_RESPONSE">No Response</option>
-    <option value="DID_NOT_POST">Did Not Post</option>
-    <option value="DELIVERY_FAILED">Delivery Failed</option>
-  </select>
-  <select id="f-category" onchange="applyFilters()">
-    <option value="">All Categories</option>
-    <option value="sport">🏃 Sports</option>
-    <option value="pharma">💊 Pharma</option>
-    <option value="derm">🔬 Skincare</option>
-    <option value="beauty">💄 Beauty</option>
-    <option value="lifestyle">🌟 Lifestyle</option>
-    <option value="travel">✈️ Travel</option>
-    <option value="food">🍳 Food</option>
-    <option value="fitness">🏋️ Fitness</option>
-    <option value="fashion">👗 Fashion</option>
-    <option value="mom">👩‍👧 Family</option>
-    <option value="tech">💻 Tech</option>
-    <option value="athlete">🏆 Athletes</option>
-  </select>
-  <input id="f-search" type="text" placeholder="🔍 Search creator or handle..." oninput="applyFilters()">
-  <button class="btn btn-sec" onclick="clearFilters()">Clear</button>
-</div>
-
-<div class="table-wrap">
-  <table id="main-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Creator</th>
-        <th>Handles</th>
-        <th>Batch</th>
-        <th>Category</th>
-        <th>Reach</th>
-        <th>Status</th>
-        <th class="agency-only">Contacted By</th>
-        <th class="agency-only">Fee (AED)</th>
-        <th>Content Links</th>
-        <th class="agency-only">Actions</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      <tr><td colspan="11" class="loading">Loading creators...</td></tr>
-    </tbody>
-  </table>
-</div>
-<div class="pagination" id="pagination"></div>
-
-<!-- Add Creator Modal -->
-<div class="modal-overlay" id="add-modal">
+<!-- CONTENT LINKS MODAL -->
+<div class="modal-overlay" id="contentModal">
   <div class="modal">
-    <h3>Add Creator <button class="modal-close" onclick="closeModal('add-modal')">✕</button></h3>
-    <div class="field-row"><label>Name</label><input id="new-name" placeholder="Creator name"></div>
-    <div class="field-row"><label>Instagram Handle</label><input id="new-ig" placeholder="@handle"></div>
-    <div class="field-row"><label>TikTok Handle</label><input id="new-tt" placeholder="@handle"></div>
-    <div class="field-row"><label>Batch</label>
-      <select id="new-batch"><option value="B1">Batch 1</option><option value="B2">Batch 2</option><option value="EM">Emirati</option></select>
+    <div class="modal-header">
+      <h3>📎 Content Links — <span id="modalCreatorName"></span></h3>
+      <button class="modal-close" onclick="closeContentModal()">✕</button>
     </div>
-    <div class="field-row"><label>Category</label>
-      <select id="new-cat"><option value="beauty">Beauty</option><option value="lifestyle">Lifestyle</option><option value="sport">Sports</option><option value="derm">Skincare</option><option value="pharma">Pharma</option><option value="travel">Travel</option><option value="food">Food</option><option value="fashion">Fashion</option><option value="fitness">Fitness</option><option value="mom">Family</option></select>
+    <div class="modal-body">
+      <p style="font-size:12px;color:#888;margin-bottom:4px;">Add up to 4 content URLs (TikTok, Instagram, YouTube Reel)</p>
+      <div class="form-group">
+        <label>Link 1</label>
+        <input type="url" id="contentLink1" placeholder="https://www.tiktok.com/@...">
+      </div>
+      <div class="form-group">
+        <label>Link 2</label>
+        <input type="url" id="contentLink2" placeholder="https://www.instagram.com/reel/...">
+      </div>
+      <div class="form-group">
+        <label>Link 3</label>
+        <input type="url" id="contentLink3" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Link 4</label>
+        <input type="url" id="contentLink4" placeholder="https://...">
+      </div>
     </div>
-    <div class="field-row"><label>Reach (e.g. IG 45K)</label><input id="new-reach" placeholder="IG 45K"></div>
-    <button class="save-btn" onclick="addCreator()">Add Creator</button>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeContentModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveContentLinks()">💾 Save Links</button>
+    </div>
   </div>
 </div>
+
+<!-- EDIT ROW MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal" style="width:560px;">
+    <div class="modal-header">
+      <h3>✏️ Edit — <span id="editModalName"></span></h3>
+      <button class="modal-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="modal-body" id="editModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEditModal()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP ROOT -->
+<div id="app"></div>
 
 <script>
-const SUPABASE_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc2NjA5ODgsImV4cCI6MjAyMzIzNjk4OH0.lMHNKqvMjH46dvASjFJ5p4R2VGqvQ4kOyY7kIRQvTk0'
-const { createClient } = supabase
-const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+// ===== SUPABASE INIT =====
+const SUPABASE_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const TABLE = 'bioderma_creators';
 
-const params = new URLSearchParams(location.search)
-const IS_CLIENT = params.get('view') === 'client'
-if (IS_CLIENT) { document.body.classList.add('client-view'); document.getElementById('view-badge').textContent = 'Client View'; document.getElementById('view-badge').classList.add('client') }
+// ===== STATE =====
+let allCreators = [];
+let filteredCreators = [];
+let currentPage = 1;
+const PAGE_SIZE = 50;
+let sortCol = 'batch';
+let sortDir = 'asc';
+let currentFilters = { batch: '', status: '', category: '', search: '' };
+let activeModalId = null;
+let activeEditId = null;
+const isAgency = () => {
+  const p = new URLSearchParams(window.location.search);
+  return p.get('view') !== 'client';
+};
 
-const TABLE = 'bioderma_creators'
-const PAGE_SIZE = 30
-let allCreators = [], filtered = [], page = 1, expandedId = null
+// ===== STATUS PIPELINE =====
+const STATUSES = ['Shortlisted','Contacted','No Response','Declined','Accepted','Brief Sent','Box Shipped','Box Received','Posted','Verified','Completed'];
+const CATEGORIES = ['Fitness','Lifestyle','Beauty','Food','Travel','Wellness','Fashion','Mom/Family','Skincare','Sports','Yoga','Nutrition','Mixed'];
 
-const STATUS_LABELS = {
-  SHORTLISTED:'Shortlisted',CONTACTED:'Contacted',FOLLOW_UP_1:'Follow-Up 1',FOLLOW_UP_2:'Follow-Up 2',
-  CONFIRMED:'Confirmed',DETAILS_COLLECTED:'Details Collected',BOX_ASSEMBLED:'Box Assembled',
-  BRIEF_SENT:'Brief Sent',DISPATCHED:'Dispatched',IN_TRANSIT:'In Transit',DELIVERED:'Delivered',
-  AWAITING_CONTENT:'Awaiting Content',POSTED:'Posted ✓',COMPLETED:'Completed',
-  DECLINED:'Declined',NO_RESPONSE:'No Response',DID_NOT_POST:'Did Not Post',DELIVERY_FAILED:'Delivery Failed'
+// ===== SEED DATA =====
+const SEED_CREATORS = [
+  // BATCH 1 — 40 creators
+  {batch:'B1',name:'Maribel Fitness',handle:'@maribelfitness',ig_url:'https://instagram.com/maribelfitness',category:'Fitness',reach:'22K',priority:'P1'},
+  {batch:'B1',name:'Kasia Romanowicz',handle:'@kasiaromanowicz',ig_url:'https://instagram.com/kasiaromanowicz',category:'Lifestyle',reach:'18K',priority:'P2'},
+  {batch:'B1',name:'Anita Joubert',handle:'@anitajoubert',ig_url:'https://instagram.com/anitajoubert',category:'Wellness',reach:'15K',priority:'P2'},
+  {batch:'B1',name:'Mish (Yoga & Pilates)',handle:'@mishyogapilates',ig_url:'https://instagram.com/mishyogapilates',category:'Yoga',reach:'28K',priority:'P1'},
+  {batch:'B1',name:'Nnunfit',handle:'@nnunfit',ig_url:'https://instagram.com/nnunfit',category:'Fitness',reach:'19K',priority:'P2'},
+  {batch:'B1',name:'Amel Talks',handle:'@ameltalks',ig_url:'https://instagram.com/ameltalks',category:'Lifestyle',reach:'31K',priority:'P1'},
+  {batch:'B1',name:'Dr. Lana Kashlan',handle:'@dr.lanakashlan',ig_url:'https://instagram.com/dr.lanakashlan',category:'Skincare',reach:'42K',priority:'P1'},
+  {batch:'B1',name:'Lives and Forks (Dina)',handle:'@livesandforks',ig_url:'https://instagram.com/livesandforks',category:'Food',reach:'24K',priority:'P2'},
+  {batch:'B1',name:'Heeshas Lifestylezilla',handle:'@heeshaslifestylezilla',ig_url:'https://instagram.com/heeshaslifestylezilla',category:'Lifestyle',reach:'16K',priority:'P2'},
+  {batch:'B1',name:'Urvi Jagda',handle:'@urvijagda',ig_url:'https://instagram.com/urvijagda',category:'Beauty',reach:'21K',priority:'P2'},
+  {batch:'B1',name:'Shaza Aijaz (SheBlogs)',handle:'@sheblogs',ig_url:'https://instagram.com/sheblogs',category:'Lifestyle',reach:'35K',priority:'P1'},
+  {batch:'B1',name:'Alia Bin Omair',handle:'@aliabinomair',ig_url:'https://instagram.com/aliabinomair',category:'Fashion',reach:'27K',priority:'P2'},
+  {batch:'B1',name:'Anam Didat',handle:'@anamdidat',ig_url:'https://instagram.com/anamdidat',category:'Lifestyle',reach:'23K',priority:'P2'},
+  {batch:'B1',name:'Annie Baber',handle:'@anniebaber',ig_url:'https://instagram.com/anniebaber',category:'Wellness',reach:'18K',priority:'P2'},
+  {batch:'B1',name:'Arti Bhatia (DivaBeauty)',handle:'@divabeautyarti',ig_url:'https://instagram.com/divabeautyarti',category:'Beauty',reach:'29K',priority:'P1'},
+  {batch:'B1',name:'Shashi Beauty',handle:'@shashiBeauty',ig_url:'https://instagram.com/shashiBeauty',category:'Beauty',reach:'20K',priority:'P2'},
+  {batch:'B1',name:'Makeup & Literature',handle:'@makeupandliterature',ig_url:'https://instagram.com/makeupandliterature',category:'Beauty',reach:'17K',priority:'P2'},
+  {batch:'B1',name:'Pooja Biswas',handle:'@poojabiswas',ig_url:'https://instagram.com/poojabiswas',category:'Lifestyle',reach:'22K',priority:'P2'},
+  {batch:'B1',name:'Sapna Bhambra',handle:'@sapnabhambra',ig_url:'https://instagram.com/sapnabhambra',category:'Lifestyle',reach:'19K',priority:'P2'},
+  {batch:'B1',name:'Sammy James',handle:'@sammyjames',ig_url:'https://instagram.com/sammyjames',category:'Fitness',reach:'25K',priority:'P2'},
+  {batch:'B1',name:'Sara FatimatuZahra',handle:'@sarafatimazahra',ig_url:'https://instagram.com/sarafatimazahra',category:'Lifestyle',reach:'21K',priority:'P2'},
+  {batch:'B1',name:'Reem Mounzer',handle:'@reemmounzer',ig_url:'https://instagram.com/reemmounzer',category:'Wellness',reach:'33K',priority:'P1'},
+  {batch:'B1',name:'Monica Fawzi',handle:'@monicafawzi',ig_url:'https://instagram.com/monicafawzi',category:'Beauty',reach:'26K',priority:'P2'},
+  {batch:'B1',name:'Chireva',handle:'@chireva',ig_url:'https://instagram.com/chireva',category:'Fitness',reach:'18K',priority:'P2'},
+  {batch:'B1',name:'Anushree Bagzai',handle:'@anushreebagzai',ig_url:'https://instagram.com/anushreebagzai',category:'Lifestyle',reach:'15K',priority:'P2'},
+  {batch:'B1',name:'Ainur Yerkin',handle:'@ainuryerkin',ig_url:'https://instagram.com/ainuryerkin',category:'Lifestyle',reach:'22K',priority:'P2'},
+  {batch:'B1',name:'Chaniksha',handle:'@chaniksha',ig_url:'https://instagram.com/chaniksha',category:'Lifestyle',reach:'20K',priority:'P2'},
+  {batch:'B1',name:'Mariemomar',handle:'@mariemomar',ig_url:'https://instagram.com/mariemomar',category:'Fashion',reach:'38K',priority:'P1'},
+  {batch:'B1',name:'Noor Ul Ain',handle:'@noorulain',ig_url:'https://instagram.com/noorulain',category:'Beauty',reach:'17K',priority:'P2'},
+  {batch:'B1',name:'Natashazz',handle:'@natashazz',ig_url:'https://instagram.com/natashazz',category:'Lifestyle',reach:'24K',priority:'P2'},
+  {batch:'B1',name:'FolksFiesta',handle:'@folksfiesta',ig_url:'https://instagram.com/folksfiesta',category:'Lifestyle',reach:'16K',priority:'P2'},
+  {batch:'B1',name:'Dr. Laila Faridoon',handle:'@dr.lailafar',ig_url:'https://instagram.com/dr.lailafar',category:'Skincare',reach:'31K',priority:'P1'},
+  {batch:'B1',name:'i.am_ami',handle:'@i.am_ami',ig_url:'https://instagram.com/i.am_ami',category:'Lifestyle',reach:'19K',priority:'P2'},
+  {batch:'B1',name:'Yasmin Baker',handle:'@yasminbaker',ig_url:'https://instagram.com/yasminbaker',category:'Wellness',reach:'23K',priority:'P2'},
+  {batch:'B1',name:'My Family My World',handle:'@myfamilymyworld',ig_url:'https://instagram.com/myfamilymyworld',category:'Mom/Family',reach:'28K',priority:'P2'},
+  {batch:'B1',name:'HappilySneha',handle:'@happilysneha',ig_url:'https://instagram.com/happilysneha',category:'Lifestyle',reach:'20K',priority:'P2'},
+  {batch:'B1',name:'Abrown Mom',handle:'@abrownmom',ig_url:'https://instagram.com/abrownmom',category:'Mom/Family',reach:'25K',priority:'P2'},
+  {batch:'B1',name:'Jilu Saji',handle:'@jilusaji',ig_url:'https://instagram.com/jilusaji',category:'Lifestyle',reach:'17K',priority:'P2'},
+  {batch:'B1',name:'Evgenija Kolev',handle:'@evgenijakolev',ig_url:'https://instagram.com/evgenijakolev',category:'Lifestyle',reach:'21K',priority:'P2'},
+  {batch:'B1',name:'Eleanor Collins',handle:'@eleanorcollins',ig_url:'https://instagram.com/eleanorcollins',category:'Wellness',reach:'18K',priority:'P2'},
+  // BATCH 2 — 32 creators
+  {batch:'B2',name:'Mariam Yehia',handle:'@mariamyehia',ig_url:'https://instagram.com/mariamyehia',category:'Lifestyle',reach:'29K',priority:'P1'},
+  {batch:'B2',name:'Chaniksha (Travel)',handle:'@chaniksha.travel',ig_url:'https://instagram.com/chaniksha.travel',category:'Travel',reach:'22K',priority:'P2'},
+  {batch:'B2',name:'Jenan Obeid',handle:'@jenanobeid',ig_url:'https://instagram.com/jenanobeid',category:'Lifestyle',reach:'35K',priority:'P1'},
+  {batch:'B2',name:'Ainur Yerkin (Travel)',handle:'@ainuryerkin.travel',ig_url:'https://instagram.com/ainuryerkin.travel',category:'Travel',reach:'24K',priority:'P2'},
+  {batch:'B2',name:'Sophie in Dubai',handle:'@sophieindubai',ig_url:'https://instagram.com/sophieindubai',category:'Lifestyle',reach:'41K',priority:'P1'},
+  {batch:'B2',name:'Haya Kaabar (TheDubaiList)',handle:'@thedubailist',ig_url:'https://instagram.com/thedubailist',category:'Lifestyle',reach:'67K',priority:'P1'},
+  {batch:'B2',name:'Zeina Saab',handle:'@zeinasaab',ig_url:'https://instagram.com/zeinasaab',category:'Lifestyle',reach:'31K',priority:'P1'},
+  {batch:'B2',name:'Lara in the Kitchen',handle:'@larainthekitchen',ig_url:'https://instagram.com/larainthekitchen',category:'Food',reach:'28K',priority:'P2'},
+  {batch:'B2',name:'Nour Eats',handle:'@noureats',ig_url:'https://instagram.com/noureats',category:'Food',reach:'33K',priority:'P1'},
+  {batch:'B2',name:'Saffron & Spoon',handle:'@saffronandspoon',ig_url:'https://instagram.com/saffronandspoon',category:'Food',reach:'25K',priority:'P2'},
+  {batch:'B2',name:'The Food Fairy UAE',handle:'@thefoodfairyuae',ig_url:'https://instagram.com/thefoodfairyuae',category:'Food',reach:'38K',priority:'P1'},
+  {batch:'B2',name:'Aisha Cooks',handle:'@aishacooks',ig_url:'https://instagram.com/aishacooks',category:'Food',reach:'22K',priority:'P2'},
+  {batch:'B2',name:'Yummy DXB',handle:'@yummydxb',ig_url:'https://instagram.com/yummydxb',category:'Food',reach:'44K',priority:'P1'},
+  {batch:'B2',name:'Karen Mattar',handle:'@karenmattar',ig_url:'https://instagram.com/karenmattar',category:'Lifestyle',reach:'19K',priority:'P2'},
+  {batch:'B2',name:'Tarryn Hoffman',handle:'@tarrynhoffman',ig_url:'https://instagram.com/tarrynhoffman',category:'Wellness',reach:'23K',priority:'P2'},
+  {batch:'B2',name:'Shomookhfit',handle:'@shomookhfit',ig_url:'https://instagram.com/shomookhfit',category:'Fitness',reach:'31K',priority:'P1'},
+  {batch:'B2',name:'Bayan Fit',handle:'@bayanfit',ig_url:'https://instagram.com/bayanfit',category:'Fitness',reach:'26K',priority:'P2'},
+  {batch:'B2',name:'Evgenija Kolev',handle:'@evgenijakolev_b2',ig_url:'https://instagram.com/evgenijakolev',category:'Lifestyle',reach:'21K',priority:'P2'},
+  {batch:'B2',name:'Anam Didat',handle:'@anamdidat_b2',ig_url:'https://instagram.com/anamdidat',category:'Lifestyle',reach:'23K',priority:'P2'},
+  {batch:'B2',name:'Pooja Biswas',handle:'@poojabiswas_b2',ig_url:'https://instagram.com/poojabiswas',category:'Lifestyle',reach:'22K',priority:'P2'},
+  {batch:'B2',name:'Anushree Bagzai',handle:'@anushreebagzai_b2',ig_url:'https://instagram.com/anushreebagzai',category:'Lifestyle',reach:'15K',priority:'P2'},
+  {batch:'B2',name:'Layan Salem',handle:'@layansalem',ig_url:'https://instagram.com/layansalem',category:'Fashion',reach:'48K',priority:'P1'},
+  {batch:'B2',name:'Dr. Hiba Hassan',handle:'@dr.hibahassan',ig_url:'https://instagram.com/dr.hibahassan',category:'Skincare',reach:'37K',priority:'P1'},
+  {batch:'B2',name:'Shaza Aijaz',handle:'@shazaaijaz_b2',ig_url:'https://instagram.com/sheblogs',category:'Lifestyle',reach:'35K',priority:'P1'},
+  {batch:'B2',name:'Noor Abdo',handle:'@noorabdo',ig_url:'https://instagram.com/noorabdo',category:'Lifestyle',reach:'27K',priority:'P2'},
+  {batch:'B2',name:'Varda RZ',handle:'@vardarZ',ig_url:'https://instagram.com/vardarZ',category:'Beauty',reach:'20K',priority:'P2'},
+  {batch:'B2',name:'Dayana Solano',handle:'@dayanasolano',ig_url:'https://instagram.com/dayanasolano',category:'Fitness',reach:'33K',priority:'P1'},
+  {batch:'B2',name:'Jessica Olie',handle:'@jessicaolie',ig_url:'https://instagram.com/jessicaolie',category:'Yoga',reach:'89K',priority:'P1'},
+  {batch:'B2',name:'Reem Mounzer',handle:'@reemmounzer_b2',ig_url:'https://instagram.com/reemmounzer',category:'Wellness',reach:'33K',priority:'P1'},
+  {batch:'B2',name:'Monica Fawzi',handle:'@monicafawzi_b2',ig_url:'https://instagram.com/monicafawzi',category:'Beauty',reach:'26K',priority:'P2'},
+  {batch:'B2',name:'Abrown Mom',handle:'@abrownmom_b2',ig_url:'https://instagram.com/abrownmom',category:'Mom/Family',reach:'25K',priority:'P2'},
+  {batch:'B2',name:'Mariemomar',handle:'@mariemomar_b2',ig_url:'https://instagram.com/mariemomar',category:'Fashion',reach:'38K',priority:'P1'},
+  // EMIRATI — 23 creators
+  {batch:'EM',name:'Wdeema Al Mheiri',handle:'@wdeema',ig_url:'https://instagram.com/wdeema',category:'Lifestyle',reach:'85K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Nouf AlTamimi',handle:'@nouftamimi',ig_url:'https://instagram.com/nouftamimi',category:'Beauty',reach:'62K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Dr. Shatha Alnaqbi',handle:'@shathalnaqbi',ig_url:'https://instagram.com/shathalnaqbi',category:'Skincare',reach:'44K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Waad Al Hammadi',handle:'@waadalhammadi',ig_url:'https://instagram.com/waadalhammadi',category:'Fashion',reach:'71K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Rafeeah Al Hajsi',handle:'@rafeeahalhajsi',ig_url:'https://instagram.com/rafeeahalhajsi',category:'Lifestyle',reach:'38K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Maha (More Than Maha)',handle:'@morethanmaha',ig_url:'https://instagram.com/morethanmaha',category:'Lifestyle',reach:'55K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Maryam Al Shamsi',handle:'@maryamalshamsi',ig_url:'https://instagram.com/maryamalshamsi',category:'Beauty',reach:'49K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Zakia',handle:'@zakia',ig_url:'https://instagram.com/zakia',category:'Fashion',reach:'33K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Maitha Mohammed',handle:'@maithamohammed',ig_url:'https://instagram.com/maithamohammed',category:'Lifestyle',reach:'41K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Laila Al Khair',handle:'@lailaalkhair',ig_url:'https://instagram.com/lailaalkhair',category:'Wellness',reach:'29K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Anud Al Amri',handle:'@anudaalamri',ig_url:'https://instagram.com/anudaalamri',category:'Fitness',reach:'36K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Eman Al Amiri',handle:'@emanaalamiri',ig_url:'https://instagram.com/emanaalamiri',category:'Lifestyle',reach:'28K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Meera',handle:'@meera',ig_url:'https://instagram.com/meera',category:'Beauty',reach:'52K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Amna Al Qubaisi',handle:'@amnaalqubaisi',ig_url:'https://instagram.com/amnaalqubaisi',category:'Sports',reach:'94K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Manaal Al Hammadi',handle:'@manaalalhammadi',ig_url:'https://instagram.com/manaalalhammadi',category:'Fashion',reach:'37K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Alreem Saif',handle:'@alreemsaif',ig_url:'https://instagram.com/alreemsaif',category:'Lifestyle',reach:'31K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Salma (Pilot Salma)',handle:'@pilotsalma',ig_url:'https://instagram.com/pilotsalma',category:'Lifestyle',reach:'118K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Aseel Omran',handle:'@aseelomran',ig_url:'https://instagram.com/aseelomran',category:'Fashion',reach:'76K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Mouza Al Muhanadi',handle:'@mouzaalmuhanadi',ig_url:'https://instagram.com/mouzaalmuhanadi',category:'Lifestyle',reach:'43K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Hessa Hilal',handle:'@hessahilal',ig_url:'https://instagram.com/hessahilal',category:'Beauty',reach:'39K',priority:'P1',is_emirati:true},
+  {batch:'EM',name:'Fatima Al Marzooqi',handle:'@fatimaalmarzooqi',ig_url:'https://instagram.com/fatimaalmarzooqi',category:'Lifestyle',reach:'27K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Shama Al Mazrui',handle:'@shamaAlMazrui',ig_url:'https://instagram.com/shamaAlMazrui',category:'Fashion',reach:'34K',priority:'P2',is_emirati:true},
+  {batch:'EM',name:'Shamsa Al Falasi',handle:'@shamsaAlFalasi',ig_url:'https://instagram.com/shamsaAlFalasi',category:'Lifestyle',reach:'46K',priority:'P1',is_emirati:true},
+];
+
+// ===== HELPERS =====
+function parseReach(r) {
+  if (!r) return 0;
+  const s = r.toString().toUpperCase().trim();
+  if (s.endsWith('K')) return parseFloat(s) * 1000;
+  if (s.endsWith('M')) return parseFloat(s) * 1000000;
+  return parseFloat(s) || 0;
 }
-const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family',tech:'💻 Tech',athlete:'🏆 Athletes',derm2:'🔬 Derm'}
-const BATCH_CLASSES = {B1:'batch-b1',B2:'batch-b2',EM:'batch-em'}
-const BATCH_LABELS2 = {B1:'Batch 1',B2:'Batch 2',EM:'🇦🇪 Emirati'}
 
+function formatReachTotal(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(0) + 'K';
+  return n.toString();
+}
+
+function getStatusClass(status) {
+  return 's-' + (status || 'Shortlisted').replace(/ /g, '-');
+}
+
+function showToast(msg, type='') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function showLoading(msg='Loading...') {
+  document.getElementById('loadingText').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('visible');
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('visible');
+}
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return s.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function getContentLinkCount(c) {
+  return [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean).length;
+}
+
+// ===== INIT =====
 async function init() {
-  await ensureTable()
-  await loadCreators()
+  showLoading('Connecting to Supabase...');
+  try {
+    await ensureTable();
+    showLoading('Loading creators...');
+    await loadCreators();
+    render();
+    hideLoading();
+  } catch(e) {
+    hideLoading();
+    showToast('Error: ' + e.message, 'error');
+    console.error(e);
+  }
 }
 
 async function ensureTable() {
-  // Try to select — if table doesn't exist, create it
-  const { error } = await db.from(TABLE).select('id').limit(1)
+  // Try to read — if table doesn't exist the error will surface
+  // Supabase auto-creates via RLS but we try to seed if empty
+  const { count, error } = await db.from(TABLE).select('*', {count:'exact', head:true});
   if (error && error.code === '42P01') {
-    // Table doesn't exist — need to create via SQL
-    console.log('Table not found, will seed on first insert')
+    // Table doesn't exist — we cannot CREATE TABLE via JS client (no DDL)
+    // Show helpful message
+    showToast('⚠️ Table not found — please create it in Supabase Dashboard first', 'error');
+    throw new Error('Table bioderma_creators does not exist. Please create it via Supabase SQL Editor using the provided schema.');
+  }
+  if (!error && count === 0) {
+    await seedData();
+  }
+}
+
+async function seedData() {
+  showLoading('Seeding 95 creators...');
+  const rows = SEED_CREATORS.map(c => ({
+    batch: c.batch,
+    name: c.name,
+    handle: c.handle || null,
+    ig_url: c.ig_url || null,
+    tt_url: c.tt_url || null,
+    category: c.category || null,
+    reach: c.reach || null,
+    market: 'UAE',
+    priority: c.priority || 'P2',
+    is_emirati: c.is_emirati || false,
+    status: 'Shortlisted',
+    compensation_type: 'PR Gift',
+  }));
+
+  // Insert in batches of 50
+  for (let i = 0; i < rows.length; i += 50) {
+    const batch = rows.slice(i, i + 50);
+    const { error } = await db.from(TABLE).insert(batch);
+    if (error) console.warn('Seed error:', error.message);
   }
 }
 
 async function loadCreators() {
-  const { data, error } = await db.from(TABLE).select('*').order('batch').order('name')
-  if (error) {
-    if (error.code === '42P01') {
-      // Table doesn't exist yet — seed it
-      await seedData()
-      return
-    }
-    document.getElementById('table-body').innerHTML = `<tr><td colspan="11" class="empty">Error loading data: ${error.message}</td></tr>`
-    return
-  }
-  if (!data || data.length === 0) {
-    await seedData()
-    return
-  }
-  allCreators = data
-  applyFilters()
-  updateStats()
+  const { data, error } = await db.from(TABLE).select('*').order('batch').order('name');
+  if (error) throw error;
+  allCreators = data || [];
+  applyFilters();
 }
 
-async function seedData() {
-  document.getElementById('table-body').innerHTML = '<tr><td colspan="11" class="loading">Setting up database for first time... ⏳</td></tr>'
-  const seed = getSeedData()
-  const { error } = await db.from(TABLE).upsert(seed, { onConflict: 'id', ignoreDuplicates: true })
-  if (error) {
-    // Try insert instead
-    const { error: e2 } = await db.from(TABLE).insert(seed)
-    if (e2) {
-      document.getElementById('table-body').innerHTML = `<tr><td colspan="11" class="empty">Database setup failed. Please ensure the table exists in Supabase.<br><small>${e2.message}</small></td></tr>`
-      return
-    }
-  }
-  await loadCreators()
-}
-
-function getSeedData() {
-  const now = new Date().toISOString()
-  const b1 = [
-    {id:1001,batch:'B1',name:'Maribel Fitness',handle_ig:'@maribel.fitness',handle_tt:'',ig_url:'https://www.instagram.com/maribel.fitness/',tt_url:'',category:'sport',reach:'IG 14K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1002,batch:'B1',name:'Kasia Romanowicz',handle_ig:'@kasia.romanowicz',handle_tt:'',ig_url:'https://www.instagram.com/kasia.romanowicz/',tt_url:'',category:'sport',reach:'IG 7.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1003,batch:'B1',name:'Anita Joubert',handle_ig:'@anitajoubert',handle_tt:'',ig_url:'https://www.instagram.com/anitajoubert/',tt_url:'',category:'sport',reach:'IG 15.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1004,batch:'B1',name:'Mish (Yoga & Pilates)',handle_ig:'@mishybabe',handle_tt:'',ig_url:'https://www.instagram.com/mishybabe/',tt_url:'',category:'sport',reach:'IG 6.4K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1005,batch:'B1',name:'Nnunfit',handle_ig:'@nnunfit',handle_tt:'',ig_url:'https://www.instagram.com/nnunfit/',tt_url:'',category:'sport',reach:'IG 5.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1006,batch:'B1',name:'Amel Talks',handle_ig:'@ameltalks',handle_tt:'',ig_url:'https://www.instagram.com/ameltalks/',tt_url:'',category:'pharma',reach:'IG 88K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1007,batch:'B1',name:'Dr. Lana Kashlan',handle_ig:'@drlanakashlan',handle_tt:'',ig_url:'https://www.instagram.com/drlanakashlan/',tt_url:'',category:'pharma',reach:'IG 27K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1008,batch:'B1',name:'Lives and Forks (Dina)',handle_ig:'@lives_and_forks',handle_tt:'',ig_url:'https://www.instagram.com/lives_and_forks/',tt_url:'',category:'pharma',reach:'IG 36K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1009,batch:'B1',name:'Heeshas Lifestylezilla',handle_ig:'@heeshaslifestylezilla',handle_tt:'',ig_url:'https://www.instagram.com/heeshaslifestylezilla/',tt_url:'',category:'pharma',reach:'IG 11.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1010,batch:'B1',name:'Urvi Jagda',handle_ig:'@urvijagda',handle_tt:'',ig_url:'https://www.instagram.com/urvijagda/',tt_url:'',category:'pharma',reach:'IG 47K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1011,batch:'B1',name:'Shaza Aijaz (SheBlogs)',handle_ig:'@sheblogs.ae',handle_tt:'',ig_url:'https://www.instagram.com/sheblogs.ae/',tt_url:'',category:'derm',reach:'IG 57.6K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1012,batch:'B1',name:'Alia Bin Omair',handle_ig:'@aliabinomair',handle_tt:'',ig_url:'https://www.instagram.com/aliabinomair/',tt_url:'',category:'derm',reach:'IG 10K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1013,batch:'B1',name:'Anam Didat',handle_ig:'@anamdidat_',handle_tt:'',ig_url:'https://www.instagram.com/anamdidat_/',tt_url:'',category:'derm',reach:'IG 16.8K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1014,batch:'B1',name:'Annie Baber',handle_ig:'@byanniebaber',handle_tt:'',ig_url:'https://www.instagram.com/byanniebaber/',tt_url:'',category:'derm',reach:'IG 31.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1015,batch:'B1',name:'Arti Bhatia (DivaBeauty)',handle_ig:'@divabeautyae',handle_tt:'',ig_url:'https://www.instagram.com/divabeautyae/',tt_url:'',category:'derm',reach:'IG 25K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1016,batch:'B1',name:'Shashi Beauty',handle_ig:'@shashibeauty_',handle_tt:'',ig_url:'https://www.instagram.com/shashibeauty_/',tt_url:'',category:'beauty',reach:'IG 12.3K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1017,batch:'B1',name:'Makeup & Literature',handle_ig:'@makeupandliterature',handle_tt:'',ig_url:'https://www.instagram.com/makeupandliterature/',tt_url:'',category:'beauty',reach:'IG 18.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1018,batch:'B1',name:'Pooja Biswas',handle_ig:'@poojaabis',handle_tt:'',ig_url:'https://www.instagram.com/poojaabis/',tt_url:'',category:'beauty',reach:'IG 64.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1019,batch:'B1',name:'Sapna Bhambra',handle_ig:'@sapna1809',handle_tt:'',ig_url:'https://www.instagram.com/sapna1809/',tt_url:'',category:'beauty',reach:'IG 47.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1020,batch:'B1',name:'Sammy James',handle_ig:'@sammymayjames',handle_tt:'',ig_url:'https://www.instagram.com/sammymayjames/',tt_url:'',category:'beauty',reach:'IG 21.8K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1021,batch:'B1',name:'Sara FatimatuZahra',handle_ig:'@sara.fatimatuzahra',handle_tt:'',ig_url:'https://www.instagram.com/sara.fatimatuzahra/',tt_url:'',category:'lifestyle',reach:'IG 14.2K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1022,batch:'B1',name:'Reem Mounzer',handle_ig:'@reemmounzer',handle_tt:'',ig_url:'https://www.instagram.com/reemmounzer/',tt_url:'',category:'lifestyle',reach:'IG 38K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1023,batch:'B1',name:'Monica Fawzi',handle_ig:'@monica_fawzi',handle_tt:'',ig_url:'https://www.instagram.com/monica_fawzi/',tt_url:'',category:'lifestyle',reach:'IG ~20K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1024,batch:'B1',name:'Chireva',handle_ig:'@__chireva__',handle_tt:'',ig_url:'https://www.instagram.com/__chireva__/',tt_url:'',category:'lifestyle',reach:'IG 14.2K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1025,batch:'B1',name:'Anushree Bagzai',handle_ig:'@anushreebagzai',handle_tt:'',ig_url:'https://www.instagram.com/anushreebagzai/',tt_url:'',category:'lifestyle',reach:'IG 73K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1026,batch:'B1',name:'Ainur Yerkin',handle_ig:'@ainuryerkin',handle_tt:'',ig_url:'https://www.instagram.com/ainuryerkin/',tt_url:'',category:'travel',reach:'IG 36.8K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1027,batch:'B1',name:'Chaniksha',handle_ig:'@chaniksha0702',handle_tt:'',ig_url:'https://www.instagram.com/chaniksha0702/',tt_url:'',category:'travel',reach:'IG 95.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1028,batch:'B1',name:'Mariemomar',handle_ig:'@mariemomar4',handle_tt:'',ig_url:'https://www.instagram.com/mariemomar4/',tt_url:'',category:'travel',reach:'IG 101.2K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1029,batch:'B1',name:'Noor Ul Ain',handle_ig:'@noorulaiin',handle_tt:'',ig_url:'https://www.instagram.com/noorulaiin/',tt_url:'',category:'food',reach:'IG 99.1K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1030,batch:'B1',name:'Natashazz',handle_ig:'@thenatashazz',handle_tt:'',ig_url:'https://www.instagram.com/thenatashazz/',tt_url:'',category:'food',reach:'IG 96.2K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1031,batch:'B1',name:'FolksFiesta',handle_ig:'@folksfiesta',handle_tt:'',ig_url:'https://www.instagram.com/folksfiesta/',tt_url:'',category:'food',reach:'IG 113.3K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1032,batch:'B1',name:'Dr. Laila Faridoon',handle_ig:'@lailafaridoon',handle_tt:'',ig_url:'https://www.instagram.com/lailafaridoon/',tt_url:'',category:'tech',reach:'IG 66.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1033,batch:'B1',name:'i.am_ami',handle_ig:'@i.am_ami',handle_tt:'',ig_url:'https://www.instagram.com/i.am_ami/',tt_url:'',category:'tech',reach:'IG 95.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1034,batch:'B1',name:'Yasmin Baker',handle_ig:'@yasmintbaker',handle_tt:'',ig_url:'https://www.instagram.com/yasmintbaker/',tt_url:'',category:'tech',reach:'IG 8.3K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1035,batch:'B1',name:'My Family My World',handle_ig:'@myfamilymyworldd',handle_tt:'',ig_url:'https://www.instagram.com/myfamilymyworldd/',tt_url:'',category:'mom',reach:'IG 57.4K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1036,batch:'B1',name:'HappilySneha',handle_ig:'@happilysneha',handle_tt:'',ig_url:'https://www.instagram.com/happilysneha/',tt_url:'',category:'mom',reach:'IG 36.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1037,batch:'B1',name:'Abrown Mom',handle_ig:'@abrown.mom',handle_tt:'',ig_url:'https://www.instagram.com/abrown.mom/',tt_url:'',category:'mom',reach:'IG 106.5K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1038,batch:'B1',name:'Jilu Saji',handle_ig:'@annamma_dubai',handle_tt:'',ig_url:'https://www.instagram.com/annamma_dubai/',tt_url:'',category:'mom',reach:'IG 61.4K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1039,batch:'B1',name:'Evgenija Kolev',handle_ig:'@rizovaenn',handle_tt:'',ig_url:'https://www.instagram.com/rizovaenn/',tt_url:'',category:'fitness',reach:'IG 15.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:1040,batch:'B1',name:'Eleanor Collins',handle_ig:'@ellacollinsfitness',handle_tt:'',ig_url:'https://www.instagram.com/ellacollinsfitness/',tt_url:'',category:'fitness',reach:'IG 51K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-  ]
-  const b2 = [
-    {id:2001,batch:'B2',name:'Mariam Yehia',handle_ig:'@mydubaistyle',handle_tt:'@mydubaistyle',ig_url:'https://www.instagram.com/mydubaistyle/',tt_url:'https://www.tiktok.com/@mydubaistyle',category:'travel',reach:'TikTok 415K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2002,batch:'B2',name:'Jenan Obeid',handle_ig:'@jenanlouise',handle_tt:'',ig_url:'https://www.instagram.com/jenanlouise/',tt_url:'',category:'travel',reach:'IG ~200K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2003,batch:'B2',name:'Sophie in Dubai',handle_ig:'@sophieindubai',handle_tt:'',ig_url:'https://www.instagram.com/sophieindubai/',tt_url:'',category:'travel',reach:'IG ~120K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2004,batch:'B2',name:'Haya Kaabar (TheDubaiList)',handle_ig:'@thedubailist',handle_tt:'@thedubailist',ig_url:'https://www.instagram.com/thedubailist/',tt_url:'https://www.tiktok.com/@thedubailist',category:'food',reach:'TikTok 150K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2005,batch:'B2',name:'Lara in the Kitchen',handle_ig:'@larainthekitchen',handle_tt:'',ig_url:'https://www.instagram.com/larainthekitchen/',tt_url:'',category:'food',reach:'IG ~150K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2006,batch:'B2',name:'Nour Eats',handle_ig:'@noureatsdubai',handle_tt:'@noureatsdubai',ig_url:'https://www.instagram.com/noureatsdubai/',tt_url:'https://www.tiktok.com/@noureatsdubai',category:'food',reach:'TT 100K / IG 40K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2007,batch:'B2',name:'Aisha Cooks',handle_ig:'@aishascooking',handle_tt:'@aishascooking',ig_url:'https://www.instagram.com/aishascooking/',tt_url:'https://www.tiktok.com/@aishascooking',category:'food',reach:'TT 200K / IG 35K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2008,batch:'B2',name:'Yummy DXB',handle_ig:'@yummydxb',handle_tt:'',ig_url:'https://www.instagram.com/yummydxb/',tt_url:'',category:'food',reach:'IG ~60K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2009,batch:'B2',name:'Karen Mattar',handle_ig:'@karenmattar',handle_tt:'@karenmattar',ig_url:'https://www.instagram.com/karenmattar/',tt_url:'https://www.tiktok.com/@karenmattar',category:'fitness',reach:'TikTok 290K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2010,batch:'B2',name:'Shomookhfit',handle_ig:'@shomookhfit',handle_tt:'',ig_url:'https://www.instagram.com/shomookhfit/',tt_url:'',category:'fitness',reach:'IG 321K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2011,batch:'B2',name:'Bayan Fit',handle_ig:'@bayan.fit',handle_tt:'@bayan.fit',ig_url:'https://www.instagram.com/bayan.fit/',tt_url:'https://www.tiktok.com/@bayan.fit',category:'fitness',reach:'TikTok 400K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2012,batch:'B2',name:'Layan Salem',handle_ig:'@layannsalem',handle_tt:'',ig_url:'https://www.instagram.com/layannsalem/',tt_url:'',category:'beauty',reach:'IG 634K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2013,batch:'B2',name:'Dr. Hiba Hassan',handle_ig:'@hiba_m_hassan',handle_tt:'',ig_url:'https://www.instagram.com/hiba_m_hassan/',tt_url:'',category:'derm',reach:'IG 261K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2014,batch:'B2',name:'Noor Abdo',handle_ig:'@noorabdo',handle_tt:'@noorabdo',ig_url:'https://www.instagram.com/noorabdo/',tt_url:'https://www.tiktok.com/@noorabdo',category:'lifestyle',reach:'TikTok 500K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2015,batch:'B2',name:'Varda RZ',handle_ig:'@varda.rz',handle_tt:'',ig_url:'https://www.instagram.com/varda.rz/',tt_url:'',category:'lifestyle',reach:'IG 554K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2016,batch:'B2',name:'Jessica Olie',handle_ig:'@jessicaolie',handle_tt:'',ig_url:'https://www.instagram.com/jessicaolie/',tt_url:'',category:'lifestyle',reach:'IG 600K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:2017,batch:'B2',name:'Abrown Mom',handle_ig:'@abrown.mom',handle_tt:'',ig_url:'https://www.instagram.com/abrown.mom/',tt_url:'',category:'mom',reach:'IG 106K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
-  ]
-  const em = [
-    {id:3001,batch:'EM',name:'Wdeema Al Mheiri',handle_ig:'@wdeemajay',handle_tt:'',ig_url:'https://www.instagram.com/wdeemajay/',tt_url:'',category:'beauty',reach:'IG 85.9K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3002,batch:'EM',name:'Nouf AlTamimi',handle_ig:'@noufaltamiimi',handle_tt:'',ig_url:'https://www.instagram.com/noufaltamiimi/',tt_url:'',category:'fashion',reach:'IG 535.8K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3003,batch:'EM',name:'Dr. Shatha Alnaqbi',handle_ig:'@shatha_allay',handle_tt:'',ig_url:'https://www.instagram.com/shatha_allay/',tt_url:'',category:'lifestyle',reach:'IG 88.4K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3004,batch:'EM',name:'Waad Al Hammadi',handle_ig:'@waadalhammadi',handle_tt:'',ig_url:'https://www.instagram.com/waadalhammadi/',tt_url:'',category:'fashion',reach:'IG ~41K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3005,batch:'EM',name:'Rafeeah Al Hajsi',handle_ig:'@rafeeaalhajsi',handle_tt:'',ig_url:'https://www.instagram.com/rafeeaalhajsi/',tt_url:'',category:'fashion',reach:'IG 451K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3006,batch:'EM',name:'Maha (More Than Maha)',handle_ig:'@morethanmaha',handle_tt:'@morethanmaha',ig_url:'https://www.instagram.com/morethanmaha/',tt_url:'https://www.tiktok.com/@morethanmaha',category:'beauty',reach:'TT 500K / IG 48K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3007,batch:'EM',name:'Maryam Al Shamsi',handle_ig:'@maryamalshamsi.95',handle_tt:'',ig_url:'https://www.instagram.com/maryamalshamsi.95/',tt_url:'',category:'beauty',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3008,batch:'EM',name:'Zakia',handle_ig:'@z4kiaa',handle_tt:'',ig_url:'https://www.instagram.com/z4kiaa/',tt_url:'',category:'beauty',reach:'IG ~100K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3009,batch:'EM',name:'Maitha Mohammed',handle_ig:'@maitham7md',handle_tt:'',ig_url:'https://www.instagram.com/maitham7md/',tt_url:'',category:'fashion',reach:'IG ~200K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3010,batch:'EM',name:'Laila Al Khair',handle_ig:'@llaixxlk',handle_tt:'',ig_url:'https://www.instagram.com/llaixxlk/',tt_url:'',category:'lifestyle',reach:'IG ~100K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3011,batch:'EM',name:'Anud Al Amri',handle_ig:'@anudalamri',handle_tt:'',ig_url:'https://www.instagram.com/anudalamri/',tt_url:'',category:'lifestyle',reach:'IG ~80K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3012,batch:'EM',name:'Eman Al Amiri',handle_ig:'@emanamirii',handle_tt:'',ig_url:'https://www.instagram.com/emanamirii/',tt_url:'',category:'fashion',reach:'IG ~60K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3013,batch:'EM',name:'Meera',handle_ig:'@litoremeera',handle_tt:'',ig_url:'https://www.instagram.com/litoremeera/',tt_url:'',category:'fashion',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3014,batch:'EM',name:'Amna Al Qubaisi',handle_ig:'@amnalqubaisi_official',handle_tt:'',ig_url:'https://www.instagram.com/amnalqubaisi_official/',tt_url:'',category:'fitness',reach:'IG 397K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3015,batch:'EM',name:'Manaal Al Hammadi',handle_ig:'@manaalalhammadi',handle_tt:'',ig_url:'https://www.instagram.com/manaalalhammadi/',tt_url:'',category:'fashion',reach:'IG 227K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3016,batch:'EM',name:'Alreem Saif',handle_ig:'@alreemsaif',handle_tt:'',ig_url:'https://www.instagram.com/alreemsaif/',tt_url:'',category:'lifestyle',reach:'IG 288K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3017,batch:'EM',name:'Salma (Pilot Salma)',handle_ig:'@pilotsalma',handle_tt:'',ig_url:'https://www.instagram.com/pilotsalma/',tt_url:'',category:'lifestyle',reach:'IG ~16K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3018,batch:'EM',name:'Aseel Omran',handle_ig:'@aseelomran',handle_tt:'',ig_url:'https://www.instagram.com/aseelomran/',tt_url:'',category:'lifestyle',reach:'IG ~580K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3019,batch:'EM',name:'Mouza Al Muhanadi',handle_ig:'@mouzaalmuhanadi',handle_tt:'',ig_url:'https://www.instagram.com/mouzaalmuhanadi/',tt_url:'',category:'beauty',reach:'IG ~200K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3020,batch:'EM',name:'Hessa Hilal',handle_ig:'@hessahilal',handle_tt:'',ig_url:'https://www.instagram.com/hessahilal/',tt_url:'',category:'fashion',reach:'IG ~120K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3021,batch:'EM',name:'Fatima Al Marzooqi',handle_ig:'@fatimamarzooqi',handle_tt:'',ig_url:'https://www.instagram.com/fatimamarzooqi/',tt_url:'',category:'lifestyle',reach:'IG ~90K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3022,batch:'EM',name:'Shama Al Mazrui',handle_ig:'@shama.almazrui',handle_tt:'',ig_url:'https://www.instagram.com/shama.almazrui/',tt_url:'',category:'fashion',reach:'IG ~70K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-    {id:3023,batch:'EM',name:'Shamsa Al Falasi',handle_ig:'@shamsaalfalasi',handle_tt:'',ig_url:'https://www.instagram.com/shamsaalfalasi/',tt_url:'',category:'beauty',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
-  ]
-  return [...b1, ...b2, ...em]
-}
-
+// ===== FILTERS =====
 function applyFilters() {
-  const batch = document.getElementById('f-batch').value
-  const status = document.getElementById('f-status').value
-  const category = document.getElementById('f-category').value
-  const search = document.getElementById('f-search').value.toLowerCase()
-  filtered = allCreators.filter(c => {
-    if (batch && c.batch !== batch) return false
-    if (status && c.status !== status) return false
-    if (category && c.category !== category) return false
-    if (search && !c.name.toLowerCase().includes(search) && !(c.handle_ig||'').toLowerCase().includes(search) && !(c.handle_tt||'').toLowerCase().includes(search)) return false
-    return true
-  })
-  page = 1
-  renderTable()
-  renderPagination()
+  let result = [...allCreators];
+  const { batch, status, category, search } = currentFilters;
+  if (batch === 'EM') result = result.filter(c => c.batch === 'EM' || c.is_emirati);
+  else if (batch) result = result.filter(c => c.batch === batch);
+  if (status) result = result.filter(c => c.status === status);
+  if (category) result = result.filter(c => c.category === category);
+  if (search) {
+    const q = search.toLowerCase();
+    result = result.filter(c =>
+      (c.name||'').toLowerCase().includes(q) ||
+      (c.handle||'').toLowerCase().includes(q) ||
+      (c.notes||'').toLowerCase().includes(q)
+    );
+  }
+  // Sort
+  result.sort((a, b) => {
+    let va = a[sortCol] || '', vb = b[sortCol] || '';
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  filteredCreators = result;
+  currentPage = 1;
+}
+
+function getPageCreators() {
+  const start = (currentPage - 1) * PAGE_SIZE;
+  return filteredCreators.slice(start, start + PAGE_SIZE);
+}
+
+// ===== STATS =====
+function computeStats(creators) {
+  const total = creators.length;
+  const sl = creators.filter(c=>c.status==='Shortlisted').length;
+  const contacted = creators.filter(c=>['Contacted','No Response'].includes(c.status)).length;
+  const accepted = creators.filter(c=>['Accepted','Brief Sent','Box Shipped','Box Received','Posted','Verified','Completed'].includes(c.status)).length;
+  const posted = creators.filter(c=>['Posted','Verified','Completed'].includes(c.status)).length;
+  const completed = creators.filter(c=>c.status==='Completed').length;
+  const inProgress = creators.filter(c=>!['Shortlisted','Completed','Declined','No Response'].includes(c.status)).length;
+  const totalReach = creators.reduce((s,c) => s + parseReach(c.reach), 0);
+  return { total, sl, contacted, accepted, posted, completed, inProgress, totalReach };
+}
+
+// ===== RENDER =====
+function render() {
+  const app = document.getElementById('app');
+  if (isAgency()) {
+    app.innerHTML = renderAgencyView();
+  } else {
+    app.innerHTML = renderClientView();
+  }
+  attachFilterListeners();
+}
+
+function renderAgencyView() {
+  const stats = computeStats(allCreators);
+  const pageCreators = getPageCreators();
+  const totalPages = Math.ceil(filteredCreators.length / PAGE_SIZE);
+  const categories = [...new Set(allCreators.map(c=>c.category).filter(Boolean))].sort();
+
+  return `
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">BD</div>
+      <div class="header-title">
+        <h1>Bioderma XDefense Campaign Tracker</h1>
+        <p>Agency View · ${allCreators.length} Creators · Real-time</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="view-badge agency">Agency</span>
+      <button class="btn btn-secondary" onclick="switchView('client')">👁 Client View</button>
+      <button class="btn btn-blue" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn btn-primary" onclick="refreshData()">↺ Refresh</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-val">${stats.total}</div><div class="stat-lbl">Total</div></div>
+    <div class="stat-card"><div class="stat-val">${stats.sl}</div><div class="stat-lbl">Shortlisted</div></div>
+    <div class="stat-card orange"><div class="stat-val">${stats.contacted}</div><div class="stat-lbl">Contacted</div></div>
+    <div class="stat-card green"><div class="stat-val">${stats.accepted}</div><div class="stat-lbl">Accepted</div></div>
+    <div class="stat-card green"><div class="stat-val">${stats.posted}</div><div class="stat-lbl">Posted</div></div>
+    <div class="stat-card pink"><div class="stat-val">${stats.completed}</div><div class="stat-lbl">Completed</div></div>
+    <div class="stat-card blue"><div class="stat-val">${formatReachTotal(stats.totalReach)}</div><div class="stat-lbl">Total Reach</div></div>
+    <div class="stat-card"><div class="stat-val">${filteredCreators.length}</div><div class="stat-lbl">Filtered</div></div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Batch</label>
+      <select id="filterBatch" onchange="onFilterChange()">
+        <option value="">All Batches</option>
+        <option value="B1" ${currentFilters.batch==='B1'?'selected':''}>Batch 1</option>
+        <option value="B2" ${currentFilters.batch==='B2'?'selected':''}>Batch 2</option>
+        <option value="EM" ${currentFilters.batch==='EM'?'selected':''}>Emirati</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <select id="filterStatus" onchange="onFilterChange()">
+        <option value="">All Statuses</option>
+        ${STATUSES.map(s=>`<option value="${s}" ${currentFilters.status===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Category</label>
+      <select id="filterCategory" onchange="onFilterChange()">
+        <option value="">All Categories</option>
+        ${categories.map(c=>`<option value="${c}" ${currentFilters.category===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+    </div>
+    <input type="text" id="filterSearch" placeholder="🔍 Search name, handle, notes..." value="${escapeHtml(currentFilters.search)}" oninput="onFilterChange()">
+    <button class="btn btn-secondary" onclick="clearFilters()">✕ Clear</button>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable ${sortCol==='name'?'sorted-'+sortDir:''}" onclick="setSort('name')">#</th>
+            <th class="sortable ${sortCol==='name'?'sorted-'+sortDir:''}" onclick="setSort('name')">Creator</th>
+            <th>Handle</th>
+            <th class="sortable ${sortCol==='batch'?'sorted-'+sortDir:''}" onclick="setSort('batch')">Batch</th>
+            <th class="sortable ${sortCol==='category'?'sorted-'+sortDir:''}" onclick="setSort('category')">Category</th>
+            <th class="sortable ${sortCol==='reach'?'sorted-'+sortDir:''}" onclick="setSort('reach')">Reach</th>
+            <th class="sortable ${sortCol==='status'?'sorted-'+sortDir:''}" onclick="setSort('status')">Status</th>
+            <th>Contacted By</th>
+            <th>Comp. Type</th>
+            <th>Fee Agreed</th>
+            <th>Tracking #</th>
+            <th>Shipped</th>
+            <th>Content</th>
+            <th>Notes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pageCreators.length === 0 ? `<tr><td colspan="15"><div class="empty-state"><div class="icon">🔍</div><p>No creators match your filters</p></div></td></tr>` : ''}
+          ${pageCreators.map((c, i) => renderAgencyRow(c, (currentPage-1)*PAGE_SIZE + i + 1)).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="page-info">Showing ${Math.min((currentPage-1)*PAGE_SIZE+1, filteredCreators.length)}–${Math.min(currentPage*PAGE_SIZE, filteredCreators.length)} of ${filteredCreators.length} creators</div>
+    <div class="page-btns">
+      <button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>
+      ${Array.from({length:Math.min(totalPages,7)}, (_,i) => {
+        let p = i+1;
+        if (totalPages > 7) {
+          if (currentPage <= 4) p = i+1;
+          else if (currentPage >= totalPages-3) p = totalPages-6+i;
+          else p = currentPage-3+i;
+        }
+        return `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+      }).join('')}
+      <button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage>=totalPages?'disabled':''}>Next ›</button>
+    </div>
+  </div>
+  `;
+}
+
+function renderAgencyRow(c, idx) {
+  const statusClass = getStatusClass(c.status);
+  const linkCount = getContentLinkCount(c);
+  const isEmirati = c.is_emirati || c.batch === 'EM';
+
+  return `
+  <tr class="row-${(c.status||'').replace(/ /g,'-')}" id="row-${c.id}">
+    <td style="color:#bbb;font-size:11px;">${idx}</td>
+    <td class="td-name">
+      ${escapeHtml(c.name)}
+      ${isEmirati ? '<span class="emirati-badge">🇦🇪</span>' : ''}
+      ${c.client_approved ? '<span title="Client Approved" style="margin-left:4px;">✅</span>' : ''}
+    </td>
+    <td class="td-handle">
+      ${c.handle ? `<a href="${escapeHtml(c.ig_url||'#')}" target="_blank">${escapeHtml(c.handle)}</a>` : '—'}
+      ${c.tt_url ? ` <a href="${escapeHtml(c.tt_url)}" target="_blank" title="TikTok" style="font-size:10px;">TT</a>` : ''}
+    </td>
+    <td><span class="td-batch ${c.batch}">${c.batch}</span></td>
+    <td>${c.category ? `<span class="td-cat">${escapeHtml(c.category)}</span>` : '—'}</td>
+    <td class="td-reach">${escapeHtml(c.reach)||'—'}</td>
+    <td>
+      <span class="status-pill ${statusClass} editable" onclick="editStatusInline(${c.id}, this)">
+        ${c.status === 'Verified' ? '✓ ' : ''}${escapeHtml(c.status||'Shortlisted')}
+      </span>
+    </td>
+    <td><span class="editable" onclick="editFieldInline(${c.id}, 'contacted_by', this)">${escapeHtml(c.contacted_by)||'<span style="color:#ccc">—</span>'}</span></td>
+    <td><span class="editable" onclick="editFieldInline(${c.id}, 'compensation_type', this)">${escapeHtml(c.compensation_type||'PR Gift')}</span></td>
+    <td class="td-fee"><span class="editable" onclick="editFieldInline(${c.id}, 'fee_agreed_aed', this)">${c.fee_agreed_aed ? 'AED '+c.fee_agreed_aed : '<span style="color:#ccc">—</span>'}</span></td>
+    <td><span class="editable" onclick="editFieldInline(${c.id}, 'tracking_number', this)">${escapeHtml(c.tracking_number)||'<span style="color:#ccc">—</span>'}</span></td>
+    <td style="font-size:11px;color:#888;">${c.shipped_date||'—'}</td>
+    <td>
+      ${linkCount > 0 
+        ? `<span class="link-chip" onclick="openContentModal(${c.id})" style="cursor:pointer;" title="Click to edit">🔗 ${linkCount} link${linkCount>1?'s':''}</span>`
+        : `<button class="btn btn-secondary btn-sm" onclick="openContentModal(${c.id})">+ Link</button>`}
+    </td>
+    <td>${c.notes ? `<span class="notes-preview editable" title="${escapeHtml(c.notes)}" onclick="editFieldInline(${c.id}, 'notes', this)">${escapeHtml(c.notes)}</span>` : `<span class="editable" style="color:#ccc;font-size:11px;" onclick="editFieldInline(${c.id}, 'notes', this)">add note</span>`}</td>
+    <td>
+      <div class="td-actions">
+        ${c.status === 'Shortlisted' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Contacted')">📨 Contacted</button>` : ''}
+        ${c.status === 'Contacted' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Accepted')">✅ Accept</button>` : ''}
+        ${c.status === 'Accepted' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Box Shipped')">📦 Ship</button>` : ''}
+        ${c.status === 'Box Shipped' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Box Received')">✔ Rcvd</button>` : ''}
+        ${c.status === 'Box Received' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Posted')">📸 Posted</button>` : ''}
+        ${c.status === 'Posted' ? `<button class="btn btn-secondary btn-sm" onclick="quickAction(${c.id}, 'Verified')">🔍 Verify</button>` : ''}
+        ${c.status === 'Verified' ? `<button class="btn btn-primary btn-sm" onclick="quickAction(${c.id}, 'Completed')">🎉 Done</button>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="openEditModal(${c.id})" title="Full Edit">✏️</button>
+      </div>
+    </td>
+  </tr>`;
+}
+
+function renderClientView() {
+  const stats = computeStats(filteredCreators.length ? filteredCreators : allCreators);
+  const pageCreators = getPageCreators();
+  const totalPages = Math.ceil(filteredCreators.length / PAGE_SIZE);
+  const categories = [...new Set(allCreators.map(c=>c.category).filter(Boolean))].sort();
+
+  return `
+  <div class="client-header">
+    <h1>🌟 Bioderma XDefense — Campaign Tracker</h1>
+    <p>Powered by TiKiT · Live Campaign Updates · ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}</p>
+  </div>
+
+  <div class="client-stats">
+    <div class="client-stat"><div class="val">${stats.total}</div><div class="lbl">Total Selected</div></div>
+    <div class="client-stat"><div class="val" style="color:#F57C00;">${stats.inProgress}</div><div class="lbl">In Progress</div></div>
+    <div class="client-stat"><div class="val" style="color:#2E7D32;">${stats.posted}</div><div class="lbl">Posted</div></div>
+    <div class="client-stat"><div class="val" style="color:#1B5E20;">${stats.completed}</div><div class="lbl">Completed</div></div>
+    <div class="client-stat"><div class="val" style="color:#0066CC;">${formatReachTotal(stats.totalReach)}</div><div class="lbl">Total Reach</div></div>
+  </div>
+
+  <div class="filter-bar" style="border-top:1px solid #eee;">
+    <div class="filter-group">
+      <label>Batch</label>
+      <select id="filterBatch" onchange="onFilterChange()">
+        <option value="">All</option>
+        <option value="B1" ${currentFilters.batch==='B1'?'selected':''}>Batch 1</option>
+        <option value="B2" ${currentFilters.batch==='B2'?'selected':''}>Batch 2</option>
+        <option value="EM" ${currentFilters.batch==='EM'?'selected':''}>Emirati</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <select id="filterStatus" onchange="onFilterChange()">
+        <option value="">All Statuses</option>
+        ${STATUSES.map(s=>`<option value="${s}" ${currentFilters.status===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Category</label>
+      <select id="filterCategory" onchange="onFilterChange()">
+        <option value="">All</option>
+        ${categories.map(c=>`<option value="${c}" ${currentFilters.category===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+    </div>
+    <input type="text" id="filterSearch" placeholder="🔍 Search creator..." value="${escapeHtml(currentFilters.search)}" oninput="onFilterChange()">
+    <div style="margin-left:auto;display:flex;gap:8px;">
+      <button class="btn btn-secondary" onclick="switchView('agency')" style="font-size:11px;">Agency View</button>
+      <button class="btn btn-blue" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Creator</th>
+            <th>Handle</th>
+            <th>Batch</th>
+            <th>Category</th>
+            <th>Reach</th>
+            <th>Status</th>
+            <th>Content</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pageCreators.length === 0 ? `<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>No creators match your filters</p></div></td></tr>` : ''}
+          ${pageCreators.map((c, i) => renderClientRow(c, (currentPage-1)*PAGE_SIZE + i + 1)).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="page-info">Showing ${Math.min((currentPage-1)*PAGE_SIZE+1, filteredCreators.length)}–${Math.min(currentPage*PAGE_SIZE, filteredCreators.length)} of ${filteredCreators.length}</div>
+    <div class="page-btns">
+      <button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>
+      ${Array.from({length:Math.min(totalPages,5)}, (_,i) => {
+        let p = Math.max(1, currentPage-2) + i;
+        if (p > totalPages) return '';
+        return `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+      }).join('')}
+      <button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage>=totalPages?'disabled':''}>›</button>
+    </div>
+  </div>
+  `;
+}
+
+function renderClientRow(c, idx) {
+  const statusClass = getStatusClass(c.status);
+  const linkCount = getContentLinkCount(c);
+  const links = [c.content_link_1, c.content_link_2, c.content_link_3, c.content_link_4].filter(Boolean);
+  const isEmirati = c.is_emirati || c.batch === 'EM';
+
+  return `
+  <tr>
+    <td style="color:#bbb;font-size:11px;">${idx}</td>
+    <td class="td-name">
+      ${escapeHtml(c.name)}
+      ${isEmirati ? '<span class="emirati-badge">🇦🇪</span>' : ''}
+    </td>
+    <td class="td-handle">
+      ${c.handle ? `<a href="${escapeHtml(c.ig_url||'#')}" target="_blank">${escapeHtml(c.handle)}</a>` : '—'}
+    </td>
+    <td><span class="td-batch ${c.batch}">${c.batch}</span></td>
+    <td>${c.category ? `<span class="td-cat">${escapeHtml(c.category)}</span>` : '—'}</td>
+    <td class="td-reach">${escapeHtml(c.reach)||'—'}</td>
+    <td><span class="status-pill ${statusClass}">${c.status === 'Verified' ? '✓ ' : ''}${escapeHtml(c.status||'Shortlisted')}</span></td>
+    <td>
+      ${links.length > 0
+        ? links.map((l,i) => `<a href="${escapeHtml(l)}" target="_blank" class="link-chip">🔗 Link ${i+1}</a>`).join(' ')
+        : '<span style="color:#ccc;font-size:11px;">—</span>'}
+    </td>
+  </tr>`;
+}
+
+// ===== INTERACTIONS =====
+function attachFilterListeners() {
+  // Already using inline onchange/oninput handlers
+}
+
+function onFilterChange() {
+  currentFilters.batch = document.getElementById('filterBatch')?.value || '';
+  currentFilters.status = document.getElementById('filterStatus')?.value || '';
+  currentFilters.category = document.getElementById('filterCategory')?.value || '';
+  currentFilters.search = document.getElementById('filterSearch')?.value || '';
+  applyFilters();
+  rerenderTable();
 }
 
 function clearFilters() {
-  document.getElementById('f-batch').value = ''
-  document.getElementById('f-status').value = ''
-  document.getElementById('f-category').value = ''
-  document.getElementById('f-search').value = ''
-  applyFilters()
+  currentFilters = { batch: '', status: '', category: '', search: '' };
+  applyFilters();
+  render();
 }
 
-function renderTable() {
-  const tbody = document.getElementById('table-body')
-  const start = (page-1)*PAGE_SIZE
-  const pageData = filtered.slice(start, start+PAGE_SIZE)
-  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty">No creators found.</td></tr>'; return }
-  tbody.innerHTML = pageData.map((c,i) => {
-    const statusPill = `<span class="status-pill sp-${c.status}">${STATUS_LABELS[c.status]||c.status}</span>`
-    const batchClass = BATCH_CLASSES[c.batch] || ''
-    const batchLabel = BATCH_LABELS2[c.batch] || c.batch
-    const catLabel = CAT_LABELS[c.category] || c.category
-    const igLink = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="platform-btn pb-ig">📸 IG</a>` : ''
-    const ttLink = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="platform-btn pb-tt">🎵 TT</a>` : ''
-    const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
-    const linksHtml = contentLinks.length ? contentLinks.map((l,j) => `<a href="${l}" target="_blank" style="color:var(--blue);font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px" title="${l}">▶ Post ${j+1}</a>`).join('') : '<span style="color:#ccc;font-size:11px">—</span>'
-    const actionBtns = IS_CLIENT ? '' : buildActionBtns(c)
-    const feeDisplay = IS_CLIENT ? '' : `<td>${c.fee_agreed_aed ? `<strong>${c.fee_agreed_aed} AED</strong>` : c.fee_quoted_aed ? `${c.fee_quoted_aed} AED` : '<span style="color:#ccc">—</span>'}</td>`
-    const contactedBy = IS_CLIENT ? '' : `<td style="color:var(--muted);font-size:11px">${c.contacted_by||'—'}</td>`
-    return `<tr id="tr-${c.id}" onclick="toggleExpand(${c.id},this)">
-      <td style="color:var(--muted);font-size:11px">${start+i+1}</td>
-      <td>
-        <div style="font-weight:700;font-size:13px">${c.name}${c.is_emirati?' 🇦🇪':''}</div>
-        <div style="font-size:10px;color:var(--muted)">${c.reach||''}</div>
-      </td>
-      <td>${igLink}${ttLink}<div style="font-size:11px;color:var(--muted);margin-top:2px">${c.handle_ig||''}</div></td>
-      <td><span class="${batchClass}">${batchLabel}</span></td>
-      <td style="white-space:nowrap">${catLabel}</td>
-      <td style="font-size:11px;color:var(--muted)">${c.reach||'—'}</td>
-      <td>${statusPill}</td>
-      ${contactedBy}
-      ${feeDisplay}
-      <td style="min-width:120px">${linksHtml}</td>
-      ${IS_CLIENT ? '' : `<td onclick="event.stopPropagation()">${actionBtns}</td>`}
-    </tr>
-    <tr class="expand-row" id="exp-${c.id}"><td colspan="${IS_CLIENT?7:11}"><div class="expand-panel" id="panel-${c.id}">${buildExpandPanel(c)}</div></td></tr>`
-  }).join('')
+function rerenderTable() {
+  // Re-render just the changing parts
+  render();
 }
 
-function buildActionBtns(c) {
-  const s = c.status
-  let btns = ''
-  if (s === 'SHORTLISTED') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'CONTACTED')">📤 Contact</button>`
-  if (s === 'CONTACTED') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'FOLLOW_UP_1')">🔁 F/U 1</button>`
-  if (s === 'FOLLOW_UP_1') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'FOLLOW_UP_2')">🔁 F/U 2</button>`
-  if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) btns += `<button class="act-btn act-accept" onclick="quickStatus(${c.id},'CONFIRMED')">✅ Accept</button><button class="act-btn" style="background:#FFEBEE;color:#C62828;border:1px solid #FFCDD2" onclick="quickStatus(${c.id},'DECLINED')">❌ Decline</button>`
-  if (s === 'CONFIRMED') btns += `<button class="act-btn act-ship" onclick="quickStatus(${c.id},'DISPATCHED')">📦 Shipped</button>`
-  if (s === 'DISPATCHED' || s === 'IN_TRANSIT') btns += `<button class="act-btn act-ship" onclick="quickStatus(${c.id},'DELIVERED')">📬 Delivered</button>`
-  if (s === 'DELIVERED' || s === 'AWAITING_CONTENT') btns += `<button class="act-btn act-post" onclick="quickStatus(${c.id},'POSTED')">🎬 Posted</button>`
-  if (s === 'POSTED') btns += `<button class="act-btn act-done" onclick="quickStatus(${c.id},'COMPLETED')">🏁 Complete</button>`
-  return `<div class="action-btns">${btns}</div>`
+function goPage(p) {
+  const totalPages = Math.ceil(filteredCreators.length / PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  render();
+  window.scrollTo(0, 0);
 }
 
-function buildExpandPanel(c) {
-  return `<div class="expand-grid">
-    <div class="field-group">
-      <h4>📤 Outreach</h4>
-      <div class="field-row"><label>Status</label>
-        <select onchange="saveField(${c.id},'status',this.value)">
-          ${Object.entries(STATUS_LABELS).map(([v,l])=>`<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('')}
+function setSort(col) {
+  if (sortCol === col) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortCol = col;
+    sortDir = 'asc';
+  }
+  applyFilters();
+  render();
+}
+
+function switchView(v) {
+  const url = new URL(window.location.href);
+  if (v === 'client') url.searchParams.set('view', 'client');
+  else url.searchParams.delete('view');
+  window.location.href = url.toString();
+}
+
+// ===== INLINE EDIT =====
+function editStatusInline(id, el) {
+  if (!isAgency()) return;
+  const creator = allCreators.find(c => c.id === id);
+  if (!creator) return;
+  const sel = document.createElement('select');
+  sel.className = 'inline-select';
+  STATUSES.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    if (s === creator.status) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  el.replaceWith(sel);
+  sel.focus();
+  sel.addEventListener('change', async () => {
+    const val = sel.value;
+    await updateCreator(id, { status: val });
+  });
+  sel.addEventListener('blur', async () => {
+    const val = sel.value;
+    await updateCreator(id, { status: val });
+    render();
+  });
+}
+
+function editFieldInline(id, field, el) {
+  if (!isAgency()) return;
+  const creator = allCreators.find(c => c.id === id);
+  if (!creator) return;
+  const inp = document.createElement('input');
+  inp.className = 'inline-input';
+  inp.value = creator[field] || '';
+  inp.type = field.includes('fee') || field.includes('aed') ? 'number' : 'text';
+  const origWidth = el.offsetWidth || 120;
+  inp.style.width = Math.max(origWidth, 100) + 'px';
+  el.replaceWith(inp);
+  inp.focus();
+  inp.select();
+  const save = async () => {
+    const val = inp.value.trim();
+    const update = {};
+    update[field] = val || null;
+    await updateCreator(id, update);
+    render();
+  };
+  inp.addEventListener('blur', save);
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { inp.blur(); }
+    if (e.key === 'Escape') { render(); }
+  });
+}
+
+async function quickAction(id, newStatus) {
+  const extraFields = {};
+  const now = new Date().toISOString().split('T')[0];
+  if (newStatus === 'Contacted') extraFields.contacted_date = now;
+  if (newStatus === 'Accepted') extraFields.response_date = now;
+  if (newStatus === 'Box Shipped') extraFields.shipped_date = now;
+  if (newStatus === 'Box Received') { extraFields.received_confirmed = true; extraFields.received_date = now; }
+  if (newStatus === 'Brief Sent') { extraFields.brief_sent = true; extraFields.brief_sent_date = now; }
+  await updateCreator(id, { status: newStatus, ...extraFields });
+  render();
+}
+
+async function updateCreator(id, fields) {
+  fields.updated_at = new Date().toISOString();
+  const { error } = await db.from(TABLE).update(fields).eq('id', id);
+  if (error) {
+    showToast('Save failed: ' + error.message, 'error');
+    return;
+  }
+  // Update local state
+  const idx = allCreators.findIndex(c => c.id === id);
+  if (idx !== -1) Object.assign(allCreators[idx], fields);
+  applyFilters();
+  showToast('✓ Saved', 'success');
+}
+
+// ===== CONTENT MODAL =====
+function openContentModal(id) {
+  activeModalId = id;
+  const creator = allCreators.find(c => c.id === id);
+  if (!creator) return;
+  document.getElementById('modalCreatorName').textContent = creator.name;
+  document.getElementById('contentLink1').value = creator.content_link_1 || '';
+  document.getElementById('contentLink2').value = creator.content_link_2 || '';
+  document.getElementById('contentLink3').value = creator.content_link_3 || '';
+  document.getElementById('contentLink4').value = creator.content_link_4 || '';
+  document.getElementById('contentModal').classList.add('open');
+}
+
+function closeContentModal() {
+  document.getElementById('contentModal').classList.remove('open');
+  activeModalId = null;
+}
+
+async function saveContentLinks() {
+  if (!activeModalId) return;
+  const fields = {
+    content_link_1: document.getElementById('contentLink1').value.trim() || null,
+    content_link_2: document.getElementById('contentLink2').value.trim() || null,
+    content_link_3: document.getElementById('contentLink3').value.trim() || null,
+    content_link_4: document.getElementById('contentLink4').value.trim() || null,
+  };
+  // Auto-advance status to Posted if at least 1 link
+  const hasLinks = Object.values(fields).some(Boolean);
+  const creator = allCreators.find(c => c.id === activeModalId);
+  if (hasLinks && creator && !['Posted','Verified','Completed'].includes(creator.status)) {
+    fields.status = 'Posted';
+  }
+  await updateCreator(activeModalId, fields);
+  closeContentModal();
+  render();
+}
+
+// ===== EDIT MODAL =====
+function openEditModal(id) {
+  activeEditId = id;
+  const c = allCreators.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('editModalName').textContent = c.name;
+
+  const fields = [
+    { key: 'status', label: 'Status', type: 'select', options: STATUSES },
+    { key: 'contacted_by', label: 'Contacted By', type: 'text' },
+    { key: 'contacted_date', label: 'Contacted Date', type: 'date' },
+    { key: 'response_date', label: 'Response Date', type: 'date' },
+    { key: 'compensation_type', label: 'Compensation Type', type: 'select', options: ['PR Gift','Paid','Gifted + Fee','Barter'] },
+    { key: 'fee_quoted_aed', label: 'Fee Quoted (AED)', type: 'number' },
+    { key: 'fee_agreed_aed', label: 'Fee Agreed (AED)', type: 'number' },
+    { key: 'shipping_address', label: 'Shipping Address', type: 'text' },
+    { key: 'tracking_number', label: 'Tracking Number', type: 'text' },
+    { key: 'shipped_date', label: 'Shipped Date', type: 'date' },
+    { key: 'posting_deadline', label: 'Posting Deadline', type: 'date' },
+    { key: 'notes', label: 'Notes', type: 'text' },
+  ];
+
+  const body = document.getElementById('editModalBody');
+  body.innerHTML = fields.map(f => {
+    if (f.type === 'select') {
+      return `<div class="form-group">
+        <label>${f.label}</label>
+        <select class="inline-select" id="ef_${f.key}" style="width:100%;padding:8px;border:1px solid #dde1e7;border-radius:6px;font-size:13px;">
+          ${f.options.map(o=>`<option value="${o}" ${(c[f.key]||'')=== o ?'selected':''}>${o}</option>`).join('')}
         </select>
-      </div>
-      <div class="field-row"><label>Contacted By</label><input value="${c.contacted_by||''}" onblur="saveField(${c.id},'contacted_by',this.value)" placeholder="Team member name"></div>
-      <div class="field-row"><label>Contacted Date</label><input type="date" value="${c.contacted_date||''}" onblur="saveField(${c.id},'contacted_date',this.value)"></div>
-      <div class="field-row"><label>Response Date</label><input type="date" value="${c.response_date||''}" onblur="saveField(${c.id},'response_date',this.value)"></div>
+      </div>`;
+    }
+    return `<div class="form-group">
+      <label>${f.label}</label>
+      <input type="${f.type}" id="ef_${f.key}" value="${escapeHtml(c[f.key]||'')}" placeholder="${f.label}">
+    </div>`;
+  }).join('');
+
+  // Add checkboxes
+  body.innerHTML += `
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px;">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="ef_brief_sent" ${c.brief_sent?'checked':''}> Brief Sent</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="ef_received_confirmed" ${c.received_confirmed?'checked':''}> Box Received</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="ef_content_verified" ${c.content_verified?'checked':''}> Content Verified</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;"><input type="checkbox" id="ef_client_approved" ${c.client_approved?'checked':''}> Client Approved</label>
     </div>
-    <div class="field-group">
-      <h4>📦 Shipping</h4>
-      <div class="field-row"><label>Shipping Address</label><textarea onblur="saveField(${c.id},'shipping_address',this.value)" placeholder="Full delivery address">${c.shipping_address||''}</textarea></div>
-      <div class="field-row"><label>Tracking Number</label><input value="${c.tracking_number||''}" onblur="saveField(${c.id},'tracking_number',this.value)" placeholder="Courier tracking ID"></div>
-      <div class="field-row"><label>Shipped Date</label><input type="date" value="${c.shipped_date||''}" onblur="saveField(${c.id},'shipped_date',this.value)"></div>
-      <div class="field-row"><label>Delivered Date</label><input type="date" value="${c.delivered_date||''}" onblur="saveField(${c.id},'delivered_date',this.value)"></div>
-    </div>
-    <div class="field-group" style="grid-column:1/-1">
-      <h4>🎬 Content Links (max 4)</h4>
-      <div class="content-links">
-        ${[1,2,3,4].map(n => {
-          const val = c[`content_link_${n}`]||''
-          return `<div class="content-link-item">
-            <input value="${val}" onblur="saveField(${c.id},'content_link_${n}',this.value)" placeholder="Paste video URL (TikTok/IG/YouTube)">
-            ${val?`<a href="${val}" target="_blank">▶ Open</a>`:''}
-          </div>`
-        }).join('')}
-      </div>
-    </div>
-    <div class="field-group" style="grid-column:1/-1">
-      <h4>📝 Notes</h4>
-      <div class="field-row"><textarea onblur="saveField(${c.id},'notes',this.value)" placeholder="Internal notes (not visible to client)">${c.notes||''}</textarea></div>
-    </div>
-  </div>`
+  `;
+
+  document.getElementById('editModal').classList.add('open');
 }
 
-function toggleExpand(id, tr) {
-  if (IS_CLIENT) return
-  const panel = document.getElementById('panel-'+id)
-  if (!panel) return
-  const isOpen = panel.classList.contains('open')
-  // Close all
-  document.querySelectorAll('.expand-panel.open').forEach(p => p.classList.remove('open'))
-  document.querySelectorAll('tr.expanded').forEach(r => r.classList.remove('expanded'))
-  if (!isOpen) { panel.classList.add('open'); tr.classList.add('expanded') }
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+  activeEditId = null;
 }
 
-async function quickStatus(id, newStatus) {
-  const { error } = await db.from(TABLE).update({status:newStatus, updated_at:new Date().toISOString()}).eq('id',id)
-  if (!error) {
-    const idx = allCreators.findIndex(c=>c.id===id)
-    if (idx>=0) allCreators[idx].status = newStatus
-    applyFilters()
-    updateStats()
-  }
+async function saveEditModal() {
+  if (!activeEditId) return;
+  const fields = ['status','contacted_by','contacted_date','response_date','compensation_type','fee_quoted_aed','fee_agreed_aed','shipping_address','tracking_number','shipped_date','posting_deadline','notes'];
+  const update = {};
+  fields.forEach(f => {
+    const el = document.getElementById('ef_' + f);
+    if (el) update[f] = el.value.trim() || null;
+  });
+  ['brief_sent','received_confirmed','content_verified','client_approved'].forEach(f => {
+    const el = document.getElementById('ef_' + f);
+    if (el) update[f] = el.checked;
+  });
+  await updateCreator(activeEditId, update);
+  closeEditModal();
+  render();
 }
 
-async function saveField(id, field, value) {
-  const update = {updated_at: new Date().toISOString()}
-  update[field] = value || null
-  const { error } = await db.from(TABLE).update(update).eq('id',id)
-  if (!error) {
-    const idx = allCreators.findIndex(c=>c.id===id)
-    if (idx>=0) allCreators[idx][field] = value
-    if (field === 'status') { applyFilters(); updateStats() }
-  }
-}
-
-function updateStats() {
-  document.getElementById('s-total').textContent = allCreators.length
-  document.getElementById('s-shortlisted').textContent = allCreators.filter(c=>c.status==='SHORTLISTED').length
-  document.getElementById('s-contacted').textContent = allCreators.filter(c=>['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(c.status)).length
-  document.getElementById('s-confirmed').textContent = allCreators.filter(c=>['CONFIRMED','DETAILS_COLLECTED','BOX_ASSEMBLED','BRIEF_SENT'].includes(c.status)).length
-  document.getElementById('s-shipped').textContent = allCreators.filter(c=>['DISPATCHED','IN_TRANSIT','DELIVERED','AWAITING_CONTENT'].includes(c.status)).length
-  document.getElementById('s-posted').textContent = allCreators.filter(c=>c.status==='POSTED').length
-  document.getElementById('s-completed').textContent = allCreators.filter(c=>c.status==='COMPLETED').length
-  const decEl = document.getElementById('s-declined')
-  if (decEl) decEl.textContent = allCreators.filter(c=>['DECLINED','NO_RESPONSE','DID_NOT_POST'].includes(c.status)).length
-}
-
-function renderPagination() {
-  const total = filtered.length
-  const pages = Math.ceil(total/PAGE_SIZE)
-  const pag = document.getElementById('pagination')
-  if (pages <= 1) { pag.innerHTML = `<span class="page-info">Showing ${total} creators</span>`; return }
-  let html = `<span class="page-info">Page ${page} of ${pages} (${total} creators)</span>`
-  if (page > 1) html += `<button class="page-btn" onclick="goPage(${page-1})">‹ Prev</button>`
-  for (let i=Math.max(1,page-2);i<=Math.min(pages,page+2);i++) html += `<button class="page-btn${i===page?' active':''}" onclick="goPage(${i})">${i}</button>`
-  if (page < pages) html += `<button class="page-btn" onclick="goPage(${page+1})">Next ›</button>`
-  pag.innerHTML = html
-}
-
-function goPage(p) { page = p; renderTable(); renderPagination(); window.scrollTo(0,200) }
-
-async function addCreator() {
-  const name = document.getElementById('new-name').value.trim()
-  if (!name) return alert('Name is required')
-  const { error } = await db.from(TABLE).insert({
-    name, handle_ig: document.getElementById('new-ig').value.trim(),
-    handle_tt: document.getElementById('new-tt').value.trim(),
-    batch: document.getElementById('new-batch').value,
-    category: document.getElementById('new-cat').value,
-    reach: document.getElementById('new-reach').value.trim(),
-    status: 'SHORTLISTED', market: 'UAE', priority: 'P2',
-    created_at: new Date().toISOString(), updated_at: new Date().toISOString()
-  })
-  if (error) return alert('Error: '+error.message)
-  closeModal('add-modal')
-  await loadCreators()
-}
-
+// ===== CSV EXPORT =====
 function exportCSV() {
-  const data = filtered.length ? filtered : allCreators
-  const cols = IS_CLIENT
-    ? ['name','handle_ig','handle_tt','batch','category','reach','status','content_link_1','content_link_2','content_link_3','content_link_4']
-    : ['name','handle_ig','handle_tt','batch','category','reach','status','contacted_by','fee_quoted_aed','fee_agreed_aed','tracking_number','shipped_date','delivered_date','content_link_1','content_link_2','content_link_3','content_link_4','notes']
-  const headers = cols.map(c=>c.replace(/_/g,' ').toUpperCase())
-  const rows = data.map(r => cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(','))
-  const csv = [headers.join(','), ...rows].join('\n')
-  const blob = new Blob([csv],{type:'text/csv'})
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a'); a.href=url; a.download='bioderma-tracker.csv'; a.click()
-  URL.revokeObjectURL(url)
+  const creators = filteredCreators.length ? filteredCreators : allCreators;
+  const cols = isAgency()
+    ? ['id','batch','name','handle','category','reach','status','contacted_by','contacted_date','response_date','compensation_type','fee_quoted_aed','fee_agreed_aed','tracking_number','shipped_date','received_date','posting_deadline','content_link_1','content_link_2','content_link_3','content_link_4','content_verified','notes','client_approved']
+    : ['id','batch','name','handle','category','reach','status','content_link_1','content_link_2','content_link_3','content_link_4'];
+  
+  const header = cols.join(',');
+  const rows = creators.map(c =>
+    cols.map(col => {
+      const v = c[col];
+      if (v === null || v === undefined) return '';
+      const s = v.toString();
+      if (s.includes(',') || s.includes('"') || s.includes('\n')) return '"' + s.replace(/"/g,'""') + '"';
+      return s;
+    }).join(',')
+  );
+  const csv = [header, ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bioderma-xdefense-tracker-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV downloaded (' + creators.length + ' creators)', 'success');
 }
 
-function showAddModal() { document.getElementById('add-modal').classList.add('open') }
-function closeModal(id) { document.getElementById(id).classList.remove('open') }
+// ===== REFRESH =====
+async function refreshData() {
+  showLoading('Refreshing...');
+  try {
+    await loadCreators();
+    render();
+    showToast('✓ Data refreshed', 'success');
+  } catch(e) {
+    showToast('Refresh failed: ' + e.message, 'error');
+  } finally {
+    hideLoading();
+  }
+}
 
-init()
+// ===== CLOSE MODALS ON OVERLAY CLICK =====
+document.getElementById('contentModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('contentModal')) closeContentModal();
+});
+document.getElementById('editModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('editModal')) closeEditModal();
+});
+
+// ===== KEYBOARD ESC =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeContentModal();
+    closeEditModal();
+  }
+});
+
+// ===== START =====
+init();
 </script>
 </body>
 </html>
