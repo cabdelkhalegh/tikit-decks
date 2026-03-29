@@ -189,21 +189,7 @@ body.client-view {
     #0A0805;
   position: relative;
 }
-/* Product bottle background — centered, ghosted */
-body.client-view::before {
-  content: "";
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(520px, 90vw);
-  height: min(780px, 135vw);
-  background: url("bioderma-tracker/assets/product-xdefense.png") center/contain no-repeat;
-  opacity: 0.045;
-  pointer-events: none;
-  z-index: 0;
-  filter: saturate(0.4) brightness(1.8);
-}
+
 
 /* Floating orbs */
 .cv-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; animation:float-orb 24s infinite ease-in-out; }
@@ -738,20 +724,48 @@ body.client-view {
     #0A0805;
   position: relative;
 }
-/* Product bottle background — centered, ghosted */
+/* UV sun halo — SPF-inspired rotating light rays, pure CSS */
 body.client-view::before {
   content: "";
   position: fixed;
-  top: 50%;
+  top: -15%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(520px, 90vw);
-  height: min(780px, 135vw);
-  background: url("bioderma-tracker/assets/product-xdefense.png") center/contain no-repeat;
-  opacity: 0.045;
+  transform: translateX(-50%) rotate(0deg);
+  width: 140vw;
+  height: 140vw;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    rgba(255,140,0,0.05) 18deg,
+    transparent 36deg,
+    rgba(233,30,140,0.04) 54deg,
+    transparent 72deg,
+    rgba(255,180,0,0.05) 90deg,
+    transparent 108deg,
+    rgba(255,100,50,0.04) 126deg,
+    transparent 144deg,
+    rgba(233,30,140,0.04) 162deg,
+    transparent 180deg,
+    rgba(255,140,0,0.05) 198deg,
+    transparent 216deg,
+    rgba(255,180,0,0.04) 234deg,
+    transparent 252deg,
+    rgba(233,30,140,0.04) 270deg,
+    transparent 288deg,
+    rgba(255,140,0,0.04) 306deg,
+    transparent 324deg,
+    rgba(233,30,140,0.03) 342deg,
+    transparent 360deg
+  );
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: saturate(0.4) brightness(1.8);
+  animation: halo-spin 55s linear infinite;
+  opacity: 0.65;
+}
+@keyframes halo-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
 }
 
 /* Floating orbs */
