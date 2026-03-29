@@ -888,10 +888,19 @@ function renderCards() {
 function buildQuickActions(c) {
   const s = c.status
   let btns = ''
-  if (s==='SHORTLISTED') btns+=`<button class="actb act-c" onclick="qs(${c.id},'CONTACTED')">📤 Contact</button>`
+  // SHORTLISTED: always show Contact regardless of agency_approved state
+  // agency_approved=false means agency hasn't pushed to client yet, but they can still contact directly
+  if (s==='SHORTLISTED') {
+    btns+=`<button class="actb act-c" onclick="qs(${c.id},'CONTACTED')">📤 Contact</button>`
+    // If agency rejected this creator, show a restore button
+    if (c.agency_approved === false) {
+      btns+=`<button class="actb" style="background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8" onclick="setAgencyApproval(${c.id},true)" title="Add to client shortlist">➕ Propose to client</button>`
+    }
+  }
   if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) {
     btns+=`<button class="actb act-a" onclick="qs(${c.id},'CONFIRMED')">✅ Confirmed</button>`
     btns+=`<button class="actb act-decline" onclick="qs(${c.id},'DECLINED')">❌ Declined</button>`
+    btns+=`<button class="actb" style="background:#FFF8E1;color:#E65100;border:1px solid #FFE082" onclick="qs(${c.id},'FOLLOW_UP_1')">🔁 Follow-Up</button>`
   }
   if (s==='CONFIRMED') btns+=`<button class="actb act-s" onclick="qs(${c.id},'DISPATCHED')">📦 Shipped</button>`
   if (['DISPATCHED','IN_TRANSIT'].includes(s)) btns+=`<button class="actb act-s" onclick="qs(${c.id},'DELIVERED')">📬 Delivered</button>`
@@ -899,6 +908,18 @@ function buildQuickActions(c) {
   if (s==='POSTED') btns+=`<button class="actb act-d" onclick="qs(${c.id},'COMPLETED')">🏁 Complete</button>`
   if (!btns) return ''
   return `<div class="quick-actions">${btns}</div>`
+}
+
+async function setAgencyApproval(id, approved) {
+  const { error } = await db.from(TABLE).update({agency_approved: approved, updated_at: new Date().toISOString()}).eq('id', id)
+  if (!error) {
+    const idx = allCreators.findIndex(c=>c.id===id)
+    if (idx>=0) allCreators[idx].agency_approved = approved
+    showToast(approved ? '✅ Added to client shortlist' : '↩ Removed from client shortlist')
+    applyFilters(); updateStats()
+  } else {
+    showToast('❌ Failed: ' + error.message, true)
+  }
 }
 
 function buildCardExpand(c) {
@@ -981,7 +1002,7 @@ function renderTable() {
       <td style="font-size:11px;white-space:nowrap">${catLabel}</td>
       <td style="font-size:11px;color:var(--muted)">${c.reach||'—'}</td>
       <td class="agency-col"><span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span></td>
-      <td class="agency-col">${c.agency_approved === true ? '<span class="cap-approved" style="font-size:10px">✅</span>' : c.agency_approved === false ? '<span class="cap-rejected" style="font-size:10px">❌</span>' : '<span class="cap-pending" style="font-size:10px">—</span>'}</td>
+      <td class="agency-col" onclick="event.stopPropagation()" title="Click to toggle agency shortlist">${c.status==='SHORTLISTED' ? `<button onclick="setAgencyApproval(${c.id},${!c.agency_approved})" style="border:none;background:none;cursor:pointer;font-size:16px;padding:2px 6px">${c.agency_approved === true ? '✅' : c.agency_approved === false ? '❌' : '—'}</button>` : (c.agency_approved === true ? '<span class="cap-approved" style="font-size:10px">✅</span>' : '<span class="cap-rejected" style="font-size:10px">❌</span>')}</td>
       <td onclick="event.stopPropagation()">${approvalCell}</td>
       <td class="agency-col" style="font-size:12px">${feeHtml}</td>
       <td>${linksHtml}</td>
