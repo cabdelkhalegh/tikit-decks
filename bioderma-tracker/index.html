@@ -2,62 +2,112 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Bioderma XDefense — Campaign Tracker | TiKiT</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --pink:#E91E8C;--blue:#0066CC;--bg:#F5F6F8;--white:#fff;
   --border:#E9ECEF;--text:#1a1a1a;--muted:#777;--light:#F8F9FA;
   --green:#2E7D32;--red:#C62828;--orange:#E65100;--purple:#6A1B9A;
+  --radius:12px;
 }
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5}
-.topbar{background:var(--white);border-bottom:2px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.logo{font-weight:900;font-size:14px;letter-spacing:-.3px}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.5}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--white);border-bottom:2px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.logo{font-weight:900;font-size:15px;letter-spacing:-.3px;white-space:nowrap}
 .logo .x{color:var(--pink);font-style:normal}
 .logo .blue{color:var(--blue)}
-.badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px;margin-left:8px}
+.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.6px;margin-left:6px;white-space:nowrap}
 .badge-agency{background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7}
 .badge-client{background:#E3F2FD;color:var(--blue);border:1px solid #90CAF9}
-.tbr{display:flex;gap:8px;align-items:center}
-.btn{border:none;padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer}
-.btn-pink{background:var(--pink);color:#fff}.btn-pink:hover{background:#C2185B}
-.btn-outline{background:var(--white);color:var(--muted);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--pink);color:var(--pink)}
-/* STATS */
-.stats{display:flex;gap:10px;padding:14px 24px;background:var(--white);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap}
-.stat{background:var(--light);border:1px solid var(--border);border-radius:10px;padding:10px 16px;min-width:100px;text-align:center}
-.stat .n{font-size:22px;font-weight:900;color:var(--pink)}.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:1px}
+.tbr{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{border:none;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-pink{background:var(--pink);color:#fff}.btn-pink:active{opacity:.8}
+.btn-outline{background:var(--white);color:var(--muted);border:1px solid var(--border)}.btn-outline:active{background:var(--bg)}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px;background:var(--white);border-bottom:1px solid var(--border)}
+.stat{background:var(--light);border:1px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center}
+.stat .n{font-size:20px;font-weight:900;color:var(--pink)}.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:1px}
 .stat.blue .n{color:var(--blue)}.stat.green .n{color:var(--green)}.stat.purple .n{color:var(--purple)}.stat.orange .n{color:var(--orange)}
-/* CLIENT APPROVAL SUMMARY */
-.approval-summary{background:linear-gradient(135deg,#E3F2FD,#E8F5E9);border:1px solid #90CAF9;border-radius:12px;padding:16px 24px;margin:16px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.approval-summary h3{font-size:14px;font-weight:800;color:var(--text)}
-.approval-summary .counts{display:flex;gap:16px}
-.apcount{text-align:center}
-.apcount .n{font-size:20px;font-weight:900}.apcount .l{font-size:10px;color:var(--muted);text-transform:uppercase}
+
+/* ── APPROVAL SUMMARY ── */
+.approval-summary{background:linear-gradient(135deg,#E3F2FD,#E8F5E9);border-bottom:1px solid #90CAF9;padding:14px 16px}
+.approval-summary h3{font-size:14px;font-weight:800;margin-bottom:4px}
+.approval-summary .sub{font-size:12px;color:var(--muted);margin-bottom:12px}
+.approval-counts{display:flex;gap:12px;margin-bottom:12px}
+.apcount{flex:1;text-align:center;background:var(--white);border-radius:8px;padding:8px 4px}
+.apcount .n{font-size:20px;font-weight:900}
+.apcount .l{font-size:10px;color:var(--muted);text-transform:uppercase}
 .apcount.approved .n{color:var(--green)}
 .apcount.rejected .n{color:var(--red)}
 .apcount.pending .n{color:var(--muted)}
-.export-approved-btn{margin-left:auto;background:var(--green);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
-/* FILTERS */
-.filters{display:flex;gap:8px;padding:12px 24px;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
-.filters select,.filters input{border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--text);background:var(--white);outline:none}
-.filters select:focus,.filters input:focus{border-color:var(--pink)}
-.filters input{width:200px}
-.fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
-/* TABLE */
-.table-wrap{overflow-x:auto;padding:16px 24px}
-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
-thead tr{background:var(--light);border-bottom:2px solid var(--border)}
-th{padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
-tbody tr:hover{background:#FAFAFA}
-tbody tr.client-approved-row{background:#F1F8E9}
-tbody tr.client-rejected-row{background:#FFEBEE}
-tbody tr.expanded{background:#FFF5F8}
-td{padding:10px 12px;vertical-align:middle}
-/* STATUS */
-.sp{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.export-approved-btn{width:100%;background:var(--green);color:#fff;border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+
+/* ── FILTERS ── */
+.filters{background:var(--white);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;flex-direction:column;gap:8px}
+.filter-row{display:flex;gap:8px}
+.filter-row select,.filter-row input{flex:1;border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:13px;color:var(--text);background:var(--white);outline:none;min-width:0;appearance:none;-webkit-appearance:none}
+.filter-row select:focus,.filter-row input:focus{border-color:var(--pink)}
+.filter-search{position:relative;flex:1}
+.filter-search input{width:100%;padding-left:32px}
+.filter-search::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none}
+.filter-clear{background:none;border:1px solid var(--border);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--muted);cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* ── CARD VIEW (mobile default) ── */
+.cards-container{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.creator-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;transition:box-shadow .15s}
+.creator-card.card-approved{border-color:#A5D6A7;background:#F9FBF9}
+.creator-card.card-rejected{border-color:#FFCDD2;background:#FFF9F9}
+.card-header{padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.card-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:16px;flex-shrink:0}
+.card-info{flex:1;min-width:0}
+.card-name{font-weight:800;font-size:15px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.card-handle{font-size:12px;color:var(--muted);margin-top:1px}
+.card-meta{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+/* Approval buttons on card */
+.cab-approve{border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7;display:flex;align-items:center;gap:4px}
+.cab-approve.active,.cab-approve:active{background:var(--green);color:#fff;border-color:var(--green)}
+.cab-reject{border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2;display:flex;align-items:center;gap:4px}
+.cab-reject.active,.cab-reject:active{background:var(--red);color:#fff;border-color:var(--red)}
+.card-approval-row{padding:0 16px 14px;display:flex;gap:8px}
+.card-approval-row .cab-approve,.card-approval-row .cab-reject{flex:1;justify-content:center}
+/* Agency expand */
+.card-expand-btn{width:100%;border:none;background:var(--light);border-top:1px solid var(--border);padding:10px;font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;text-align:center}
+.card-expand-panel{display:none;border-top:1px solid var(--border);padding:14px 16px;background:#FAFAFA}
+.card-expand-panel.open{display:block}
+.ce-section{margin-bottom:14px}
+.ce-section h4{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.6px;margin-bottom:8px}
+.ce-field{margin-bottom:8px}
+.ce-field label{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:3px}
+.ce-field input,.ce-field select,.ce-field textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:13px;color:var(--text);background:var(--white);outline:none}
+.ce-field input:focus,.ce-field select:focus,.ce-field textarea:focus{border-color:var(--pink)}
+.ce-field textarea{resize:vertical;min-height:70px}
+.link-pair{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.link-pair input{flex:1}
+.link-pair a{font-size:20px;text-decoration:none}
+/* Quick action buttons */
+.quick-actions{padding:0 16px 12px;display:flex;gap:6px;flex-wrap:wrap}
+.actb{border:none;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.act-c{background:#FFF8E1;color:#E65100;border:1px solid #FFE082}
+.act-a{background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7}
+.act-s{background:#F3E5F5;color:var(--purple);border:1px solid #CE93D8}
+.act-p{background:#1B5E20;color:#fff}
+.act-d{background:#004D40;color:#fff}
+.act-decline{background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2}
+/* Links section in card */
+.card-links{padding:0 16px 14px;display:flex;gap:8px;flex-wrap:wrap}
+.pl{display:inline-block;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:700;text-decoration:none}
+.pl-ig{background:linear-gradient(135deg,#f09433,#dc2743);color:#fff}
+.pl-tt{background:#000;color:#fff}
+.pl-content{background:var(--blue);color:#fff}
+
+/* ── BADGES ── */
+.sp{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
 .sp-SHORTLISTED{background:#E3F2FD;color:#1565C0}
 .sp-CONTACTED,.sp-FOLLOW_UP_1,.sp-FOLLOW_UP_2{background:#FFF8E1;color:#E65100}
 .sp-CONFIRMED,.sp-DETAILS_COLLECTED,.sp-BOX_ASSEMBLED,.sp-BRIEF_SENT{background:#E8F5E9;color:var(--green)}
@@ -66,89 +116,95 @@ td{padding:10px 12px;vertical-align:middle}
 .sp-DELIVERED,.sp-AWAITING_CONTENT{background:#E0F2F1;color:#00695C}
 .sp-POSTED{background:#1B5E20;color:#fff}
 .sp-COMPLETED{background:#004D40;color:#fff}
-/* CLIENT APPROVAL BADGE */
-.cap-approved{display:inline-block;padding:3px 10px;border-radius:20px;background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7;font-size:10px;font-weight:700}
-.cap-rejected{display:inline-block;padding:3px 10px;border-radius:20px;background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2;font-size:10px;font-weight:700}
-.cap-pending{display:inline-block;padding:3px 10px;border-radius:20px;background:#F5F5F5;color:#999;border:1px solid #E0E0E0;font-size:10px;font-weight:700}
-/* PLATFORM LINKS */
-.pl{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-decoration:none;margin-right:2px}
-.pl-ig{background:linear-gradient(135deg,#f09433,#dc2743);color:#fff}
-.pl-tt{background:#000;color:#fff}
-/* BATCH */
+.cap-approved{display:inline-block;padding:3px 10px;border-radius:20px;background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7;font-size:11px;font-weight:700}
+.cap-rejected{display:inline-block;padding:3px 10px;border-radius:20px;background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2;font-size:11px;font-weight:700}
+.cap-pending{display:inline-block;padding:3px 10px;border-radius:20px;background:#F5F5F5;color:#999;border:1px solid #E0E0E0;font-size:11px;font-weight:700}
 .bb1{background:#FCE4EC;color:#C2185B;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
 .bb2{background:#E3F2FD;color:#1565C0;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
 .bbem{background:#E8F5E9;color:var(--green);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
-/* CLIENT APPROVAL BUTTONS */
-.client-approval-btns{display:flex;gap:6px}
-.cab-approve{border:none;padding:6px 14px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7}
-.cab-approve:hover,.cab-approve.active{background:var(--green);color:#fff;border-color:var(--green)}
-.cab-reject{border:none;padding:6px 14px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2}
-.cab-reject:hover,.cab-reject.active{background:var(--red);color:#fff;border-color:var(--red)}
-/* EXPAND PANEL (agency) */
-.expand-row td{padding:0}
-.expand-panel{background:#FAFAFA;border-bottom:2px solid var(--border);padding:16px 20px;display:none}
-.expand-panel.open{display:block}
-.expand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.fg{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px}
-.fg h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px}
-.fr{display:flex;flex-direction:column;margin-bottom:8px}
-.fr label{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:3px}
-.fr input,.fr select,.fr textarea{border:1px solid var(--border);border-radius:5px;padding:6px 8px;font-size:12px;color:var(--text);outline:none;background:var(--white)}
-.fr input:focus,.fr select:focus,.fr textarea:focus{border-color:var(--pink)}
-.fr textarea{resize:vertical;min-height:60px}
-.cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.cl-item{display:flex;gap:6px;align-items:center}
-.cl-item input{flex:1}
-.cl-item a{color:var(--blue);font-size:11px;white-space:nowrap}
-/* ACTION BTNS */
-.actb{border:none;padding:4px 9px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
-.act-c{background:#FFF8E1;color:#E65100;border:1px solid #FFE082}
-.act-a{background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7}
-.act-s{background:#F3E5F5;color:var(--purple);border:1px solid #CE93D8}
-.act-p{background:#1B5E20;color:#fff;border:none}
-.act-d{background:#004D40;color:#fff;border:none}
-/* PAGINATION */
-.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:14px;background:var(--white);border-top:1px solid var(--border)}
-.pgb{border:1px solid var(--border);background:var(--white);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer}
+
+/* ── PAGINATION ── */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;background:var(--white);border-top:1px solid var(--border)}
+.pgb{border:1px solid var(--border);background:var(--white);padding:9px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:600}
 .pgb.active{background:var(--pink);color:#fff;border-color:var(--pink)}
-.pgb:hover:not(.active){border-color:var(--pink);color:var(--pink)}
 .pgi{font-size:12px;color:var(--muted)}
-.empty{text-align:center;padding:40px;color:var(--muted)}
-/* HIDE AGENCY COLS IN CLIENT VIEW */
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty-state .big{font-size:32px;margin-bottom:8px}
+
+/* ── DESKTOP TABLE (≥768px) ── */
+@media(min-width:768px){
+  .stats{grid-template-columns:repeat(7,1fr);padding:14px 24px}
+  .filters{flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px 24px}
+  .filter-row{flex:1}
+  .cards-container{padding:16px 24px;display:none}
+  .table-view{display:block!important}
+  .approval-summary{padding:16px 24px}
+  .approval-counts{gap:20px}
+  .approval-counts .apcount{padding:10px 20px}
+  .topbar{padding:0 24px;height:58px}
+  .logo{font-size:14px}
+}
+.table-view{display:none;overflow-x:auto;padding:16px 24px}
+table{width:100%;border-collapse:collapse;background:var(--white);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+thead tr{background:var(--light);border-bottom:2px solid var(--border)}
+th{padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:#FAFAFA}
+tbody tr.row-approved{background:#F1F8E9}
+tbody tr.row-rejected{background:#FFEBEE}
+td{padding:10px 12px;vertical-align:middle}
+.dt-expand{background:#FAFAFA;border-bottom:2px solid var(--border);display:none;padding:16px 20px}
+.dt-expand.open{display:table-cell}
+.dt-expand-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 body.client-view .agency-col{display:none!important}
-@media(max-width:768px){.stats{gap:8px}.stat{min-width:80px;padding:8px 10px}.filters input{width:130px}.cl-grid{grid-template-columns:1fr}.expand-grid{grid-template-columns:1fr}}
+.approval-btns-dt{display:flex;gap:6px}
+.approval-btns-dt .cab-approve,.approval-btns-dt .cab-reject{padding:6px 12px;font-size:11px}
+
+/* ── ADD MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:16px 16px 0 0;padding:24px;width:100%;max-height:90vh;overflow-y:auto}
+@media(min-width:768px){
+  .modal-bg{align-items:center}
+  .modal{border-radius:16px;max-width:440px;max-height:80vh}
+}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:16px;display:flex;justify-content:space-between}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:0}
+.mf{margin-bottom:12px}
+.mf label{font-size:12px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+.mf input,.mf select{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);outline:none;background:var(--white)}
+.mf input:focus,.mf select:focus{border-color:var(--pink)}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center">
-    <div class="logo">TiKiT<em class="x">.</em> × <span class="blue">Bioderma</span> XDefense</div>
-    <span class="badge" id="view-badge">Agency View</span>
+  <div style="display:flex;align-items:center;min-width:0">
+    <div class="logo">TiKiT<em class="x">.</em><span style="display:none" id="logo-x"> × <span class="blue">Bioderma</span></span></div>
+    <span class="badge" id="view-badge">Agency</span>
   </div>
   <div class="tbr">
-    <button class="btn btn-outline" onclick="exportCSV()">⬇ Export</button>
-    <button class="btn btn-pink agency-col" onclick="showAddModal()">+ Add Creator</button>
+    <button class="btn btn-outline" onclick="exportCSV()" style="padding:8px 10px;font-size:12px">⬇ Export</button>
+    <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
   </div>
 </div>
 
+<!-- STATS -->
 <div class="stats" id="stats-bar">
   <div class="stat"><div class="n" id="s-total">—</div><div class="l">Total</div></div>
+  <div class="stat green"><div class="n" id="s-client-approved">—</div><div class="l">✅ Approved</div></div>
   <div class="stat"><div class="n" id="s-shortlisted">—</div><div class="l">Shortlisted</div></div>
   <div class="stat blue"><div class="n" id="s-contacted">—</div><div class="l">Contacted</div></div>
   <div class="stat green"><div class="n" id="s-confirmed">—</div><div class="l">Confirmed</div></div>
   <div class="stat purple"><div class="n" id="s-shipped">—</div><div class="l">Shipped</div></div>
   <div class="stat orange"><div class="n" id="s-posted">—</div><div class="l">Posted</div></div>
-  <div class="stat green"><div class="n" id="s-client-approved">—</div><div class="l">✅ Client OK</div></div>
 </div>
 
-<!-- Client approval summary — shown in both views -->
+<!-- APPROVAL SUMMARY -->
 <div class="approval-summary" id="approval-summary" style="display:none">
-  <div>
-    <h3 id="approval-title">Client Shortlist</h3>
-    <div style="font-size:11px;color:var(--muted);margin-top:3px" id="approval-subtitle">Select the creators you want to include in the campaign</div>
-  </div>
-  <div class="counts">
+  <h3 id="approval-title">📋 Your Shortlist</h3>
+  <p class="sub" id="approval-subtitle">Tap ✅ Approve or ❌ Reject for each creator. Saved instantly.</p>
+  <div class="approval-counts">
     <div class="apcount approved"><div class="n" id="ap-approved">0</div><div class="l">✅ Approved</div></div>
     <div class="apcount rejected"><div class="n" id="ap-rejected">0</div><div class="l">❌ Rejected</div></div>
     <div class="apcount pending"><div class="n" id="ap-pending">0</div><div class="l">⏳ Pending</div></div>
@@ -156,84 +212,91 @@ body.client-view .agency-col{display:none!important}
   <button class="export-approved-btn" onclick="exportApproved()">⬇ Export My Shortlist</button>
 </div>
 
+<!-- FILTERS -->
 <div class="filters">
-  <span class="fl">Filter:</span>
-  <select id="f-batch" onchange="applyFilters()">
-    <option value="">All Batches</option>
-    <option value="B1">Batch 1</option>
-    <option value="B2">Batch 2</option>
-    <option value="EM">🇦🇪 Emirati</option>
-  </select>
-  <select id="f-status" onchange="applyFilters()" class="agency-col">
-    <option value="">All Statuses</option>
-    <option value="SHORTLISTED">Shortlisted</option>
-    <option value="CONTACTED">Contacted</option>
-    <option value="CONFIRMED">Confirmed</option>
-    <option value="DISPATCHED">Dispatched</option>
-    <option value="DELIVERED">Delivered</option>
-    <option value="POSTED">Posted</option>
-    <option value="COMPLETED">Completed</option>
-    <option value="DECLINED">Declined</option>
-    <option value="NO_RESPONSE">No Response</option>
-  </select>
-  <select id="f-approval" onchange="applyFilters()">
-    <option value="">All Approval States</option>
-    <option value="approved">✅ Approved by Client</option>
-    <option value="rejected">❌ Rejected by Client</option>
-    <option value="pending">⏳ Pending Review</option>
-  </select>
-  <select id="f-category" onchange="applyFilters()">
-    <option value="">All Categories</option>
-    <option value="sport">🏃 Sports</option>
-    <option value="pharma">💊 Pharma</option>
-    <option value="derm">🔬 Skincare</option>
-    <option value="beauty">💄 Beauty</option>
-    <option value="lifestyle">🌟 Lifestyle</option>
-    <option value="travel">✈️ Travel</option>
-    <option value="food">🍳 Food</option>
-    <option value="fitness">🏋️ Fitness</option>
-    <option value="fashion">👗 Fashion</option>
-    <option value="mom">👩‍👧 Family</option>
-  </select>
-  <input id="f-search" type="text" placeholder="🔍 Search creator or handle..." oninput="applyFilters()">
-  <button class="btn btn-outline" onclick="clearFilters()">Clear</button>
+  <div class="filter-row">
+    <select id="f-batch" onchange="applyFilters()">
+      <option value="">All Batches</option>
+      <option value="B1">Batch 1</option>
+      <option value="B2">Batch 2</option>
+      <option value="EM">🇦🇪 Emirati</option>
+    </select>
+    <select id="f-category" onchange="applyFilters()">
+      <option value="">All Categories</option>
+      <option value="sport">🏃 Sports</option>
+      <option value="pharma">💊 Pharma</option>
+      <option value="derm">🔬 Skincare</option>
+      <option value="beauty">💄 Beauty</option>
+      <option value="lifestyle">🌟 Lifestyle</option>
+      <option value="travel">✈️ Travel</option>
+      <option value="food">🍳 Food</option>
+      <option value="fitness">🏋️ Fitness</option>
+      <option value="fashion">👗 Fashion</option>
+    </select>
+  </div>
+  <div class="filter-row">
+    <select id="f-approval" onchange="applyFilters()">
+      <option value="">All States</option>
+      <option value="approved">✅ Approved</option>
+      <option value="rejected">❌ Rejected</option>
+      <option value="pending">⏳ Pending</option>
+    </select>
+    <select id="f-status" onchange="applyFilters()" class="agency-col">
+      <option value="">All Statuses</option>
+      <option value="SHORTLISTED">Shortlisted</option>
+      <option value="CONTACTED">Contacted</option>
+      <option value="CONFIRMED">Confirmed</option>
+      <option value="DISPATCHED">Dispatched</option>
+      <option value="DELIVERED">Delivered</option>
+      <option value="POSTED">Posted</option>
+      <option value="COMPLETED">Completed</option>
+      <option value="DECLINED">Declined</option>
+      <option value="NO_RESPONSE">No Response</option>
+    </select>
+    <div class="filter-search">
+      <input id="f-search" type="search" placeholder="Search name or handle..." oninput="applyFilters()">
+    </div>
+    <button class="filter-clear" onclick="clearFilters()">Clear</button>
+  </div>
 </div>
 
-<div class="table-wrap">
+<!-- MOBILE CARDS -->
+<div class="cards-container" id="cards-container">
+  <div class="empty-state"><div class="big">⏳</div>Loading creators...</div>
+</div>
+
+<!-- DESKTOP TABLE -->
+<div class="table-view" id="table-view">
   <table id="main-table">
     <thead>
       <tr>
-        <th>#</th>
-        <th>Creator</th>
-        <th>Handles</th>
-        <th>Batch</th>
-        <th>Category</th>
-        <th>Reach</th>
-        <th class="agency-col">Campaign Status</th>
+        <th>#</th><th>Creator</th><th>Handles</th><th>Batch</th><th>Category</th><th>Reach</th>
+        <th class="agency-col">Status</th>
         <th>Client Approval</th>
         <th class="agency-col">Fee (AED)</th>
-        <th>Content Links</th>
+        <th>Content</th>
         <th class="agency-col">Actions</th>
       </tr>
     </thead>
-    <tbody id="table-body">
-      <tr><td colspan="11" class="empty">Loading creators...</td></tr>
-    </tbody>
+    <tbody id="table-body"></tbody>
   </table>
 </div>
+
 <div class="pagination" id="pagination"></div>
 
-<!-- Add Creator Modal (agency only) -->
-<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center" id="add-modal">
-  <div style="background:#fff;border-radius:12px;padding:24px;width:440px;max-width:95vw">
-    <h3 style="font-size:16px;font-weight:800;margin-bottom:16px">Add Creator <button onclick="document.getElementById('add-modal').style.display='none'" style="float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted)">✕</button></h3>
-    <div class="fr"><label>Name</label><input id="new-name" placeholder="Creator name"></div>
-    <div class="fr"><label>Instagram Handle</label><input id="new-ig" placeholder="@handle"></div>
-    <div class="fr"><label>TikTok Handle</label><input id="new-tt" placeholder="@handle (optional)"></div>
-    <div class="fr"><label>Batch</label><select id="new-batch"><option value="B1">Batch 1</option><option value="B2">Batch 2</option><option value="EM">Emirati</option></select></div>
-    <div class="fr"><label>Category</label><select id="new-cat"><option value="beauty">Beauty</option><option value="lifestyle">Lifestyle</option><option value="sport">Sports</option><option value="derm">Skincare</option><option value="pharma">Pharma</option><option value="travel">Travel</option><option value="food">Food</option><option value="fashion">Fashion</option><option value="fitness">Fitness</option><option value="mom">Family</option></select></div>
-    <div class="fr"><label>Reach</label><input id="new-reach" placeholder="e.g. IG 45K"></div>
-    <button class="btn btn-pink" style="margin-top:8px;width:100%" onclick="addCreator()">Add Creator</button>
+<!-- ADD MODAL -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <h3>Add Creator <button class="modal-close" onclick="hideModal()">✕</button></h3>
+    <div class="mf"><label>Name</label><input id="new-name" placeholder="Creator name"></div>
+    <div class="mf"><label>Instagram Handle</label><input id="new-ig" placeholder="@handle"></div>
+    <div class="mf"><label>TikTok Handle</label><input id="new-tt" placeholder="@handle (optional)"></div>
+    <div class="mf"><label>IG Profile URL</label><input id="new-ig-url" placeholder="https://www.instagram.com/..."></div>
+    <div class="mf"><label>TikTok URL</label><input id="new-tt-url" placeholder="https://www.tiktok.com/... (optional)"></div>
+    <div class="mf"><label>Batch</label><select id="new-batch"><option value="B1">Batch 1</option><option value="B2">Batch 2</option><option value="EM">Emirati</option></select></div>
+    <div class="mf"><label>Category</label><select id="new-cat"><option value="beauty">💄 Beauty</option><option value="lifestyle">🌟 Lifestyle</option><option value="sport">🏃 Sports</option><option value="derm">🔬 Skincare</option><option value="pharma">💊 Pharma</option><option value="travel">✈️ Travel</option><option value="food">🍳 Food</option><option value="fashion">👗 Fashion</option><option value="fitness">🏋️ Fitness</option></select></div>
+    <div class="mf"><label>Reach</label><input id="new-reach" placeholder="e.g. IG 45K / TT 120K"></div>
+    <button class="btn btn-pink" style="width:100%;padding:14px;font-size:14px;margin-top:4px" onclick="addCreator()">Add Creator</button>
   </div>
 </div>
 
@@ -244,20 +307,19 @@ const { createClient } = supabase
 const db = createClient(SUPA_URL, SUPA_KEY)
 const TABLE = 'bioderma_creators'
 
-// View detection
 const IS_CLIENT = new URLSearchParams(location.search).get('view') === 'client'
 if (IS_CLIENT) {
   document.body.classList.add('client-view')
   document.getElementById('view-badge').textContent = 'Client View'
   document.getElementById('view-badge').className = 'badge badge-client'
-  document.getElementById('approval-summary').style.display = 'flex'
-  document.getElementById('approval-title').textContent = '📋 Your Shortlist'
-  document.getElementById('approval-subtitle').textContent = 'Click ✅ Approve or ❌ Reject for each creator. Your selections are saved and visible to TiKiT in real time.'
+  document.getElementById('approval-summary').style.display = 'block'
+  document.getElementById('logo-x').style.display = 'inline'
 } else {
   document.getElementById('view-badge').className = 'badge badge-agency'
-  document.getElementById('approval-summary').style.display = 'flex'
+  document.getElementById('approval-summary').style.display = 'block'
   document.getElementById('approval-title').textContent = '📊 Client Shortlist Progress'
-  document.getElementById('approval-subtitle').textContent = 'Live view of client approvals — updates in real time as client reviews creators.'
+  document.getElementById('approval-subtitle').textContent = 'Updates in real time as Bioderma reviews creators.'
+  document.getElementById('logo-x').style.display = 'inline'
 }
 
 const PAGE_SIZE = 30
@@ -270,11 +332,14 @@ const STATUS_LABELS = {
   AWAITING_CONTENT:'Awaiting Content',POSTED:'Posted ✓',COMPLETED:'Completed ✓',
   DECLINED:'Declined',NO_RESPONSE:'No Response',DID_NOT_POST:'Did Not Post',DELIVERY_FAILED:'Delivery Failed'
 }
-const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family',tech:'💻 Tech',athlete:'🏆 Athletes'}
+const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family'}
 
 async function init() {
   const { data, error } = await db.from(TABLE).select('*').order('batch').order('name')
-  if (error) { document.getElementById('table-body').innerHTML = `<tr><td colspan="11" class="empty">Error: ${error.message}</td></tr>`; return }
+  if (error) {
+    document.getElementById('cards-container').innerHTML = `<div class="empty-state"><div class="big">❌</div>${error.message}</div>`
+    return
+  }
   allCreators = data || []
   applyFilters()
   updateStats()
@@ -293,10 +358,11 @@ function applyFilters() {
     if (approval === 'rejected' && c.client_approved !== false) return false
     if (approval === 'pending' && c.client_approved !== null) return false
     if (category && c.category !== category) return false
-    if (search && !c.name.toLowerCase().includes(search) && !(c.handle_ig||'').toLowerCase().includes(search)) return false
+    if (search && !c.name.toLowerCase().includes(search) && !(c.handle_ig||'').toLowerCase().includes(search) && !(c.handle_tt||'').toLowerCase().includes(search)) return false
     return true
   })
   page = 1
+  renderCards()
   renderTable()
   renderPagination()
   updateApprovalCounts()
@@ -308,116 +374,185 @@ function clearFilters() {
   applyFilters()
 }
 
+// ── CARD RENDER ──
+function renderCards() {
+  const container = document.getElementById('cards-container')
+  const start = (page-1)*PAGE_SIZE
+  const pageData = filtered.slice(start, start+PAGE_SIZE)
+  if (!pageData.length) {
+    container.innerHTML = '<div class="empty-state"><div class="big">🔍</div>No creators found.</div>'
+    return
+  }
+  container.innerHTML = pageData.map(c => {
+    const batchBadge = c.batch==='B1'?`<span class="bb1">Batch 1</span>`:c.batch==='B2'?`<span class="bb2">Batch 2</span>`:`<span class="bbem">🇦🇪 Emirati</span>`
+    const catLabel = CAT_LABELS[c.category]||c.category
+    const initial = c.name.charAt(0).toUpperCase()
+    const aActive = c.client_approved === true ? 'active' : ''
+    const rActive = c.client_approved === false ? 'active' : ''
+    const cardClass = c.client_approved === true ? 'card-approved' : c.client_approved === false ? 'card-rejected' : ''
+    const approvalBadge = c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : ''
+    // Profile links
+    const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig">📸 IG</a>` : ''
+    const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt">🎵 TT</a>` : ''
+    const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
+    const contentLinksHtml = contentLinks.map((l,i)=>`<a href="${l}" target="_blank" class="pl pl-content">▶ Post ${i+1}</a>`).join('')
+    // Client approval row — shown in both views
+    const approvalRow = IS_CLIENT ? `
+      <div class="card-approval-row">
+        <button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅ Approve</button>
+        <button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌ Reject</button>
+      </div>` : ''
+    // Agency quick actions
+    const agencyActions = IS_CLIENT ? '' : buildQuickActions(c)
+    // Agency expand
+    const expandSection = IS_CLIENT ? '' : `
+      <button class="card-expand-btn" onclick="toggleCardExpand(${c.id},this)">⚙️ Edit details ▾</button>
+      <div class="card-expand-panel" id="cep-${c.id}">${buildCardExpand(c)}</div>`
+    return `<div class="creator-card ${cardClass}" id="card-${c.id}">
+      <div class="card-header" onclick="${IS_CLIENT?'':('toggleCardExpand('+c.id+')')}">
+        <div class="card-avatar">${initial}</div>
+        <div class="card-info">
+          <div class="card-name">${c.name}${c.is_emirati?' 🇦🇪':''}</div>
+          <div class="card-handle">${[c.handle_ig,c.handle_tt].filter(Boolean).join(' · ')}</div>
+          <div class="card-meta">${batchBadge}<span style="font-size:11px;color:var(--muted)">${catLabel}</span><span style="font-size:11px;color:var(--muted)">${c.reach||''}</span></div>
+        </div>
+        <div class="card-right">
+          ${!IS_CLIENT ? `<span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span>` : ''}
+          ${approvalBadge}
+        </div>
+      </div>
+      <div class="card-links">${igBtn}${ttBtn}${contentLinksHtml}</div>
+      ${approvalRow}
+      ${agencyActions}
+      ${expandSection}
+    </div>`
+  }).join('')
+}
+
+function buildQuickActions(c) {
+  const s = c.status
+  let btns = ''
+  if (s==='SHORTLISTED') btns+=`<button class="actb act-c" onclick="qs(${c.id},'CONTACTED')">📤 Contact</button>`
+  if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) {
+    btns+=`<button class="actb act-a" onclick="qs(${c.id},'CONFIRMED')">✅ Confirmed</button>`
+    btns+=`<button class="actb act-decline" onclick="qs(${c.id},'DECLINED')">❌ Declined</button>`
+  }
+  if (s==='CONFIRMED') btns+=`<button class="actb act-s" onclick="qs(${c.id},'DISPATCHED')">📦 Shipped</button>`
+  if (['DISPATCHED','IN_TRANSIT'].includes(s)) btns+=`<button class="actb act-s" onclick="qs(${c.id},'DELIVERED')">📬 Delivered</button>`
+  if (['DELIVERED','AWAITING_CONTENT'].includes(s)) btns+=`<button class="actb act-p" onclick="qs(${c.id},'POSTED')">🎬 Posted</button>`
+  if (s==='POSTED') btns+=`<button class="actb act-d" onclick="qs(${c.id},'COMPLETED')">🏁 Complete</button>`
+  if (!btns) return ''
+  return `<div class="quick-actions">${btns}</div>`
+}
+
+function buildCardExpand(c) {
+  return `<div class="ce-section">
+    <h4>📤 Outreach</h4>
+    <div class="ce-field"><label>Status</label><select onchange="sf(${c.id},'status',this.value)">${Object.entries(STATUS_LABELS).map(([v,l])=>`<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="ce-field"><label>Contacted By</label><input value="${c.contacted_by||''}" onblur="sf(${c.id},'contacted_by',this.value)" placeholder="Team member"></div>
+    <div class="ce-field"><label>Contacted Date</label><input type="date" value="${c.contacted_date||''}" onblur="sf(${c.id},'contacted_date',this.value)"></div>
+  </div>
+  <div class="ce-section">
+    <h4>📦 Shipping</h4>
+    <div class="ce-field"><label>Shipping Address</label><textarea onblur="sf(${c.id},'shipping_address',this.value)">${c.shipping_address||''}</textarea></div>
+    <div class="ce-field"><label>Tracking Number</label><input value="${c.tracking_number||''}" onblur="sf(${c.id},'tracking_number',this.value)"></div>
+    <div class="ce-field"><label>Shipped Date</label><input type="date" value="${c.shipped_date||''}" onblur="sf(${c.id},'shipped_date',this.value)"></div>
+  </div>
+  <div class="ce-section">
+    <h4>🎬 Content Links</h4>
+    ${[1,2,3,4].map(n=>{const v=c['content_link_'+n]||'';return `<div class="link-pair"><input value="${v}" onblur="sf(${c.id},'content_link_${n}',this.value)" placeholder="Video URL ${n}">${v?`<a href="${v}" target="_blank">▶</a>`:''}</div>`}).join('')}
+  </div>
+  <div class="ce-section">
+    <h4>📝 Notes</h4>
+    <div class="ce-field"><textarea onblur="sf(${c.id},'notes',this.value)" placeholder="Internal notes">${c.notes||''}</textarea></div>
+    <div class="ce-field"><label>Fee Quoted (AED)</label><input type="number" value="${c.fee_quoted_aed||''}" onblur="sf(${c.id},'fee_quoted_aed',this.value)"></div>
+    <div class="ce-field"><label>Fee Agreed (AED)</label><input type="number" value="${c.fee_agreed_aed||''}" onblur="sf(${c.id},'fee_agreed_aed',this.value)"></div>
+  </div>`
+}
+
+function toggleCardExpand(id, btn) {
+  if (IS_CLIENT) return
+  const panel = document.getElementById('cep-'+id)
+  if (!panel) return
+  const isOpen = panel.classList.contains('open')
+  document.querySelectorAll('.card-expand-panel.open').forEach(p=>p.classList.remove('open'))
+  if (!isOpen) panel.classList.add('open')
+}
+
+// ── DESKTOP TABLE ──
 function renderTable() {
   const tbody = document.getElementById('table-body')
   const start = (page-1)*PAGE_SIZE
   const pageData = filtered.slice(start, start+PAGE_SIZE)
-  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty">No creators found.</td></tr>'; return }
+  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No creators found.</td></tr>'; return }
   tbody.innerHTML = pageData.map((c,i) => {
-    const pUrl = c.ig_url || c.tt_url || '#'
-    const batchClass = c.batch==='B1'?'bb1':c.batch==='B2'?'bb2':'bbem'
-    const batchLabel = c.batch==='B1'?'Batch 1':c.batch==='B2'?'Batch 2':'🇦🇪 Emirati'
+    const batchBadge = c.batch==='B1'?`<span class="bb1">B1</span>`:c.batch==='B2'?`<span class="bb2">B2</span>`:`<span class="bbem">🇦🇪</span>`
     const catLabel = CAT_LABELS[c.category]||c.category
-    const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig" onclick="event.stopPropagation()">📸 IG</a>` : ''
-    const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt" onclick="event.stopPropagation()">🎵 TT</a>` : ''
+    const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig" style="font-size:10px;padding:2px 7px">📸</a>` : ''
+    const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt" style="font-size:10px;padding:2px 7px">🎵</a>` : ''
     const links = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
-    const linksHtml = links.length ? links.map((l,j)=>`<a href="${l}" target="_blank" style="color:var(--blue);font-size:11px;display:block" onclick="event.stopPropagation()">▶ Post ${j+1}</a>`).join('') : '<span style="color:#ccc">—</span>'
-    const statusHtml = `<span class="sp sp-${c.status}">${STATUS_LABELS[c.status]||c.status}</span>`
-    const feeHtml = c.fee_agreed_aed ? `<strong>${c.fee_agreed_aed} AED</strong>` : c.fee_quoted_aed ? `${c.fee_quoted_aed} AED` : '<span style="color:#ccc">—</span>'
-    // Client approval display
-    let approvalHtml
-    if (IS_CLIENT) {
-      const aActive = c.client_approved === true ? 'active' : ''
-      const rActive = c.client_approved === false ? 'active' : ''
-      approvalHtml = `<div class="client-approval-btns" onclick="event.stopPropagation()">
-        <button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id}, true)">✅ Approve</button>
-        <button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id}, false)">❌ Reject</button>
-      </div>`
-    } else {
-      approvalHtml = c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' :
-                    c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' :
-                    '<span class="cap-pending">⏳ Pending</span>'
-    }
-    // Row class based on client approval
-    const rowClass = c.client_approved === true ? 'client-approved-row' : c.client_approved === false ? 'client-rejected-row' : ''
-    const agencyActions = IS_CLIENT ? '' : `<td onclick="event.stopPropagation()" class="agency-col">${buildActionBtns(c)}</td>`
-    return `<tr id="tr-${c.id}" class="${rowClass}" onclick="toggleExpand(${c.id},this)">
+    const linksHtml = links.length ? links.map((l,j)=>`<a href="${l}" target="_blank" style="color:var(--blue);font-size:11px;display:block">▶ Post ${j+1}</a>`).join('') : '<span style="color:#ccc">—</span>'
+    const feeHtml = c.fee_agreed_aed ? `<strong>${c.fee_agreed_aed}</strong>` : c.fee_quoted_aed ? `${c.fee_quoted_aed}` : '—'
+    const aActive = c.client_approved === true ? 'active' : ''
+    const rActive = c.client_approved === false ? 'active' : ''
+    const approvalCell = IS_CLIENT
+      ? `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>`
+      : (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
+    const rowClass = c.client_approved === true ? 'row-approved' : c.client_approved === false ? 'row-rejected' : ''
+    const agencyActions = IS_CLIENT ? '' : `<td class="agency-col" onclick="event.stopPropagation()">${buildQuickActions(c)}</td>`
+    return `<tr id="dtr-${c.id}" class="${rowClass}" style="cursor:${IS_CLIENT?'default':'pointer'}" onclick="${IS_CLIENT?'':('toggleDtExpand('+c.id+')')}">
       <td style="color:var(--muted);font-size:11px">${start+i+1}</td>
-      <td>
-        <div style="font-weight:700;font-size:13px">${c.name}${c.is_emirati?' 🇦🇪':''}</div>
-        <div style="font-size:11px;color:var(--muted)">${c.reach||''}</div>
-      </td>
-      <td>${igBtn}${ttBtn}<div style="font-size:11px;color:var(--muted);margin-top:3px">${c.handle_ig||''}</div></td>
-      <td><span class="${batchClass}">${batchLabel}</span></td>
-      <td style="white-space:nowrap;font-size:11px">${catLabel}</td>
-      <td style="font-size:11px;color:var(--muted);white-space:nowrap">${c.reach||'—'}</td>
-      <td class="agency-col">${statusHtml}</td>
-      <td>${approvalHtml}</td>
-      <td class="agency-col">${feeHtml}</td>
-      <td style="min-width:110px">${linksHtml}</td>
+      <td><strong style="font-size:13px">${c.name}${c.is_emirati?' 🇦🇪':''}</strong></td>
+      <td>${igBtn}${ttBtn}<div style="font-size:11px;color:var(--muted);margin-top:2px">${c.handle_ig||''}</div></td>
+      <td>${batchBadge}</td>
+      <td style="font-size:11px;white-space:nowrap">${catLabel}</td>
+      <td style="font-size:11px;color:var(--muted)">${c.reach||'—'}</td>
+      <td class="agency-col"><span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span></td>
+      <td onclick="event.stopPropagation()">${approvalCell}</td>
+      <td class="agency-col" style="font-size:12px">${feeHtml}</td>
+      <td>${linksHtml}</td>
       ${agencyActions}
     </tr>
-    ${IS_CLIENT ? '' : `<tr class="expand-row" id="exp-${c.id}"><td colspan="11"><div class="expand-panel" id="panel-${c.id}">${buildExpandPanel(c)}</div></td></tr>`}`
+    ${IS_CLIENT?'':`<tr><td colspan="11" style="padding:0"><div class="dt-expand" id="dte-${c.id}">${buildCardExpand(c)}</div></td></tr>`}`
   }).join('')
 }
 
-function buildActionBtns(c) {
-  const s = c.status
-  let btns = ''
-  if (s==='SHORTLISTED') btns+=`<button class="actb act-c" onclick="qs(${c.id},'CONTACTED')">📤 Contact</button>`
-  if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) { btns+=`<button class="actb act-a" onclick="qs(${c.id},'CONFIRMED')">✅</button><button class="actb" style="background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2" onclick="qs(${c.id},'DECLINED')">❌</button>` }
-  if (s==='CONFIRMED') btns+=`<button class="actb act-s" onclick="qs(${c.id},'DISPATCHED')">📦 Ship</button>`
-  if (['DISPATCHED','IN_TRANSIT'].includes(s)) btns+=`<button class="actb act-s" onclick="qs(${c.id},'DELIVERED')">📬 Delivered</button>`
-  if (['DELIVERED','AWAITING_CONTENT'].includes(s)) btns+=`<button class="actb act-p" onclick="qs(${c.id},'POSTED')">🎬 Posted</button>`
-  if (s==='POSTED') btns+=`<button class="actb act-d" onclick="qs(${c.id},'COMPLETED')">🏁 Done</button>`
-  return `<div style="display:flex;gap:4px;flex-wrap:wrap">${btns}</div>`
-}
-
-function buildExpandPanel(c) {
-  return `<div class="expand-grid">
-    <div class="fg"><h4>📤 Outreach</h4>
-      <div class="fr"><label>Status</label><select onchange="sf(${c.id},'status',this.value)">${Object.entries(STATUS_LABELS).map(([v,l])=>`<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('')}</select></div>
-      <div class="fr"><label>Contacted By</label><input value="${c.contacted_by||''}" onblur="sf(${c.id},'contacted_by',this.value)" placeholder="Team member"></div>
-      <div class="fr"><label>Contacted Date</label><input type="date" value="${c.contacted_date||''}" onblur="sf(${c.id},'contacted_date',this.value)"></div>
-    </div>
-    <div class="fg"><h4>📦 Shipping</h4>
-      <div class="fr"><label>Shipping Address</label><textarea onblur="sf(${c.id},'shipping_address',this.value)">${c.shipping_address||''}</textarea></div>
-      <div class="fr"><label>Tracking Number</label><input value="${c.tracking_number||''}" onblur="sf(${c.id},'tracking_number',this.value)"></div>
-      <div class="fr"><label>Shipped Date</label><input type="date" value="${c.shipped_date||''}" onblur="sf(${c.id},'shipped_date',this.value)"></div>
-    </div>
-    <div class="fg" style="grid-column:1/-1"><h4>🎬 Content Links (max 4)</h4>
-      <div class="cl-grid">${[1,2,3,4].map(n=>{const v=c[`content_link_${n}`]||'';return `<div class="cl-item"><input value="${v}" onblur="sf(${c.id},'content_link_${n}',this.value)" placeholder="Paste video URL…">${v?`<a href="${v}" target="_blank">▶</a>`:''}</div>`}).join('')}</div>
-    </div>
-    <div class="fg" style="grid-column:1/-1"><h4>📝 Notes</h4>
-      <div class="fr"><textarea onblur="sf(${c.id},'notes',this.value)" placeholder="Internal notes">${c.notes||''}</textarea></div>
-    </div>
-  </div>`
-}
-
-function toggleExpand(id, tr) {
-  if (IS_CLIENT) return
-  const panel = document.getElementById('panel-'+id)
+function toggleDtExpand(id) {
+  const panel = document.getElementById('dte-'+id)
   if (!panel) return
   const isOpen = panel.classList.contains('open')
-  document.querySelectorAll('.expand-panel.open').forEach(p=>p.classList.remove('open'))
-  document.querySelectorAll('tr.expanded').forEach(r=>r.classList.remove('expanded'))
-  if (!isOpen) { panel.classList.add('open'); tr.classList.add('expanded') }
+  document.querySelectorAll('.dt-expand.open').forEach(p=>p.classList.remove('open'))
+  if (!isOpen) panel.classList.add('open')
 }
 
-async function setClientApproval(id, approved) {
+// ── ACTIONS ──
+async function setClientApproval(id, approved, btn) {
   const { error } = await db.from(TABLE).update({client_approved: approved, updated_at: new Date().toISOString()}).eq('id', id)
   if (!error) {
     const idx = allCreators.findIndex(c=>c.id===id)
     if (idx>=0) allCreators[idx].client_approved = approved
-    const tr = document.getElementById('tr-'+id)
-    if (tr) {
-      tr.className = approved ? 'client-approved-row' : 'client-rejected-row'
-      // Update the buttons
-      const appBtn = tr.querySelector('.cab-approve')
-      const rejBtn = tr.querySelector('.cab-reject')
-      if (appBtn) appBtn.classList.toggle('active', approved === true)
-      if (rejBtn) rejBtn.classList.toggle('active', approved === false)
+    // Update card
+    const card = document.getElementById('card-'+id)
+    if (card) {
+      card.className = `creator-card ${approved ? 'card-approved' : 'card-rejected'}`
+      const appBtns = card.querySelectorAll('.cab-approve')
+      const rejBtns = card.querySelectorAll('.cab-reject')
+      appBtns.forEach(b => b.classList.toggle('active', approved === true))
+      rejBtns.forEach(b => b.classList.toggle('active', approved === false))
+      // Update badge in card-right
+      const cr = card.querySelector('.card-right')
+      if (cr) {
+        const oldBadge = cr.querySelector('.cap-approved,.cap-rejected,.cap-pending')
+        if (oldBadge) oldBadge.remove()
+        const badge = document.createElement('span')
+        badge.className = approved ? 'cap-approved' : 'cap-rejected'
+        badge.textContent = approved ? '✅ Approved' : '❌ Rejected'
+        cr.appendChild(badge)
+      }
     }
+    // Update table row
+    const dtr = document.getElementById('dtr-'+id)
+    if (dtr) dtr.className = approved ? 'row-approved' : 'row-rejected'
     updateApprovalCounts()
     updateStats()
   }
@@ -429,7 +564,7 @@ async function qs(id, newStatus) {
 }
 
 async function sf(id, field, value) {
-  const u = {updated_at: new Date().toISOString()}; u[field]=value||null
+  const u = {updated_at:new Date().toISOString()}; u[field]=value||null
   const { error } = await db.from(TABLE).update(u).eq('id',id)
   if (!error) { const idx=allCreators.findIndex(c=>c.id===id); if(idx>=0) allCreators[idx][field]=value; if(field==='status'){applyFilters();updateStats()} }
 }
@@ -445,54 +580,72 @@ function updateStats() {
 }
 
 function updateApprovalCounts() {
-  const approved = allCreators.filter(c=>c.client_approved===true).length
-  const rejected = allCreators.filter(c=>c.client_approved===false).length
-  const pending = allCreators.filter(c=>c.client_approved===null).length
-  document.getElementById('ap-approved').textContent = approved
-  document.getElementById('ap-rejected').textContent = rejected
-  document.getElementById('ap-pending').textContent = pending
+  document.getElementById('ap-approved').textContent = allCreators.filter(c=>c.client_approved===true).length
+  document.getElementById('ap-rejected').textContent = allCreators.filter(c=>c.client_approved===false).length
+  document.getElementById('ap-pending').textContent = allCreators.filter(c=>c.client_approved===null).length
 }
 
 function renderPagination() {
   const total = filtered.length, pages = Math.ceil(total/PAGE_SIZE)
   const pag = document.getElementById('pagination')
   if (pages<=1) { pag.innerHTML=`<span class="pgi">Showing ${total} creators</span>`; return }
-  let html=`<span class="pgi">Page ${page} of ${pages} (${total})</span>`
-  if (page>1) html+=`<button class="pgb" onclick="gp(${page-1})">‹ Prev</button>`
+  let html=`<span class="pgi">${page}/${pages} (${total})</span>`
+  if (page>1) html+=`<button class="pgb" onclick="gp(${page-1})">‹</button>`
   for(let i=Math.max(1,page-2);i<=Math.min(pages,page+2);i++) html+=`<button class="pgb${i===page?' active':''}" onclick="gp(${i})">${i}</button>`
-  if (page<pages) html+=`<button class="pgb" onclick="gp(${page+1})">Next ›</button>`
+  if (page<pages) html+=`<button class="pgb" onclick="gp(${page+1})">›</button>`
   pag.innerHTML = html
 }
 
-function gp(p) { page=p; renderTable(); renderPagination(); window.scrollTo(0,200) }
+function gp(p) { page=p; renderCards(); renderTable(); renderPagination(); window.scrollTo(0,0) }
 
 function exportCSV() {
-  const data = filtered.length ? filtered : allCreators
+  const data = filtered.length < allCreators.length ? filtered : allCreators
   const cols = IS_CLIENT
-    ? ['name','handle_ig','handle_tt','batch','category','reach','client_approved','content_link_1','content_link_2','content_link_3','content_link_4']
-    : ['name','handle_ig','handle_tt','batch','category','reach','status','client_approved','contacted_by','fee_quoted_aed','fee_agreed_aed','tracking_number','shipped_date','delivered_date','content_link_1','content_link_2','content_link_3','content_link_4','notes']
-  const csv = [cols.map(c=>c.replace(/_/g,' ').toUpperCase()).join(','), ...data.map(r=>cols.map(c=>`"${(r[c]!=null?r[c]:'').toString().replace(/"/g,'""')}"`).join(','))].join('\n')
-  const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='bioderma-tracker.csv'; a.click()
+    ? ['name','handle_ig','handle_tt','batch','category','reach','client_approved','content_link_1','content_link_2']
+    : ['name','handle_ig','handle_tt','ig_url','tt_url','batch','category','reach','status','client_approved','contacted_by','fee_quoted_aed','fee_agreed_aed','tracking_number','content_link_1','content_link_2','notes']
+  const csv = [cols.join(','), ...data.map(r=>cols.map(c=>`"${(r[c]!=null?r[c]:'').toString().replace(/"/g,'""')}"`).join(','))].join('\n')
+  dl(csv, 'bioderma-tracker.csv')
 }
 
 function exportApproved() {
   const approved = allCreators.filter(c=>c.client_approved===true)
-  if (!approved.length) { alert('No creators approved yet. Click ✅ Approve on the creators you want.'); return }
-  const cols = ['name','handle_ig','handle_tt','batch','category','reach']
-  const csv = [cols.map(c=>c.replace(/_/g,' ').toUpperCase()).join(','), ...approved.map(r=>cols.map(c=>`"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n')
-  const a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='bioderma-my-shortlist.csv'; a.click()
+  if (!approved.length) { alert('No creators approved yet. Tap ✅ Approve on the creators you want to include.'); return }
+  const cols = ['name','handle_ig','handle_tt','ig_url','tt_url','batch','category','reach']
+  const csv = [cols.join(','), ...approved.map(r=>cols.map(c=>`"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(','))].join('\n')
+  dl(csv, 'bioderma-my-shortlist.csv')
+}
+
+function dl(csv, name) {
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}))
+  a.download = name
+  a.click()
 }
 
 async function addCreator() {
   const name = document.getElementById('new-name').value.trim()
   if (!name) return alert('Name is required')
-  const { error } = await db.from(TABLE).insert({name,handle_ig:document.getElementById('new-ig').value.trim(),handle_tt:document.getElementById('new-tt').value.trim(),batch:document.getElementById('new-batch').value,category:document.getElementById('new-cat').value,reach:document.getElementById('new-reach').value.trim(),status:'SHORTLISTED',market:'UAE',priority:'P2',created_at:new Date().toISOString(),updated_at:new Date().toISOString()})
+  const ig = document.getElementById('new-ig').value.trim()
+  const igUrl = document.getElementById('new-ig-url').value.trim()
+  const igUrlFinal = igUrl || (ig ? `https://www.instagram.com/${ig.replace('@','')}` : null)
+  const { error } = await db.from(TABLE).insert({
+    name, handle_ig: ig,
+    handle_tt: document.getElementById('new-tt').value.trim()||null,
+    ig_url: igUrlFinal,
+    tt_url: document.getElementById('new-tt-url').value.trim()||null,
+    batch: document.getElementById('new-batch').value,
+    category: document.getElementById('new-cat').value,
+    reach: document.getElementById('new-reach').value.trim()||null,
+    status: 'SHORTLISTED', market:'UAE', priority:'P2',
+    created_at: new Date().toISOString(), updated_at: new Date().toISOString()
+  })
   if (error) return alert('Error: '+error.message)
-  document.getElementById('add-modal').style.display = 'none'
-  await init()
+  hideModal(); await init()
 }
 
-function showAddModal() { document.getElementById('add-modal').style.display = 'flex' }
+function showModal() { document.getElementById('add-modal').classList.add('open') }
+function hideModal() { document.getElementById('add-modal').classList.remove('open') }
+document.getElementById('add-modal').addEventListener('click', e => { if(e.target===e.currentTarget) hideModal() })
 
 init()
 </script>
