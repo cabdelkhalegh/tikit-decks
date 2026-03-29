@@ -273,7 +273,8 @@ body.client-view .agency-col{display:none!important}
       <tr>
         <th>#</th><th>Creator</th><th>Handles</th><th>Batch</th><th>Category</th><th>Reach</th>
         <th class="agency-col">Status</th>
-        <th>Client Approval</th>
+        <th class="agency-col">Agency ✓</th>
+        <th>Client ✓</th>
         <th class="agency-col">Fee (AED)</th>
         <th>Content</th>
         <th class="agency-col">Actions</th>
@@ -338,7 +339,11 @@ const STATUS_LABELS = {
 const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family'}
 
 async function init() {
-  const { data, error } = await db.from(TABLE).select('*').order('batch').order('name')
+  // Client view: only show creators the agency has approved (agency_approved=true)
+  // Agency view: show all
+  let query = db.from(TABLE).select('*').order('batch').order('name')
+  if (IS_CLIENT) query = query.eq('agency_approved', true)
+  const { data, error } = await query
   if (error) {
     document.getElementById('cards-container').innerHTML = `<div class="empty-state"><div class="big">❌</div>${error.message}</div>`
     return
@@ -525,6 +530,7 @@ function renderTable() {
       <td style="font-size:11px;white-space:nowrap">${catLabel}</td>
       <td style="font-size:11px;color:var(--muted)">${c.reach||'—'}</td>
       <td class="agency-col"><span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span></td>
+      <td class="agency-col">${c.agency_approved === true ? '<span class="cap-approved" style="font-size:10px">✅</span>' : c.agency_approved === false ? '<span class="cap-rejected" style="font-size:10px">❌</span>' : '<span class="cap-pending" style="font-size:10px">—</span>'}</td>
       <td onclick="event.stopPropagation()">${approvalCell}</td>
       <td class="agency-col" style="font-size:12px">${feeHtml}</td>
       <td>${linksHtml}</td>
@@ -715,10 +721,19 @@ const channel = db.channel('bioderma-realtime')
   .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
     const { eventType, new: newRow, old: oldRow } = payload
     if (eventType === 'INSERT') {
-      allCreators.push(newRow)
+      // Client view: only add if agency approved it
+      if (!IS_CLIENT || newRow.agency_approved === true) allCreators.push(newRow)
     } else if (eventType === 'UPDATE') {
       const idx = allCreators.findIndex(c=>c.id===newRow.id)
-      if (idx>=0) allCreators[idx] = newRow
+      if (IS_CLIENT && newRow.agency_approved === true && idx < 0) {
+        // Agency just approved — add to client view
+        allCreators.push(newRow)
+      } else if (IS_CLIENT && newRow.agency_approved !== true && idx >= 0) {
+        // Agency un-approved — remove from client view (but only if not yet contacted)
+        if (newRow.status === 'SHORTLISTED') allCreators = allCreators.filter(c=>c.id!==newRow.id)
+      } else if (idx>=0) {
+        allCreators[idx] = newRow
+      }
       _applyApprovalUI(newRow.id, newRow.client_approved)
     } else if (eventType === 'DELETE') {
       allCreators = allCreators.filter(c=>c.id!==oldRow.id)

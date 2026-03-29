@@ -5939,8 +5939,8 @@ const ALL=[{"id":1000,"cat":"sport","name":"Maribel Fitness","handle":"@maribel.
 const BC={"B1":"#E91E8C","B2":"#0066CC","EM":"#00875A"};
 const BL={"B1":"Batch 1","B2":"Batch 2","EM":"🇦🇪 Emirati"};
 let st={};
-// Map master-review status → Supabase client_approved value
-// approved → true | rejected → false | hold → null (pending)
+// Master review writes to agency_approved (agency internal gate)
+// approved → true | rejected → false | hold/clear → null
 function _stToDb(status){if(status==='approved')return true;if(status==='rejected')return false;return null;}
 function _dbToSt(val){if(val===true)return 'approved';if(val===false)return 'rejected';return null;}
 
@@ -5950,11 +5950,11 @@ const dbStatus={}  // dbId → status
 async function _loadFromSupabase(){
   try{
     // DB IDs = master review IDs + 1 (DB: 1001-1095, MR: 1000-1094)
-    const{data,error}=await _supa.from('bioderma_creators').select('id,client_approved,status').order('id')
+    const{data,error}=await _supa.from('bioderma_creators').select('id,agency_approved,status').order('id')
     if(error)throw error
     if(!data||!data.length)return
     const dbMap={},dbSt={}
-    data.forEach(r=>{dbMap[r.id]=r.client_approved;dbSt[r.id]=r.status})
+    data.forEach(r=>{dbMap[r.id]=r.agency_approved;dbSt[r.id]=r.status})
     ALL.forEach(c=>{
       c._dbId=c.id+1
       dbStatus[c._dbId]=dbSt[c._dbId]
@@ -6024,7 +6024,7 @@ async function ss(id,status,btn){
   // DB id = MR id + 1 (deterministic offset)
   const dbId=id+1
   const dbVal=_stToDb(newStatus)
-  const{error}=await _supa.from('bioderma_creators').update({client_approved:dbVal,updated_at:new Date().toISOString()}).eq('id',dbId)
+  const{error}=await _supa.from('bioderma_creators').update({agency_approved:dbVal,updated_at:new Date().toISOString()}).eq('id',dbId)
   if(error){
     // Rollback
     st[id]=prev
@@ -6054,7 +6054,7 @@ _supa.channel('mr-realtime')
     const creator=ALL.find(c=>c.id===mrId)
     if(!creator)return
     dbStatus[row.id]=row.status
-    const s=_dbToSt(row.client_approved)
+    const s=_dbToSt(row.agency_approved)
     st[mrId]=s
     _applyBtnState(mrId,s)
     if(LOCKED_STATUSES.includes(row.status)){_lockCreatorBtns(mrId,row.status)}
