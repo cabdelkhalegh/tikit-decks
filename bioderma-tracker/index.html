@@ -187,6 +187,8 @@ body.client-view .agency-col{display:none!important}
     <button class="btn btn-outline" onclick="refreshData()" style="padding:8px 10px;font-size:12px" title="Refresh">🔄</button>
     <button class="btn btn-outline" onclick="exportCSV()" style="padding:8px 10px;font-size:12px">⬇ Export</button>
     <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
+    <!-- TESTING ONLY — set SHOW_RESET_BTN=false before production -->
+    <button id="reset-test-btn" class="btn agency-col" onclick="resetTestData()" style="padding:8px 10px;font-size:12px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80">🔁 Reset</button>
   </div>
 </div>
 
@@ -701,6 +703,37 @@ async function addCreator() {
 function showModal() { document.getElementById('add-modal').classList.add('open') }
 function hideModal() { document.getElementById('add-modal').classList.remove('open') }
 document.getElementById('add-modal').addEventListener('click', e => { if(e.target===e.currentTarget) hideModal() })
+
+// ── TEST RESET — set to false before production ──
+const SHOW_RESET_BTN = true
+if (!SHOW_RESET_BTN) {
+  const rb = document.getElementById('reset-test-btn')
+  if (rb) rb.style.display = 'none'
+}
+
+async function resetTestData() {
+  if (!confirm('⚠️ RESET ALL TEST DATA?\n\nThis will clear:\n• All agency + client approvals\n• All statuses → SHORTLISTED\n• All outreach, shipping, content data\n\nCreator profiles and handles are untouched.\n\nRun this only before production go-live.')) return
+  const confirm2 = prompt('Type RESET to confirm:')
+  if (confirm2 !== 'RESET') { showToast('Cancelled', true); return }
+  showToast('⏳ Resetting…')
+  const fields = {
+    agency_approved: null, client_approved: null,
+    client_notes: null, agency_notes: null,
+    status: 'SHORTLISTED',
+    contacted_by: null, contacted_date: null, response_date: null,
+    fee_quoted_aed: null, fee_agreed_aed: null,
+    shipping_address: null, tracking_number: null,
+    shipped_date: null, delivered_date: null,
+    content_link_1: null, content_link_2: null,
+    content_link_3: null, content_link_4: null,
+    notes: null, updated_at: new Date().toISOString()
+  }
+  // Supabase requires a filter for bulk update — use id > 0
+  const { error } = await db.from(TABLE).update(fields).gt('id', 0)
+  if (error) { showToast('❌ Reset failed: ' + error.message, true); return }
+  await init()
+  showToast('✅ All test data cleared — ready for production')
+}
 
 async function refreshData() {
   const btn = document.querySelector('[title="Refresh"]')
