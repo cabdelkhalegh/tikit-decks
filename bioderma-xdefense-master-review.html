@@ -6009,8 +6009,9 @@ function showMRToast(msg,isErr=false){
 function ts(id,e){document.getElementById('row-'+id).classList.toggle('sel');uc();}
 
 async function ss(id,status,btn){
-  // Block changes if creator is past shortlisting
+  // DB id = MR id + 1 (deterministic offset)
   const dbId=id+1
+  // Block changes if creator is past shortlisting
   if(LOCKED_STATUSES.includes(dbStatus[dbId])){
     showMRToast('🔒 Locked — outreach already started for this creator',true)
     return
@@ -6021,8 +6022,6 @@ async function ss(id,status,btn){
   st[id]=newStatus
   _applyBtnState(id,newStatus)
   uc();uat()
-  // DB id = MR id + 1 (deterministic offset)
-  const dbId=id+1
   const dbVal=_stToDb(newStatus)
   const{error}=await _supa.from('bioderma_creators').update({agency_approved:dbVal,updated_at:new Date().toISOString()}).eq('id',dbId)
   if(error){
