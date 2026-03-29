@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioderma XDefense — Campaign Tracker | TiKiT</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pink:#E91E8C;--blue:#0066CC;--bg:#F5F6F8;--white:#fff;
+  --border:#E9ECEF;--text:#1a1a1a;--muted:#666;--light:#F8F9FA;
+  --s-shortlisted:#E3F2FD;--sc-shortlisted:#1565C0;
+  --s-contacted:#FFF8E1;--sc-contacted:#F57C00;
+  --s-followup:#FFF3E0;--sc-followup:#E65100;
+  --s-confirmed:#E8F5E9;--sc-confirmed:#2E7D32;
+  --s-declined:#FFEBEE;--sc-declined:#C62828;
+  --s-noresp:#F5F5F5;--sc-noresp:#757575;
+  --s-shipped:#F3E5F5;--sc-shipped:#6A1B9A;
+  --s-delivered:#E0F2F1;--sc-delivered:#00695C;
+  --s-posted:#1B5E20;--sc-posted:#fff;
+  --s-completed:#004D40;--sc-completed:#fff;
+}
+html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5}
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.logo{font-weight:900;font-size:14px}.logo em{color:var(--pink);font-style:normal}
+.logo span{color:var(--blue)}
+.view-badge{background:var(--pink);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+.view-badge.client{background:var(--blue)}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.btn{border:none;padding:7px 16px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--pink);color:#fff}.btn-primary:hover{background:#C2185B}
+.btn-sec{background:var(--white);color:var(--muted);border:1px solid var(--border)}.btn-sec:hover{border-color:var(--pink);color:var(--pink)}
+/* STATS */
+.stats{display:flex;gap:12px;padding:16px 24px;background:var(--white);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap}
+.stat{background:var(--light);border-radius:10px;padding:12px 18px;min-width:110px;border:1px solid var(--border)}
+.stat .n{font-size:22px;font-weight:900;color:var(--pink)}.stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
+.stat.blue .n{color:var(--blue)}
+.stat.green .n{color:#2E7D32}
+.stat.purple .n{color:#6A1B9A}
+/* FILTERS */
+.filters{display:flex;gap:8px;padding:12px 24px;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center}
+.filters select,.filters input{border:1px solid var(--border);border-radius:7px;padding:6px 12px;font-size:12px;color:var(--text);background:var(--white);outline:none}
+.filters select:focus,.filters input:focus{border-color:var(--pink)}
+.filters input{width:200px}
+.filter-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)}
+/* TABLE */
+.table-wrap{overflow-x:auto;padding:16px 24px}
+table{width:100%;border-collapse:collapse;background:var(--white);border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:12px}
+thead tr{background:var(--light);border-bottom:2px solid var(--border)}
+th{padding:10px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:#FFF5F8}
+tbody tr.expanded{background:#FFF5F8}
+td{padding:10px 12px;vertical-align:middle}
+/* STATUS PILLS */
+.status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.sp-SHORTLISTED{background:var(--s-shortlisted);color:var(--sc-shortlisted)}
+.sp-CONTACTED{background:var(--s-contacted);color:var(--sc-contacted)}
+.sp-FOLLOW_UP_1,.sp-FOLLOW_UP_2{background:var(--s-followup);color:var(--sc-followup)}
+.sp-CONFIRMED,.sp-DETAILS_COLLECTED,.sp-BOX_ASSEMBLED,.sp-BRIEF_SENT{background:var(--s-confirmed);color:var(--sc-confirmed)}
+.sp-DECLINED,.sp-DELIVERY_FAILED{background:var(--s-declined);color:var(--sc-declined)}
+.sp-NO_RESPONSE,.sp-DID_NOT_POST{background:var(--s-noresp);color:var(--sc-noresp)}
+.sp-DISPATCHED,.sp-IN_TRANSIT{background:var(--s-shipped);color:var(--sc-shipped)}
+.sp-DELIVERED,.sp-AWAITING_CONTENT{background:var(--s-delivered);color:var(--sc-delivered)}
+.sp-POSTED{background:var(--s-posted);color:var(--sc-posted)}
+.sp-COMPLETED{background:var(--s-completed);color:var(--sc-completed)}
+/* LINKS INSIDE TABLE */
+.creator-link{color:var(--blue);text-decoration:none;font-weight:600}.creator-link:hover{text-decoration:underline}
+.platform-btn{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-decoration:none;margin-right:3px}
+.pb-ig{background:linear-gradient(135deg,#f09433,#dc2743);color:#fff}
+.pb-tt{background:#000;color:#fff}
+.batch-b1{background:#FCE4EC;color:#C2185B;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.batch-b2{background:#E3F2FD;color:#1565C0;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.batch-em{background:#E8F5E9;color:#2E7D32;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+/* EXPANDED ROW */
+.expand-row td{padding:0}
+.expand-panel{background:#FAFAFA;border-bottom:2px solid var(--border);padding:16px 20px;display:none}
+.expand-panel.open{display:block}
+.expand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.field-group{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px}
+.field-group h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px}
+.field-row{display:flex;flex-direction:column;margin-bottom:8px}
+.field-row label{font-size:10px;color:var(--muted);font-weight:600;margin-bottom:3px}
+.field-row input,.field-row select,.field-row textarea{border:1px solid var(--border);border-radius:5px;padding:6px 8px;font-size:12px;color:var(--text);outline:none;background:var(--white)}
+.field-row input:focus,.field-row select:focus,.field-row textarea:focus{border-color:var(--pink)}
+.field-row textarea{resize:vertical;min-height:60px}
+.content-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.content-link-item{display:flex;gap:6px;align-items:center}
+.content-link-item input{flex:1}
+.content-link-item a{color:var(--blue);font-size:11px;white-space:nowrap}
+.save-btn{background:var(--pink);color:#fff;border:none;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;margin-top:10px}
+.save-btn:hover{background:#C2185B}
+/* ACTION BUTTONS */
+.action-btns{display:flex;gap:4px;flex-wrap:wrap}
+.act-btn{border:none;padding:4px 9px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
+.act-contact{background:#FFF8E1;color:#F57C00;border:1px solid #FFE082}
+.act-accept{background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7}
+.act-ship{background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8}
+.act-post{background:var(--s-posted);color:#fff;border:none}
+.act-done{background:var(--s-completed);color:#fff;border:none}
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;background:var(--white);border-top:1px solid var(--border)}
+.page-btn{border:1px solid var(--border);background:var(--white);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer}
+.page-btn.active{background:var(--pink);color:#fff;border-color:var(--pink)}
+.page-btn:hover:not(.active){border-color:var(--pink);color:var(--pink)}
+.page-info{font-size:12px;color:var(--muted)}
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+.empty{text-align:center;padding:40px;color:var(--muted)}
+/* CLIENT-ONLY hides */
+body.client-view .agency-only{display:none!important}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:12px;padding:24px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:16px}
+.modal-close{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--muted);margin-top:-4px}
+@media(max-width:768px){.stats{gap:8px}.stat{min-width:90px;padding:10px 12px}.filters input{width:140px}.expand-grid{grid-template-columns:1fr}.content-links{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">TiKiT<em>.</em> × <span>Bioderma</span> XDefense — Campaign Tracker</div>
+  <div class="topbar-right">
+    <span class="view-badge" id="view-badge">Agency View</span>
+    <button class="btn btn-sec" onclick="exportCSV()">⬇ Export</button>
+    <button class="btn btn-primary agency-only" onclick="showAddModal()">+ Add Creator</button>
+  </div>
+</div>
+
+<div class="stats" id="stats-bar">
+  <div class="stat"><div class="n" id="s-total">—</div><div class="l">Total</div></div>
+  <div class="stat"><div class="n" id="s-shortlisted">—</div><div class="l">Shortlisted</div></div>
+  <div class="stat blue"><div class="n" id="s-contacted">—</div><div class="l">Contacted</div></div>
+  <div class="stat green"><div class="n" id="s-confirmed">—</div><div class="l">Confirmed</div></div>
+  <div class="stat purple"><div class="n" id="s-shipped">—</div><div class="l">Shipped</div></div>
+  <div class="stat green"><div class="n" id="s-posted">—</div><div class="l">Posted</div></div>
+  <div class="stat"><div class="n" id="s-completed">—</div><div class="l">Completed</div></div>
+  <div class="stat blue agency-only"><div class="n" id="s-declined">—</div><div class="l">Declined</div></div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Filter:</span>
+  <select id="f-batch" onchange="applyFilters()">
+    <option value="">All Batches</option>
+    <option value="B1">Batch 1</option>
+    <option value="B2">Batch 2</option>
+    <option value="EM">🇦🇪 Emirati</option>
+  </select>
+  <select id="f-status" onchange="applyFilters()">
+    <option value="">All Statuses</option>
+    <option value="SHORTLISTED">Shortlisted</option>
+    <option value="CONTACTED">Contacted</option>
+    <option value="FOLLOW_UP_1">Follow-Up 1</option>
+    <option value="FOLLOW_UP_2">Follow-Up 2</option>
+    <option value="CONFIRMED">Confirmed</option>
+    <option value="DETAILS_COLLECTED">Details Collected</option>
+    <option value="BOX_ASSEMBLED">Box Assembled</option>
+    <option value="DISPATCHED">Dispatched</option>
+    <option value="IN_TRANSIT">In Transit</option>
+    <option value="DELIVERED">Delivered</option>
+    <option value="AWAITING_CONTENT">Awaiting Content</option>
+    <option value="POSTED">Posted</option>
+    <option value="COMPLETED">Completed</option>
+    <option value="DECLINED">Declined</option>
+    <option value="NO_RESPONSE">No Response</option>
+    <option value="DID_NOT_POST">Did Not Post</option>
+    <option value="DELIVERY_FAILED">Delivery Failed</option>
+  </select>
+  <select id="f-category" onchange="applyFilters()">
+    <option value="">All Categories</option>
+    <option value="sport">🏃 Sports</option>
+    <option value="pharma">💊 Pharma</option>
+    <option value="derm">🔬 Skincare</option>
+    <option value="beauty">💄 Beauty</option>
+    <option value="lifestyle">🌟 Lifestyle</option>
+    <option value="travel">✈️ Travel</option>
+    <option value="food">🍳 Food</option>
+    <option value="fitness">🏋️ Fitness</option>
+    <option value="fashion">👗 Fashion</option>
+    <option value="mom">👩‍👧 Family</option>
+    <option value="tech">💻 Tech</option>
+    <option value="athlete">🏆 Athletes</option>
+  </select>
+  <input id="f-search" type="text" placeholder="🔍 Search creator or handle..." oninput="applyFilters()">
+  <button class="btn btn-sec" onclick="clearFilters()">Clear</button>
+</div>
+
+<div class="table-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Creator</th>
+        <th>Handles</th>
+        <th>Batch</th>
+        <th>Category</th>
+        <th>Reach</th>
+        <th>Status</th>
+        <th class="agency-only">Contacted By</th>
+        <th class="agency-only">Fee (AED)</th>
+        <th>Content Links</th>
+        <th class="agency-only">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr><td colspan="11" class="loading">Loading creators...</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="pagination" id="pagination"></div>
+
+<!-- Add Creator Modal -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <h3>Add Creator <button class="modal-close" onclick="closeModal('add-modal')">✕</button></h3>
+    <div class="field-row"><label>Name</label><input id="new-name" placeholder="Creator name"></div>
+    <div class="field-row"><label>Instagram Handle</label><input id="new-ig" placeholder="@handle"></div>
+    <div class="field-row"><label>TikTok Handle</label><input id="new-tt" placeholder="@handle"></div>
+    <div class="field-row"><label>Batch</label>
+      <select id="new-batch"><option value="B1">Batch 1</option><option value="B2">Batch 2</option><option value="EM">Emirati</option></select>
+    </div>
+    <div class="field-row"><label>Category</label>
+      <select id="new-cat"><option value="beauty">Beauty</option><option value="lifestyle">Lifestyle</option><option value="sport">Sports</option><option value="derm">Skincare</option><option value="pharma">Pharma</option><option value="travel">Travel</option><option value="food">Food</option><option value="fashion">Fashion</option><option value="fitness">Fitness</option><option value="mom">Family</option></select>
+    </div>
+    <div class="field-row"><label>Reach (e.g. IG 45K)</label><input id="new-reach" placeholder="IG 45K"></div>
+    <button class="save-btn" onclick="addCreator()">Add Creator</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc2NjA5ODgsImV4cCI6MjAyMzIzNjk4OH0.lMHNKqvMjH46dvASjFJ5p4R2VGqvQ4kOyY7kIRQvTk0'
+const { createClient } = supabase
+const db = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const params = new URLSearchParams(location.search)
+const IS_CLIENT = params.get('view') === 'client'
+if (IS_CLIENT) { document.body.classList.add('client-view'); document.getElementById('view-badge').textContent = 'Client View'; document.getElementById('view-badge').classList.add('client') }
+
+const TABLE = 'bioderma_creators'
+const PAGE_SIZE = 30
+let allCreators = [], filtered = [], page = 1, expandedId = null
+
+const STATUS_LABELS = {
+  SHORTLISTED:'Shortlisted',CONTACTED:'Contacted',FOLLOW_UP_1:'Follow-Up 1',FOLLOW_UP_2:'Follow-Up 2',
+  CONFIRMED:'Confirmed',DETAILS_COLLECTED:'Details Collected',BOX_ASSEMBLED:'Box Assembled',
+  BRIEF_SENT:'Brief Sent',DISPATCHED:'Dispatched',IN_TRANSIT:'In Transit',DELIVERED:'Delivered',
+  AWAITING_CONTENT:'Awaiting Content',POSTED:'Posted ✓',COMPLETED:'Completed',
+  DECLINED:'Declined',NO_RESPONSE:'No Response',DID_NOT_POST:'Did Not Post',DELIVERY_FAILED:'Delivery Failed'
+}
+const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family',tech:'💻 Tech',athlete:'🏆 Athletes',derm2:'🔬 Derm'}
+const BATCH_CLASSES = {B1:'batch-b1',B2:'batch-b2',EM:'batch-em'}
+const BATCH_LABELS2 = {B1:'Batch 1',B2:'Batch 2',EM:'🇦🇪 Emirati'}
+
+async function init() {
+  await ensureTable()
+  await loadCreators()
+}
+
+async function ensureTable() {
+  // Try to select — if table doesn't exist, create it
+  const { error } = await db.from(TABLE).select('id').limit(1)
+  if (error && error.code === '42P01') {
+    // Table doesn't exist — need to create via SQL
+    console.log('Table not found, will seed on first insert')
+  }
+}
+
+async function loadCreators() {
+  const { data, error } = await db.from(TABLE).select('*').order('batch').order('name')
+  if (error) {
+    if (error.code === '42P01') {
+      // Table doesn't exist yet — seed it
+      await seedData()
+      return
+    }
+    document.getElementById('table-body').innerHTML = `<tr><td colspan="11" class="empty">Error loading data: ${error.message}</td></tr>`
+    return
+  }
+  if (!data || data.length === 0) {
+    await seedData()
+    return
+  }
+  allCreators = data
+  applyFilters()
+  updateStats()
+}
+
+async function seedData() {
+  document.getElementById('table-body').innerHTML = '<tr><td colspan="11" class="loading">Setting up database for first time... ⏳</td></tr>'
+  const seed = getSeedData()
+  const { error } = await db.from(TABLE).upsert(seed, { onConflict: 'id', ignoreDuplicates: true })
+  if (error) {
+    // Try insert instead
+    const { error: e2 } = await db.from(TABLE).insert(seed)
+    if (e2) {
+      document.getElementById('table-body').innerHTML = `<tr><td colspan="11" class="empty">Database setup failed. Please ensure the table exists in Supabase.<br><small>${e2.message}</small></td></tr>`
+      return
+    }
+  }
+  await loadCreators()
+}
+
+function getSeedData() {
+  const now = new Date().toISOString()
+  const b1 = [
+    {id:1001,batch:'B1',name:'Maribel Fitness',handle_ig:'@maribel.fitness',handle_tt:'',ig_url:'https://www.instagram.com/maribel.fitness/',tt_url:'',category:'sport',reach:'IG 14K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1002,batch:'B1',name:'Kasia Romanowicz',handle_ig:'@kasia.romanowicz',handle_tt:'',ig_url:'https://www.instagram.com/kasia.romanowicz/',tt_url:'',category:'sport',reach:'IG 7.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1003,batch:'B1',name:'Anita Joubert',handle_ig:'@anitajoubert',handle_tt:'',ig_url:'https://www.instagram.com/anitajoubert/',tt_url:'',category:'sport',reach:'IG 15.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1004,batch:'B1',name:'Mish (Yoga & Pilates)',handle_ig:'@mishybabe',handle_tt:'',ig_url:'https://www.instagram.com/mishybabe/',tt_url:'',category:'sport',reach:'IG 6.4K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1005,batch:'B1',name:'Nnunfit',handle_ig:'@nnunfit',handle_tt:'',ig_url:'https://www.instagram.com/nnunfit/',tt_url:'',category:'sport',reach:'IG 5.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1006,batch:'B1',name:'Amel Talks',handle_ig:'@ameltalks',handle_tt:'',ig_url:'https://www.instagram.com/ameltalks/',tt_url:'',category:'pharma',reach:'IG 88K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1007,batch:'B1',name:'Dr. Lana Kashlan',handle_ig:'@drlanakashlan',handle_tt:'',ig_url:'https://www.instagram.com/drlanakashlan/',tt_url:'',category:'pharma',reach:'IG 27K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1008,batch:'B1',name:'Lives and Forks (Dina)',handle_ig:'@lives_and_forks',handle_tt:'',ig_url:'https://www.instagram.com/lives_and_forks/',tt_url:'',category:'pharma',reach:'IG 36K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1009,batch:'B1',name:'Heeshas Lifestylezilla',handle_ig:'@heeshaslifestylezilla',handle_tt:'',ig_url:'https://www.instagram.com/heeshaslifestylezilla/',tt_url:'',category:'pharma',reach:'IG 11.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1010,batch:'B1',name:'Urvi Jagda',handle_ig:'@urvijagda',handle_tt:'',ig_url:'https://www.instagram.com/urvijagda/',tt_url:'',category:'pharma',reach:'IG 47K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1011,batch:'B1',name:'Shaza Aijaz (SheBlogs)',handle_ig:'@sheblogs.ae',handle_tt:'',ig_url:'https://www.instagram.com/sheblogs.ae/',tt_url:'',category:'derm',reach:'IG 57.6K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1012,batch:'B1',name:'Alia Bin Omair',handle_ig:'@aliabinomair',handle_tt:'',ig_url:'https://www.instagram.com/aliabinomair/',tt_url:'',category:'derm',reach:'IG 10K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1013,batch:'B1',name:'Anam Didat',handle_ig:'@anamdidat_',handle_tt:'',ig_url:'https://www.instagram.com/anamdidat_/',tt_url:'',category:'derm',reach:'IG 16.8K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1014,batch:'B1',name:'Annie Baber',handle_ig:'@byanniebaber',handle_tt:'',ig_url:'https://www.instagram.com/byanniebaber/',tt_url:'',category:'derm',reach:'IG 31.6K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1015,batch:'B1',name:'Arti Bhatia (DivaBeauty)',handle_ig:'@divabeautyae',handle_tt:'',ig_url:'https://www.instagram.com/divabeautyae/',tt_url:'',category:'derm',reach:'IG 25K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1016,batch:'B1',name:'Shashi Beauty',handle_ig:'@shashibeauty_',handle_tt:'',ig_url:'https://www.instagram.com/shashibeauty_/',tt_url:'',category:'beauty',reach:'IG 12.3K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1017,batch:'B1',name:'Makeup & Literature',handle_ig:'@makeupandliterature',handle_tt:'',ig_url:'https://www.instagram.com/makeupandliterature/',tt_url:'',category:'beauty',reach:'IG 18.5K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1018,batch:'B1',name:'Pooja Biswas',handle_ig:'@poojaabis',handle_tt:'',ig_url:'https://www.instagram.com/poojaabis/',tt_url:'',category:'beauty',reach:'IG 64.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1019,batch:'B1',name:'Sapna Bhambra',handle_ig:'@sapna1809',handle_tt:'',ig_url:'https://www.instagram.com/sapna1809/',tt_url:'',category:'beauty',reach:'IG 47.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1020,batch:'B1',name:'Sammy James',handle_ig:'@sammymayjames',handle_tt:'',ig_url:'https://www.instagram.com/sammymayjames/',tt_url:'',category:'beauty',reach:'IG 21.8K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1021,batch:'B1',name:'Sara FatimatuZahra',handle_ig:'@sara.fatimatuzahra',handle_tt:'',ig_url:'https://www.instagram.com/sara.fatimatuzahra/',tt_url:'',category:'lifestyle',reach:'IG 14.2K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1022,batch:'B1',name:'Reem Mounzer',handle_ig:'@reemmounzer',handle_tt:'',ig_url:'https://www.instagram.com/reemmounzer/',tt_url:'',category:'lifestyle',reach:'IG 38K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1023,batch:'B1',name:'Monica Fawzi',handle_ig:'@monica_fawzi',handle_tt:'',ig_url:'https://www.instagram.com/monica_fawzi/',tt_url:'',category:'lifestyle',reach:'IG ~20K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1024,batch:'B1',name:'Chireva',handle_ig:'@__chireva__',handle_tt:'',ig_url:'https://www.instagram.com/__chireva__/',tt_url:'',category:'lifestyle',reach:'IG 14.2K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1025,batch:'B1',name:'Anushree Bagzai',handle_ig:'@anushreebagzai',handle_tt:'',ig_url:'https://www.instagram.com/anushreebagzai/',tt_url:'',category:'lifestyle',reach:'IG 73K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1026,batch:'B1',name:'Ainur Yerkin',handle_ig:'@ainuryerkin',handle_tt:'',ig_url:'https://www.instagram.com/ainuryerkin/',tt_url:'',category:'travel',reach:'IG 36.8K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1027,batch:'B1',name:'Chaniksha',handle_ig:'@chaniksha0702',handle_tt:'',ig_url:'https://www.instagram.com/chaniksha0702/',tt_url:'',category:'travel',reach:'IG 95.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1028,batch:'B1',name:'Mariemomar',handle_ig:'@mariemomar4',handle_tt:'',ig_url:'https://www.instagram.com/mariemomar4/',tt_url:'',category:'travel',reach:'IG 101.2K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1029,batch:'B1',name:'Noor Ul Ain',handle_ig:'@noorulaiin',handle_tt:'',ig_url:'https://www.instagram.com/noorulaiin/',tt_url:'',category:'food',reach:'IG 99.1K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1030,batch:'B1',name:'Natashazz',handle_ig:'@thenatashazz',handle_tt:'',ig_url:'https://www.instagram.com/thenatashazz/',tt_url:'',category:'food',reach:'IG 96.2K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1031,batch:'B1',name:'FolksFiesta',handle_ig:'@folksfiesta',handle_tt:'',ig_url:'https://www.instagram.com/folksfiesta/',tt_url:'',category:'food',reach:'IG 113.3K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1032,batch:'B1',name:'Dr. Laila Faridoon',handle_ig:'@lailafaridoon',handle_tt:'',ig_url:'https://www.instagram.com/lailafaridoon/',tt_url:'',category:'tech',reach:'IG 66.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1033,batch:'B1',name:'i.am_ami',handle_ig:'@i.am_ami',handle_tt:'',ig_url:'https://www.instagram.com/i.am_ami/',tt_url:'',category:'tech',reach:'IG 95.7K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1034,batch:'B1',name:'Yasmin Baker',handle_ig:'@yasmintbaker',handle_tt:'',ig_url:'https://www.instagram.com/yasmintbaker/',tt_url:'',category:'tech',reach:'IG 8.3K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1035,batch:'B1',name:'My Family My World',handle_ig:'@myfamilymyworldd',handle_tt:'',ig_url:'https://www.instagram.com/myfamilymyworldd/',tt_url:'',category:'mom',reach:'IG 57.4K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1036,batch:'B1',name:'HappilySneha',handle_ig:'@happilysneha',handle_tt:'',ig_url:'https://www.instagram.com/happilysneha/',tt_url:'',category:'mom',reach:'IG 36.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1037,batch:'B1',name:'Abrown Mom',handle_ig:'@abrown.mom',handle_tt:'',ig_url:'https://www.instagram.com/abrown.mom/',tt_url:'',category:'mom',reach:'IG 106.5K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1038,batch:'B1',name:'Jilu Saji',handle_ig:'@annamma_dubai',handle_tt:'',ig_url:'https://www.instagram.com/annamma_dubai/',tt_url:'',category:'mom',reach:'IG 61.4K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1039,batch:'B1',name:'Evgenija Kolev',handle_ig:'@rizovaenn',handle_tt:'',ig_url:'https://www.instagram.com/rizovaenn/',tt_url:'',category:'fitness',reach:'IG 15.1K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:1040,batch:'B1',name:'Eleanor Collins',handle_ig:'@ellacollinsfitness',handle_tt:'',ig_url:'https://www.instagram.com/ellacollinsfitness/',tt_url:'',category:'fitness',reach:'IG 51K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+  ]
+  const b2 = [
+    {id:2001,batch:'B2',name:'Mariam Yehia',handle_ig:'@mydubaistyle',handle_tt:'@mydubaistyle',ig_url:'https://www.instagram.com/mydubaistyle/',tt_url:'https://www.tiktok.com/@mydubaistyle',category:'travel',reach:'TikTok 415K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2002,batch:'B2',name:'Jenan Obeid',handle_ig:'@jenanlouise',handle_tt:'',ig_url:'https://www.instagram.com/jenanlouise/',tt_url:'',category:'travel',reach:'IG ~200K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2003,batch:'B2',name:'Sophie in Dubai',handle_ig:'@sophieindubai',handle_tt:'',ig_url:'https://www.instagram.com/sophieindubai/',tt_url:'',category:'travel',reach:'IG ~120K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2004,batch:'B2',name:'Haya Kaabar (TheDubaiList)',handle_ig:'@thedubailist',handle_tt:'@thedubailist',ig_url:'https://www.instagram.com/thedubailist/',tt_url:'https://www.tiktok.com/@thedubailist',category:'food',reach:'TikTok 150K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2005,batch:'B2',name:'Lara in the Kitchen',handle_ig:'@larainthekitchen',handle_tt:'',ig_url:'https://www.instagram.com/larainthekitchen/',tt_url:'',category:'food',reach:'IG ~150K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2006,batch:'B2',name:'Nour Eats',handle_ig:'@noureatsdubai',handle_tt:'@noureatsdubai',ig_url:'https://www.instagram.com/noureatsdubai/',tt_url:'https://www.tiktok.com/@noureatsdubai',category:'food',reach:'TT 100K / IG 40K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2007,batch:'B2',name:'Aisha Cooks',handle_ig:'@aishascooking',handle_tt:'@aishascooking',ig_url:'https://www.instagram.com/aishascooking/',tt_url:'https://www.tiktok.com/@aishascooking',category:'food',reach:'TT 200K / IG 35K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2008,batch:'B2',name:'Yummy DXB',handle_ig:'@yummydxb',handle_tt:'',ig_url:'https://www.instagram.com/yummydxb/',tt_url:'',category:'food',reach:'IG ~60K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2009,batch:'B2',name:'Karen Mattar',handle_ig:'@karenmattar',handle_tt:'@karenmattar',ig_url:'https://www.instagram.com/karenmattar/',tt_url:'https://www.tiktok.com/@karenmattar',category:'fitness',reach:'TikTok 290K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2010,batch:'B2',name:'Shomookhfit',handle_ig:'@shomookhfit',handle_tt:'',ig_url:'https://www.instagram.com/shomookhfit/',tt_url:'',category:'fitness',reach:'IG 321K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2011,batch:'B2',name:'Bayan Fit',handle_ig:'@bayan.fit',handle_tt:'@bayan.fit',ig_url:'https://www.instagram.com/bayan.fit/',tt_url:'https://www.tiktok.com/@bayan.fit',category:'fitness',reach:'TikTok 400K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2012,batch:'B2',name:'Layan Salem',handle_ig:'@layannsalem',handle_tt:'',ig_url:'https://www.instagram.com/layannsalem/',tt_url:'',category:'beauty',reach:'IG 634K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2013,batch:'B2',name:'Dr. Hiba Hassan',handle_ig:'@hiba_m_hassan',handle_tt:'',ig_url:'https://www.instagram.com/hiba_m_hassan/',tt_url:'',category:'derm',reach:'IG 261K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2014,batch:'B2',name:'Noor Abdo',handle_ig:'@noorabdo',handle_tt:'@noorabdo',ig_url:'https://www.instagram.com/noorabdo/',tt_url:'https://www.tiktok.com/@noorabdo',category:'lifestyle',reach:'TikTok 500K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2015,batch:'B2',name:'Varda RZ',handle_ig:'@varda.rz',handle_tt:'',ig_url:'https://www.instagram.com/varda.rz/',tt_url:'',category:'lifestyle',reach:'IG 554K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2016,batch:'B2',name:'Jessica Olie',handle_ig:'@jessicaolie',handle_tt:'',ig_url:'https://www.instagram.com/jessicaolie/',tt_url:'',category:'lifestyle',reach:'IG 600K',market:'UAE',priority:'P2',status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:2017,batch:'B2',name:'Abrown Mom',handle_ig:'@abrown.mom',handle_tt:'',ig_url:'https://www.instagram.com/abrown.mom/',tt_url:'',category:'mom',reach:'IG 106K',market:'UAE',priority:'P1',status:'SHORTLISTED',created_at:now,updated_at:now},
+  ]
+  const em = [
+    {id:3001,batch:'EM',name:'Wdeema Al Mheiri',handle_ig:'@wdeemajay',handle_tt:'',ig_url:'https://www.instagram.com/wdeemajay/',tt_url:'',category:'beauty',reach:'IG 85.9K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3002,batch:'EM',name:'Nouf AlTamimi',handle_ig:'@noufaltamiimi',handle_tt:'',ig_url:'https://www.instagram.com/noufaltamiimi/',tt_url:'',category:'fashion',reach:'IG 535.8K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3003,batch:'EM',name:'Dr. Shatha Alnaqbi',handle_ig:'@shatha_allay',handle_tt:'',ig_url:'https://www.instagram.com/shatha_allay/',tt_url:'',category:'lifestyle',reach:'IG 88.4K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3004,batch:'EM',name:'Waad Al Hammadi',handle_ig:'@waadalhammadi',handle_tt:'',ig_url:'https://www.instagram.com/waadalhammadi/',tt_url:'',category:'fashion',reach:'IG ~41K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3005,batch:'EM',name:'Rafeeah Al Hajsi',handle_ig:'@rafeeaalhajsi',handle_tt:'',ig_url:'https://www.instagram.com/rafeeaalhajsi/',tt_url:'',category:'fashion',reach:'IG 451K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3006,batch:'EM',name:'Maha (More Than Maha)',handle_ig:'@morethanmaha',handle_tt:'@morethanmaha',ig_url:'https://www.instagram.com/morethanmaha/',tt_url:'https://www.tiktok.com/@morethanmaha',category:'beauty',reach:'TT 500K / IG 48K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3007,batch:'EM',name:'Maryam Al Shamsi',handle_ig:'@maryamalshamsi.95',handle_tt:'',ig_url:'https://www.instagram.com/maryamalshamsi.95/',tt_url:'',category:'beauty',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3008,batch:'EM',name:'Zakia',handle_ig:'@z4kiaa',handle_tt:'',ig_url:'https://www.instagram.com/z4kiaa/',tt_url:'',category:'beauty',reach:'IG ~100K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3009,batch:'EM',name:'Maitha Mohammed',handle_ig:'@maitham7md',handle_tt:'',ig_url:'https://www.instagram.com/maitham7md/',tt_url:'',category:'fashion',reach:'IG ~200K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3010,batch:'EM',name:'Laila Al Khair',handle_ig:'@llaixxlk',handle_tt:'',ig_url:'https://www.instagram.com/llaixxlk/',tt_url:'',category:'lifestyle',reach:'IG ~100K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3011,batch:'EM',name:'Anud Al Amri',handle_ig:'@anudalamri',handle_tt:'',ig_url:'https://www.instagram.com/anudalamri/',tt_url:'',category:'lifestyle',reach:'IG ~80K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3012,batch:'EM',name:'Eman Al Amiri',handle_ig:'@emanamirii',handle_tt:'',ig_url:'https://www.instagram.com/emanamirii/',tt_url:'',category:'fashion',reach:'IG ~60K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3013,batch:'EM',name:'Meera',handle_ig:'@litoremeera',handle_tt:'',ig_url:'https://www.instagram.com/litoremeera/',tt_url:'',category:'fashion',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3014,batch:'EM',name:'Amna Al Qubaisi',handle_ig:'@amnalqubaisi_official',handle_tt:'',ig_url:'https://www.instagram.com/amnalqubaisi_official/',tt_url:'',category:'fitness',reach:'IG 397K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3015,batch:'EM',name:'Manaal Al Hammadi',handle_ig:'@manaalalhammadi',handle_tt:'',ig_url:'https://www.instagram.com/manaalalhammadi/',tt_url:'',category:'fashion',reach:'IG 227K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3016,batch:'EM',name:'Alreem Saif',handle_ig:'@alreemsaif',handle_tt:'',ig_url:'https://www.instagram.com/alreemsaif/',tt_url:'',category:'lifestyle',reach:'IG 288K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3017,batch:'EM',name:'Salma (Pilot Salma)',handle_ig:'@pilotsalma',handle_tt:'',ig_url:'https://www.instagram.com/pilotsalma/',tt_url:'',category:'lifestyle',reach:'IG ~16K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3018,batch:'EM',name:'Aseel Omran',handle_ig:'@aseelomran',handle_tt:'',ig_url:'https://www.instagram.com/aseelomran/',tt_url:'',category:'lifestyle',reach:'IG ~580K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3019,batch:'EM',name:'Mouza Al Muhanadi',handle_ig:'@mouzaalmuhanadi',handle_tt:'',ig_url:'https://www.instagram.com/mouzaalmuhanadi/',tt_url:'',category:'beauty',reach:'IG ~200K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3020,batch:'EM',name:'Hessa Hilal',handle_ig:'@hessahilal',handle_tt:'',ig_url:'https://www.instagram.com/hessahilal/',tt_url:'',category:'fashion',reach:'IG ~120K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3021,batch:'EM',name:'Fatima Al Marzooqi',handle_ig:'@fatimamarzooqi',handle_tt:'',ig_url:'https://www.instagram.com/fatimamarzooqi/',tt_url:'',category:'lifestyle',reach:'IG ~90K',market:'UAE 🇦🇪',priority:'P1',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3022,batch:'EM',name:'Shama Al Mazrui',handle_ig:'@shama.almazrui',handle_tt:'',ig_url:'https://www.instagram.com/shama.almazrui/',tt_url:'',category:'fashion',reach:'IG ~70K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+    {id:3023,batch:'EM',name:'Shamsa Al Falasi',handle_ig:'@shamsaalfalasi',handle_tt:'',ig_url:'https://www.instagram.com/shamsaalfalasi/',tt_url:'',category:'beauty',reach:'IG ~50K',market:'UAE 🇦🇪',priority:'P2',is_emirati:true,status:'SHORTLISTED',created_at:now,updated_at:now},
+  ]
+  return [...b1, ...b2, ...em]
+}
+
+function applyFilters() {
+  const batch = document.getElementById('f-batch').value
+  const status = document.getElementById('f-status').value
+  const category = document.getElementById('f-category').value
+  const search = document.getElementById('f-search').value.toLowerCase()
+  filtered = allCreators.filter(c => {
+    if (batch && c.batch !== batch) return false
+    if (status && c.status !== status) return false
+    if (category && c.category !== category) return false
+    if (search && !c.name.toLowerCase().includes(search) && !(c.handle_ig||'').toLowerCase().includes(search) && !(c.handle_tt||'').toLowerCase().includes(search)) return false
+    return true
+  })
+  page = 1
+  renderTable()
+  renderPagination()
+}
+
+function clearFilters() {
+  document.getElementById('f-batch').value = ''
+  document.getElementById('f-status').value = ''
+  document.getElementById('f-category').value = ''
+  document.getElementById('f-search').value = ''
+  applyFilters()
+}
+
+function renderTable() {
+  const tbody = document.getElementById('table-body')
+  const start = (page-1)*PAGE_SIZE
+  const pageData = filtered.slice(start, start+PAGE_SIZE)
+  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty">No creators found.</td></tr>'; return }
+  tbody.innerHTML = pageData.map((c,i) => {
+    const statusPill = `<span class="status-pill sp-${c.status}">${STATUS_LABELS[c.status]||c.status}</span>`
+    const batchClass = BATCH_CLASSES[c.batch] || ''
+    const batchLabel = BATCH_LABELS2[c.batch] || c.batch
+    const catLabel = CAT_LABELS[c.category] || c.category
+    const igLink = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="platform-btn pb-ig">📸 IG</a>` : ''
+    const ttLink = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="platform-btn pb-tt">🎵 TT</a>` : ''
+    const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
+    const linksHtml = contentLinks.length ? contentLinks.map((l,j) => `<a href="${l}" target="_blank" style="color:var(--blue);font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px" title="${l}">▶ Post ${j+1}</a>`).join('') : '<span style="color:#ccc;font-size:11px">—</span>'
+    const actionBtns = IS_CLIENT ? '' : buildActionBtns(c)
+    const feeDisplay = IS_CLIENT ? '' : `<td>${c.fee_agreed_aed ? `<strong>${c.fee_agreed_aed} AED</strong>` : c.fee_quoted_aed ? `${c.fee_quoted_aed} AED` : '<span style="color:#ccc">—</span>'}</td>`
+    const contactedBy = IS_CLIENT ? '' : `<td style="color:var(--muted);font-size:11px">${c.contacted_by||'—'}</td>`
+    return `<tr id="tr-${c.id}" onclick="toggleExpand(${c.id},this)">
+      <td style="color:var(--muted);font-size:11px">${start+i+1}</td>
+      <td>
+        <div style="font-weight:700;font-size:13px">${c.name}${c.is_emirati?' 🇦🇪':''}</div>
+        <div style="font-size:10px;color:var(--muted)">${c.reach||''}</div>
+      </td>
+      <td>${igLink}${ttLink}<div style="font-size:11px;color:var(--muted);margin-top:2px">${c.handle_ig||''}</div></td>
+      <td><span class="${batchClass}">${batchLabel}</span></td>
+      <td style="white-space:nowrap">${catLabel}</td>
+      <td style="font-size:11px;color:var(--muted)">${c.reach||'—'}</td>
+      <td>${statusPill}</td>
+      ${contactedBy}
+      ${feeDisplay}
+      <td style="min-width:120px">${linksHtml}</td>
+      ${IS_CLIENT ? '' : `<td onclick="event.stopPropagation()">${actionBtns}</td>`}
+    </tr>
+    <tr class="expand-row" id="exp-${c.id}"><td colspan="${IS_CLIENT?7:11}"><div class="expand-panel" id="panel-${c.id}">${buildExpandPanel(c)}</div></td></tr>`
+  }).join('')
+}
+
+function buildActionBtns(c) {
+  const s = c.status
+  let btns = ''
+  if (s === 'SHORTLISTED') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'CONTACTED')">📤 Contact</button>`
+  if (s === 'CONTACTED') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'FOLLOW_UP_1')">🔁 F/U 1</button>`
+  if (s === 'FOLLOW_UP_1') btns += `<button class="act-btn act-contact" onclick="quickStatus(${c.id},'FOLLOW_UP_2')">🔁 F/U 2</button>`
+  if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) btns += `<button class="act-btn act-accept" onclick="quickStatus(${c.id},'CONFIRMED')">✅ Accept</button><button class="act-btn" style="background:#FFEBEE;color:#C62828;border:1px solid #FFCDD2" onclick="quickStatus(${c.id},'DECLINED')">❌ Decline</button>`
+  if (s === 'CONFIRMED') btns += `<button class="act-btn act-ship" onclick="quickStatus(${c.id},'DISPATCHED')">📦 Shipped</button>`
+  if (s === 'DISPATCHED' || s === 'IN_TRANSIT') btns += `<button class="act-btn act-ship" onclick="quickStatus(${c.id},'DELIVERED')">📬 Delivered</button>`
+  if (s === 'DELIVERED' || s === 'AWAITING_CONTENT') btns += `<button class="act-btn act-post" onclick="quickStatus(${c.id},'POSTED')">🎬 Posted</button>`
+  if (s === 'POSTED') btns += `<button class="act-btn act-done" onclick="quickStatus(${c.id},'COMPLETED')">🏁 Complete</button>`
+  return `<div class="action-btns">${btns}</div>`
+}
+
+function buildExpandPanel(c) {
+  return `<div class="expand-grid">
+    <div class="field-group">
+      <h4>📤 Outreach</h4>
+      <div class="field-row"><label>Status</label>
+        <select onchange="saveField(${c.id},'status',this.value)">
+          ${Object.entries(STATUS_LABELS).map(([v,l])=>`<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-row"><label>Contacted By</label><input value="${c.contacted_by||''}" onblur="saveField(${c.id},'contacted_by',this.value)" placeholder="Team member name"></div>
+      <div class="field-row"><label>Contacted Date</label><input type="date" value="${c.contacted_date||''}" onblur="saveField(${c.id},'contacted_date',this.value)"></div>
+      <div class="field-row"><label>Response Date</label><input type="date" value="${c.response_date||''}" onblur="saveField(${c.id},'response_date',this.value)"></div>
+    </div>
+    <div class="field-group">
+      <h4>📦 Shipping</h4>
+      <div class="field-row"><label>Shipping Address</label><textarea onblur="saveField(${c.id},'shipping_address',this.value)" placeholder="Full delivery address">${c.shipping_address||''}</textarea></div>
+      <div class="field-row"><label>Tracking Number</label><input value="${c.tracking_number||''}" onblur="saveField(${c.id},'tracking_number',this.value)" placeholder="Courier tracking ID"></div>
+      <div class="field-row"><label>Shipped Date</label><input type="date" value="${c.shipped_date||''}" onblur="saveField(${c.id},'shipped_date',this.value)"></div>
+      <div class="field-row"><label>Delivered Date</label><input type="date" value="${c.delivered_date||''}" onblur="saveField(${c.id},'delivered_date',this.value)"></div>
+    </div>
+    <div class="field-group" style="grid-column:1/-1">
+      <h4>🎬 Content Links (max 4)</h4>
+      <div class="content-links">
+        ${[1,2,3,4].map(n => {
+          const val = c[`content_link_${n}`]||''
+          return `<div class="content-link-item">
+            <input value="${val}" onblur="saveField(${c.id},'content_link_${n}',this.value)" placeholder="Paste video URL (TikTok/IG/YouTube)">
+            ${val?`<a href="${val}" target="_blank">▶ Open</a>`:''}
+          </div>`
+        }).join('')}
+      </div>
+    </div>
+    <div class="field-group" style="grid-column:1/-1">
+      <h4>📝 Notes</h4>
+      <div class="field-row"><textarea onblur="saveField(${c.id},'notes',this.value)" placeholder="Internal notes (not visible to client)">${c.notes||''}</textarea></div>
+    </div>
+  </div>`
+}
+
+function toggleExpand(id, tr) {
+  if (IS_CLIENT) return
+  const panel = document.getElementById('panel-'+id)
+  if (!panel) return
+  const isOpen = panel.classList.contains('open')
+  // Close all
+  document.querySelectorAll('.expand-panel.open').forEach(p => p.classList.remove('open'))
+  document.querySelectorAll('tr.expanded').forEach(r => r.classList.remove('expanded'))
+  if (!isOpen) { panel.classList.add('open'); tr.classList.add('expanded') }
+}
+
+async function quickStatus(id, newStatus) {
+  const { error } = await db.from(TABLE).update({status:newStatus, updated_at:new Date().toISOString()}).eq('id',id)
+  if (!error) {
+    const idx = allCreators.findIndex(c=>c.id===id)
+    if (idx>=0) allCreators[idx].status = newStatus
+    applyFilters()
+    updateStats()
+  }
+}
+
+async function saveField(id, field, value) {
+  const update = {updated_at: new Date().toISOString()}
+  update[field] = value || null
+  const { error } = await db.from(TABLE).update(update).eq('id',id)
+  if (!error) {
+    const idx = allCreators.findIndex(c=>c.id===id)
+    if (idx>=0) allCreators[idx][field] = value
+    if (field === 'status') { applyFilters(); updateStats() }
+  }
+}
+
+function updateStats() {
+  document.getElementById('s-total').textContent = allCreators.length
+  document.getElementById('s-shortlisted').textContent = allCreators.filter(c=>c.status==='SHORTLISTED').length
+  document.getElementById('s-contacted').textContent = allCreators.filter(c=>['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(c.status)).length
+  document.getElementById('s-confirmed').textContent = allCreators.filter(c=>['CONFIRMED','DETAILS_COLLECTED','BOX_ASSEMBLED','BRIEF_SENT'].includes(c.status)).length
+  document.getElementById('s-shipped').textContent = allCreators.filter(c=>['DISPATCHED','IN_TRANSIT','DELIVERED','AWAITING_CONTENT'].includes(c.status)).length
+  document.getElementById('s-posted').textContent = allCreators.filter(c=>c.status==='POSTED').length
+  document.getElementById('s-completed').textContent = allCreators.filter(c=>c.status==='COMPLETED').length
+  const decEl = document.getElementById('s-declined')
+  if (decEl) decEl.textContent = allCreators.filter(c=>['DECLINED','NO_RESPONSE','DID_NOT_POST'].includes(c.status)).length
+}
+
+function renderPagination() {
+  const total = filtered.length
+  const pages = Math.ceil(total/PAGE_SIZE)
+  const pag = document.getElementById('pagination')
+  if (pages <= 1) { pag.innerHTML = `<span class="page-info">Showing ${total} creators</span>`; return }
+  let html = `<span class="page-info">Page ${page} of ${pages} (${total} creators)</span>`
+  if (page > 1) html += `<button class="page-btn" onclick="goPage(${page-1})">‹ Prev</button>`
+  for (let i=Math.max(1,page-2);i<=Math.min(pages,page+2);i++) html += `<button class="page-btn${i===page?' active':''}" onclick="goPage(${i})">${i}</button>`
+  if (page < pages) html += `<button class="page-btn" onclick="goPage(${page+1})">Next ›</button>`
+  pag.innerHTML = html
+}
+
+function goPage(p) { page = p; renderTable(); renderPagination(); window.scrollTo(0,200) }
+
+async function addCreator() {
+  const name = document.getElementById('new-name').value.trim()
+  if (!name) return alert('Name is required')
+  const { error } = await db.from(TABLE).insert({
+    name, handle_ig: document.getElementById('new-ig').value.trim(),
+    handle_tt: document.getElementById('new-tt').value.trim(),
+    batch: document.getElementById('new-batch').value,
+    category: document.getElementById('new-cat').value,
+    reach: document.getElementById('new-reach').value.trim(),
+    status: 'SHORTLISTED', market: 'UAE', priority: 'P2',
+    created_at: new Date().toISOString(), updated_at: new Date().toISOString()
+  })
+  if (error) return alert('Error: '+error.message)
+  closeModal('add-modal')
+  await loadCreators()
+}
+
+function exportCSV() {
+  const data = filtered.length ? filtered : allCreators
+  const cols = IS_CLIENT
+    ? ['name','handle_ig','handle_tt','batch','category','reach','status','content_link_1','content_link_2','content_link_3','content_link_4']
+    : ['name','handle_ig','handle_tt','batch','category','reach','status','contacted_by','fee_quoted_aed','fee_agreed_aed','tracking_number','shipped_date','delivered_date','content_link_1','content_link_2','content_link_3','content_link_4','notes']
+  const headers = cols.map(c=>c.replace(/_/g,' ').toUpperCase())
+  const rows = data.map(r => cols.map(c => `"${(r[c]||'').toString().replace(/"/g,'""')}"`).join(','))
+  const csv = [headers.join(','), ...rows].join('\n')
+  const blob = new Blob([csv],{type:'text/csv'})
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a'); a.href=url; a.download='bioderma-tracker.csv'; a.click()
+  URL.revokeObjectURL(url)
+}
+
+function showAddModal() { document.getElementById('add-modal').classList.add('open') }
+function closeModal(id) { document.getElementById(id).classList.remove('open') }
+
+init()
+</script>
+</body>
+</html>
