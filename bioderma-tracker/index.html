@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Bioderma XDefense — Campaign Tracker | TiKiT</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E91E8C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bioderma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -556,9 +561,160 @@ body.client-view.client-force-phone .stats,
 body.client-view.client-force-phone .approval-summary,
 body.client-view.client-force-phone .filters,
 body.client-view.client-force-phone .pagination{max-width:520px!important;margin:0 auto!important}
+
+/* ═══ TASK 1: WELCOME OVERLAY ═══ */
+#welcome-overlay{
+  position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;
+  background:rgba(5,5,20,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:24px;overflow-y:auto;
+}
+#welcome-overlay.show{display:flex}
+.welcome-box{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;padding:40px 32px;max-width:440px;width:100%;text-align:center;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  box-shadow:0 24px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.welcome-box h2{
+  font-size:26px;font-weight:900;margin-bottom:6px;
+  background:linear-gradient(135deg,#F472B6,#E91E8C,#A855F7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.welcome-box .welcome-sub{font-size:14px;color:rgba(255,255,255,.45);margin-bottom:28px}
+.welcome-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px;text-align:left}
+.welcome-step{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;
+}
+.welcome-step .ws-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.welcome-step h4{font-size:14px;font-weight:800;color:#fff;margin-bottom:3px}
+.welcome-step p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.welcome-go{
+  background:linear-gradient(135deg,#E91E8C,#A855F7);color:#fff;border:none;
+  padding:16px 40px;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;
+  box-shadow:0 0 30px rgba(233,30,140,.3);transition:transform .15s,box-shadow .15s;
+  letter-spacing:.3px;
+}
+.welcome-go:active{transform:scale(.96)}
+
+/* ═══ TASK 2: PROGRESS RINGS ═══ */
+.progress-rings{
+  display:none;position:relative;z-index:1;
+  justify-content:center;gap:24px;padding:24px 16px;
+  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.06);
+}
+body.client-view .progress-rings{display:flex}
+.ring-item{text-align:center}
+.ring-svg{width:80px;height:80px;transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:6}
+.ring-progress{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dasharray 1s ease}
+.ring-label{font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.8px;margin-top:6px;font-weight:700}
+.ring-value{position:absolute;font-size:18px;font-weight:900;color:#fff}
+
+/* ═══ TASK 4: POSTED CELEBRATION ═══ */
+body.client-view .creator-card.card-posted{
+  border-color:rgba(74,222,128,.35);
+  box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 24px rgba(74,222,128,.12);
+  animation:postedGlow 2s ease-in-out infinite;
+}
+@keyframes postedGlow{
+  0%,100%{box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 24px rgba(74,222,128,.12)}
+  50%{box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 36px rgba(74,222,128,.22)}
+}
+.content-live-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(74,222,128,.15);color:#4ADE80;border:1px solid rgba(74,222,128,.3);
+  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;
+  animation:livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse{
+  0%,100%{box-shadow:0 0 8px rgba(74,222,128,.2)}
+  50%{box-shadow:0 0 16px rgba(74,222,128,.4)}
+}
+body.client-view .pl-content.posted-link{
+  background:linear-gradient(135deg,rgba(74,222,128,.7),rgba(34,197,94,.7))!important;
+  font-size:14px!important;padding:10px 20px!important;
+  box-shadow:0 0 20px rgba(74,222,128,.3)!important;
+  animation:none!important;
+}
+/* Confetti burst */
+.confetti-container{position:absolute;top:50%;left:50%;pointer-events:none;z-index:10}
+.confetti-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  animation:confettiBurst .8s ease-out forwards;opacity:0;
+}
+@keyframes confettiBurst{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{opacity:0}
+}
+.confetti-dot:nth-child(1){background:#E91E8C;animation-delay:0s}
+.confetti-dot:nth-child(1){--cx:-40px;--cy:-50px}
+.confetti-dot:nth-child(2){background:#4ADE80;--cx:45px;--cy:-35px}
+.confetti-dot:nth-child(3){background:#60A5FA;--cx:-35px;--cy:45px}
+.confetti-dot:nth-child(4){background:#FB923C;--cx:50px;--cy:40px}
+.confetti-dot:nth-child(5){background:#C084FC;--cx:0px;--cy:-55px}
+.confetti-dot:nth-child(6){background:#F472B6;--cx:-50px;--cy:10px}
+.confetti-dot:nth-child(7){background:#2DD4BF;--cx:40px;--cy:-10px}
+.confetti-dot:nth-child(8){background:#FFD93D;--cx:10px;--cy:50px}
+@keyframes confettiBurst{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  60%{opacity:1}
+  100%{transform:translate(var(--cx),var(--cy)) scale(0);opacity:0}
+}
+
+/* ═══ TASK 6: BULK ACTIONS ═══ */
+.bulk-check{width:18px;height:18px;accent-color:var(--pink);cursor:pointer}
+.bulk-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  display:none;align-items:center;justify-content:center;gap:12px;
+  padding:14px 20px;
+  background:rgba(255,255,255,.95);border-top:2px solid var(--border);
+  box-shadow:0 -4px 20px rgba(0,0,0,.1);
+}
+body.client-view .bulk-bar{
+  background:rgba(15,15,35,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.bulk-bar.show{display:flex}
+.bulk-bar .bulk-count{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap}
+body.client-view .bulk-bar .bulk-count{color:#fff}
+.bulk-bar .bbtn{border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.bbtn-contact{background:#FFF8E1;color:#E65100;border:1px solid #FFE082}
+.bbtn-confirm{background:#E8F5E9;color:var(--green);border:1px solid #A5D6A7}
+.bbtn-remove{background:#FFEBEE;color:var(--red);border:1px solid #FFCDD2}
+.bbtn-clear{background:var(--light);color:var(--muted);border:1px solid var(--border)}
+body.client-view .bulk-check{accent-color:#E91E8C}
+body.client-view .bbtn-clear{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)}
+/* Hide bulk checkboxes in client view */
+body.client-view .agency-col{display:none!important}
+th.bulk-col,td.bulk-col{width:36px;text-align:center}
+body.client-view .bulk-col{display:none!important}
 </style>
 </head>
 <body>
+
+<!-- WELCOME OVERLAY (client first-visit) -->
+<div id="welcome-overlay">
+  <div class="welcome-box">
+    <h2>Welcome to Your Campaign</h2>
+    <p class="welcome-sub">Bioderma Photoderm XDefense — Review Program 2026</p>
+    <div class="welcome-steps">
+      <div class="welcome-step">
+        <div class="ws-icon">👁️</div>
+        <div><h4>Review Creators</h4><p>Browse each creator's TikTok and Instagram profile</p></div>
+      </div>
+      <div class="welcome-step">
+        <div class="ws-icon">✅</div>
+        <div><h4>Approve or Reject</h4><p>Tap the buttons on each card — saves instantly</p></div>
+      </div>
+      <div class="welcome-step">
+        <div class="ws-icon">📊</div>
+        <div><h4>Track Live</h4><p>Once outreach starts, watch the campaign progress here</p></div>
+      </div>
+    </div>
+    <button class="welcome-go" onclick="dismissWelcome()">Let's Go →</button>
+  </div>
+</div>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;min-width:0">
@@ -568,6 +724,7 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
   <div class="tbr">
     <button class="btn btn-outline" onclick="refreshData()" style="padding:8px 10px;font-size:12px" title="Refresh">🔄</button>
     <button class="btn btn-outline" onclick="exportCSV()" style="padding:8px 10px;font-size:12px">⬇ Export</button>
+    <button class="btn btn-outline" id="report-btn" onclick="generateReport()" style="padding:8px 10px;font-size:12px;display:none">📄 Report</button>
     <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
     <!-- TESTING ONLY — set SHOW_RESET_BTN=false before production -->
     <button id="reset-test-btn" class="btn agency-col" onclick="resetTestData()" style="padding:8px 10px;font-size:12px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80">🔁 Reset</button>
@@ -590,6 +747,40 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
   <div class="stat green"><div class="n" id="s-confirmed">—</div><div class="l">Confirmed</div></div>
   <div class="stat purple"><div class="n" id="s-shipped">—</div><div class="l">Shipped</div></div>
   <div class="stat orange"><div class="n" id="s-posted">—</div><div class="l">Posted</div></div>
+</div>
+
+<!-- PROGRESS RINGS (client view only) -->
+<div class="progress-rings" id="progress-rings">
+  <div class="ring-item">
+    <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
+      <svg class="ring-svg" viewBox="0 0 36 36">
+        <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+        <circle class="ring-progress" id="ring-approved" cx="18" cy="18" r="15.9" stroke="#00E676" stroke-dasharray="0 100"/>
+      </svg>
+      <span class="ring-value" id="ring-approved-val">0%</span>
+    </div>
+    <div class="ring-label">Approved</div>
+  </div>
+  <div class="ring-item">
+    <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
+      <svg class="ring-svg" viewBox="0 0 36 36">
+        <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+        <circle class="ring-progress" id="ring-progress" cx="18" cy="18" r="15.9" stroke="#64B5F6" stroke-dasharray="0 100"/>
+      </svg>
+      <span class="ring-value" id="ring-progress-val">0%</span>
+    </div>
+    <div class="ring-label">In Progress</div>
+  </div>
+  <div class="ring-item">
+    <div style="position:relative;display:inline-flex;align-items:center;justify-content:center">
+      <svg class="ring-svg" viewBox="0 0 36 36">
+        <circle class="ring-track" cx="18" cy="18" r="15.9"/>
+        <circle class="ring-progress" id="ring-posted" cx="18" cy="18" r="15.9" stroke="#E91E8C" stroke-dasharray="0 100"/>
+      </svg>
+      <span class="ring-value" id="ring-posted-val">0%</span>
+    </div>
+    <div class="ring-label">Posted</div>
+  </div>
 </div>
 
 <!-- APPROVAL SUMMARY -->
@@ -662,6 +853,7 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
   <table id="main-table">
     <thead>
       <tr>
+        <th class="bulk-col agency-col"><input type="checkbox" class="bulk-check" id="select-all" onchange="toggleSelectAll(this.checked)"></th>
         <th>#</th><th>Creator</th><th>Handles</th><th>Batch</th><th>Category</th><th>Reach</th>
         <th class="agency-col">Status</th>
         <th class="agency-col">Agency ✓</th>
@@ -676,6 +868,15 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
 </div>
 
 <div class="pagination" id="pagination"></div>
+
+<!-- BULK ACTION BAR (agency view) -->
+<div class="bulk-bar" id="bulk-bar">
+  <span class="bulk-count" id="bulk-count">0 selected</span>
+  <button class="bbtn bbtn-contact" onclick="bulkAction('CONTACTED')">📤 Mark Contacted</button>
+  <button class="bbtn bbtn-confirm" onclick="bulkAction('CONFIRMED')">✅ Mark Confirmed</button>
+  <button class="bbtn bbtn-remove" onclick="bulkRemove()">🗑 Remove</button>
+  <button class="bbtn bbtn-clear" onclick="clearSelection()">✕ Clear</button>
+</div>
 
 <!-- ADD MODAL -->
 <div class="modal-bg" id="add-modal">
@@ -778,6 +979,7 @@ async function init() {
   allCreators = data || []
   applyFilters()
   updateStats()
+  updateRings()
 }
 
 function applyFilters() {
@@ -818,19 +1020,23 @@ function renderCards() {
     container.innerHTML = '<div class="empty-state"><div class="big">🔍</div>No creators found.</div>'
     return
   }
+  const _cardIds = []
   container.innerHTML = pageData.map(c => {
+    _cardIds.push(c.id)
     const batchBadge = c.batch==='B1'?`<span class="bb1">Batch 1</span>`:c.batch==='B2'?`<span class="bb2">Batch 2</span>`:`<span class="bbem">🇦🇪 Emirati</span>`
     const catLabel = CAT_LABELS[c.category]||c.category
     const initial = c.name.charAt(0).toUpperCase()
     const aActive = c.client_approved === true ? 'active' : ''
     const rActive = c.client_approved === false ? 'active' : ''
-    const cardClass = c.client_approved === true ? 'card-approved' : c.client_approved === false ? 'card-rejected' : ''
+    const isPosted = IS_CLIENT && ['POSTED','COMPLETED'].includes(c.status)
+    const cardClass = isPosted ? 'card-approved card-posted' : c.client_approved === true ? 'card-approved' : c.client_approved === false ? 'card-rejected' : ''
+    const postedBadge = isPosted ? '<span class="content-live-badge">🎬 Content Live</span>' : ''
     const approvalBadge = c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : ''
     // Profile links
     const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig">📸 IG</a>` : ''
     const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt">🎵 TT</a>` : ''
     const contentLinks = [c.content_link_1,c.content_link_2,c.content_link_3,c.content_link_4].filter(Boolean)
-    const contentLinksHtml = contentLinks.map((l,i)=>`<a href="${l}" target="_blank" class="pl pl-content">▶ Post ${i+1}</a>`).join('')
+    const contentLinksHtml = contentLinks.map((l,i)=>`<a href="${l}" target="_blank" class="pl pl-content${isPosted?' posted-link':''}">${isPosted?'▶ Watch Now':'▶ Post '+(i+1)}</a>`).join('')
     // Client view: show approval buttons (SHORTLISTED) or status progress track (beyond)
     const _isLocked = IS_CLIENT && c.status !== 'SHORTLISTED'
     const CLIENT_STATUS_LABELS = {
@@ -874,6 +1080,7 @@ function renderCards() {
         </div>
         <div class="card-right">
           ${!IS_CLIENT ? `<span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span>` : ''}
+          ${postedBadge}
           ${approvalBadge}
         </div>
       </div>
@@ -883,6 +1090,8 @@ function renderCards() {
       ${expandSection}
     </div>`
   }).join('')
+  // Setup long-press for mobile bulk select
+  _cardIds.forEach(id => { const el = document.getElementById('card-' + id); if (el) setupLongPress(el, id) })
 }
 
 function buildQuickActions(c) {
@@ -960,7 +1169,7 @@ function renderTable() {
   const tbody = document.getElementById('table-body')
   const start = (page-1)*PAGE_SIZE
   const pageData = filtered.slice(start, start+PAGE_SIZE)
-  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No creators found.</td></tr>'; return }
+  if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="13" class="empty-state">No creators found.</td></tr>'; return }
   tbody.innerHTML = pageData.map((c,i) => {
     const batchBadge = c.batch==='B1'?`<span class="bb1">B1</span>`:c.batch==='B2'?`<span class="bb2">B2</span>`:`<span class="bbem">🇦🇪</span>`
     const catLabel = CAT_LABELS[c.category]||c.category
@@ -990,7 +1199,9 @@ function renderTable() {
       : (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
     const rowClass = c.client_approved === true ? 'row-approved' : c.client_approved === false ? 'row-rejected' : ''
     const agencyActions = IS_CLIENT ? '' : `<td class="agency-col" onclick="event.stopPropagation()">${buildQuickActions(c)}</td>`
+    const bulkCheckHtml = IS_CLIENT ? '' : `<td class="bulk-col agency-col" onclick="event.stopPropagation()"><input type="checkbox" class="bulk-check row-bulk-check" ${selectedIds.has(c.id)?'checked':''} onchange="toggleRowSelect(${c.id},this)"></td>`
     return `<tr id="dtr-${c.id}" class="${rowClass}" style="cursor:${IS_CLIENT?'default':'pointer'}" onclick="${IS_CLIENT?'':('toggleDtExpand('+c.id+')')}">
+      ${bulkCheckHtml}
       <td style="color:var(--muted);font-size:11px">${start+i+1}</td>
       <td><strong style="font-size:13px">${c.name}${c.is_emirati?' 🇦🇪':''}</strong></td>
       <td>${igBtn}${ttBtn}<div style="font-size:11px;color:var(--muted);margin-top:2px">${c.handle_ig||''}</div></td>
@@ -1004,7 +1215,7 @@ function renderTable() {
       <td>${linksHtml}</td>
       ${agencyActions}
     </tr>
-    ${IS_CLIENT?'':`<tr><td colspan="11" style="padding:0"><div class="dt-expand" id="dte-${c.id}">${buildCardExpand(c)}</div></td></tr>`}`
+    ${IS_CLIENT?'':`<tr><td colspan="13" style="padding:0"><div class="dt-expand" id="dte-${c.id}">${buildCardExpand(c)}</div></td></tr>`}`
   }).join('')
 }
 
@@ -1083,7 +1294,7 @@ async function deleteCreator(id, name) {
 
 async function qs(id, newStatus) {
   const { error } = await db.from(TABLE).update({status:newStatus, updated_at:new Date().toISOString()}).eq('id',id)
-  if (!error) { const idx=allCreators.findIndex(c=>c.id===id); if(idx>=0) allCreators[idx].status=newStatus; applyFilters(); updateStats() }
+  if (!error) { const idx=allCreators.findIndex(c=>c.id===id); if(idx>=0) allCreators[idx].status=newStatus; applyFilters(); updateStats(); updateRings() }
 }
 
 async function sf(id, field, value) {
@@ -1215,6 +1426,183 @@ async function refreshData() {
   if (btn) setTimeout(()=>{if(btn)btn.textContent='🔄'},500)
 }
 
+// ═══ TASK 1: WELCOME OVERLAY ═══
+function dismissWelcome() {
+  localStorage.setItem('bioderma_welcome_seen', '1')
+  document.getElementById('welcome-overlay').classList.remove('show')
+}
+if (IS_CLIENT && !localStorage.getItem('bioderma_welcome_seen')) {
+  document.getElementById('welcome-overlay').classList.add('show')
+}
+
+// ═══ TASK 2: PROGRESS RINGS ═══
+function updateRings() {
+  if (!IS_CLIENT || !allCreators.length) return
+  const total = allCreators.length
+  const approved = allCreators.filter(c => c.client_approved === true).length
+  const contacted = allCreators.filter(c => ['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2','CONFIRMED','DETAILS_COLLECTED','BOX_ASSEMBLED','BRIEF_SENT','DISPATCHED','IN_TRANSIT','DELIVERED','AWAITING_CONTENT'].includes(c.status)).length
+  const posted = allCreators.filter(c => ['POSTED','COMPLETED'].includes(c.status)).length
+  const pctApproved = Math.round((approved / total) * 100)
+  const pctProgress = Math.round((contacted / total) * 100)
+  const pctPosted = Math.round((posted / total) * 100)
+  document.getElementById('ring-approved').setAttribute('stroke-dasharray', pctApproved + ' ' + (100 - pctApproved))
+  document.getElementById('ring-progress').setAttribute('stroke-dasharray', pctProgress + ' ' + (100 - pctProgress))
+  document.getElementById('ring-posted').setAttribute('stroke-dasharray', pctPosted + ' ' + (100 - pctPosted))
+  document.getElementById('ring-approved-val').textContent = pctApproved + '%'
+  document.getElementById('ring-progress-val').textContent = pctProgress + '%'
+  document.getElementById('ring-posted-val').textContent = pctPosted + '%'
+}
+
+// ═══ TASK 4: POSTED CELEBRATION — confetti burst ═══
+function triggerConfetti(cardEl) {
+  if (!cardEl) return
+  const container = document.createElement('div')
+  container.className = 'confetti-container'
+  for (let i = 0; i < 8; i++) {
+    const dot = document.createElement('div')
+    dot.className = 'confetti-dot'
+    container.appendChild(dot)
+  }
+  cardEl.style.position = 'relative'
+  cardEl.appendChild(container)
+  setTimeout(() => container.remove(), 1000)
+}
+
+// ═══ TASK 5: PWA — show report button for client ═══
+if (IS_CLIENT) {
+  const rb = document.getElementById('report-btn')
+  if (rb) rb.style.display = 'inline-block'
+}
+
+// ═══ TASK 6: BULK ACTIONS ═══
+let selectedIds = new Set()
+let longPressTimer = null
+
+function toggleSelectAll(checked) {
+  const start = (page - 1) * PAGE_SIZE
+  const pageData = filtered.slice(start, start + PAGE_SIZE)
+  selectedIds.clear()
+  if (checked) pageData.forEach(c => selectedIds.add(c.id))
+  document.querySelectorAll('.row-bulk-check').forEach(cb => cb.checked = checked)
+  updateBulkBar()
+}
+
+function toggleRowSelect(id, cb) {
+  if (cb.checked) selectedIds.add(id)
+  else selectedIds.delete(id)
+  updateBulkBar()
+}
+
+function updateBulkBar() {
+  const bar = document.getElementById('bulk-bar')
+  const count = selectedIds.size
+  if (count >= 2 && !IS_CLIENT) {
+    bar.classList.add('show')
+    document.getElementById('bulk-count').textContent = count + ' creators selected'
+  } else {
+    bar.classList.remove('show')
+  }
+}
+
+function clearSelection() {
+  selectedIds.clear()
+  document.querySelectorAll('.row-bulk-check').forEach(cb => cb.checked = false)
+  const sa = document.getElementById('select-all')
+  if (sa) sa.checked = false
+  updateBulkBar()
+}
+
+async function bulkAction(newStatus) {
+  const ids = Array.from(selectedIds)
+  if (!ids.length) return
+  for (const id of ids) {
+    await qs(id, newStatus)
+  }
+  showToast('✅ ' + ids.length + ' creators → ' + (STATUS_LABELS[newStatus] || newStatus))
+  clearSelection()
+}
+
+async function bulkRemove() {
+  const ids = Array.from(selectedIds)
+  if (!ids.length) return
+  if (!confirm('Remove ' + ids.length + ' creators from the campaign?')) return
+  for (const id of ids) {
+    await db.from(TABLE).delete().eq('id', id)
+    allCreators = allCreators.filter(c => c.id !== id)
+  }
+  showToast('🗑️ Removed ' + ids.length + ' creators')
+  clearSelection()
+  applyFilters(); updateStats()
+}
+
+// Mobile long-press for card selection
+function setupLongPress(cardEl, id) {
+  if (IS_CLIENT) return
+  cardEl.addEventListener('touchstart', () => {
+    longPressTimer = setTimeout(() => {
+      if (selectedIds.has(id)) selectedIds.delete(id)
+      else selectedIds.add(id)
+      cardEl.style.outline = selectedIds.has(id) ? '2px solid var(--pink)' : 'none'
+      updateBulkBar()
+    }, 500)
+  }, { passive: true })
+  cardEl.addEventListener('touchend', () => clearTimeout(longPressTimer), { passive: true })
+  cardEl.addEventListener('touchmove', () => clearTimeout(longPressTimer), { passive: true })
+}
+
+// ═══ TASK 7: CAMPAIGN REPORT EXPORT ═══
+function generateReport() {
+  const approved = allCreators.filter(c => c.client_approved === true)
+  const inProgress = allCreators.filter(c => ['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2','CONFIRMED','DETAILS_COLLECTED','BOX_ASSEMBLED','BRIEF_SENT','DISPATCHED','IN_TRANSIT','DELIVERED','AWAITING_CONTENT'].includes(c.status))
+  const posted = allCreators.filter(c => c.status === 'POSTED')
+  const completed = allCreators.filter(c => c.status === 'COMPLETED')
+  const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  const statusColor = (s) => {
+    if (['POSTED','COMPLETED'].includes(s)) return '#2E7D32'
+    if (['DECLINED','NO_RESPONSE','DID_NOT_POST','DELIVERY_FAILED'].includes(s)) return '#C62828'
+    if (['CONTACTED','FOLLOW_UP_1','FOLLOW_UP_2'].includes(s)) return '#E65100'
+    if (['CONFIRMED','DETAILS_COLLECTED','BOX_ASSEMBLED','BRIEF_SENT'].includes(s)) return '#1565C0'
+    if (['DISPATCHED','IN_TRANSIT','DELIVERED','AWAITING_CONTENT'].includes(s)) return '#6A1B9A'
+    return '#777'
+  }
+  const rows = approved.map(c => {
+    const links = [c.content_link_1, c.content_link_2, c.content_link_3, c.content_link_4].filter(Boolean)
+    const linkHtml = links.length ? links.map((l, i) => '<a href="' + l + '" target="_blank">Post ' + (i + 1) + '</a>').join(', ') : '—'
+    return '<tr><td>' + c.name + '</td><td>' + (c.handle_ig || c.handle_tt || '—') + '</td><td>' + (CAT_LABELS[c.category] || c.category) + '</td><td>' + (c.reach || '—') + '</td><td style="color:' + statusColor(c.status) + ';font-weight:700">' + (STATUS_LABELS[c.status] || c.status) + '</td><td>' + linkHtml + '</td></tr>'
+  }).join('')
+  const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bioderma XDefense — Campaign Report</title><style>' +
+    'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;color:#1a1a1a;font-size:13px;line-height:1.6}' +
+    '.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:16px;border-bottom:2px solid #E9ECEF}' +
+    '.header h1{font-size:22px;font-weight:900;color:#1a1a1a}.header h1 em{color:#E91E8C;font-style:normal}' +
+    '.header .date{font-size:12px;color:#777}' +
+    '.logos{display:flex;gap:16px;align-items:center;font-weight:900;font-size:15px}' +
+    '.logos .pink{color:#E91E8C}.logos .blue{color:#0066CC}' +
+    '.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}' +
+    '.stat-box{background:#F8F9FA;border:1px solid #E9ECEF;border-radius:10px;padding:16px;text-align:center}' +
+    '.stat-box .n{font-size:28px;font-weight:900}.stat-box .l{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.6px;margin-top:4px}' +
+    '.stat-box.green .n{color:#2E7D32}.stat-box.blue .n{color:#0066CC}.stat-box.pink .n{color:#E91E8C}.stat-box.orange .n{color:#E65100}' +
+    'table{width:100%;border-collapse:collapse;margin-top:16px}' +
+    'th{background:#F8F9FA;padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#777;text-align:left;border-bottom:2px solid #E9ECEF}' +
+    'td{padding:8px 12px;border-bottom:1px solid #E9ECEF;font-size:12px}' +
+    'a{color:#0066CC;text-decoration:none}a:hover{text-decoration:underline}' +
+    'footer{margin-top:40px;padding-top:16px;border-top:1px solid #E9ECEF;text-align:center;font-size:11px;color:#999}' +
+    '@media print{body{padding:20px}th{background:#f5f5f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
+    '</style></head><body>' +
+    '<div class="header"><div><div class="logos"><span>TiKiT<span class="pink">.</span> × <span class="blue">Bioderma</span></span></div><h1>Photoderm XDefense — <em>Campaign Report</em></h1><div class="date">' + today + '</div></div></div>' +
+    '<div class="stats-grid">' +
+    '<div class="stat-box green"><div class="n">' + approved.length + '</div><div class="l">Approved</div></div>' +
+    '<div class="stat-box blue"><div class="n">' + inProgress.length + '</div><div class="l">In Progress</div></div>' +
+    '<div class="stat-box pink"><div class="n">' + posted.length + '</div><div class="l">Posted</div></div>' +
+    '<div class="stat-box orange"><div class="n">' + completed.length + '</div><div class="l">Completed</div></div>' +
+    '</div>' +
+    '<h2 style="font-size:16px;margin-bottom:4px">Approved Creators</h2>' +
+    '<table><thead><tr><th>Name</th><th>Handle</th><th>Category</th><th>Reach</th><th>Status</th><th>Content</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    '<footer>Generated by TiKiT Marketing Management · #PhotodermXdefenseReview</footer>' +
+    '</body></html>'
+  const w = window.open('', '_blank')
+  if (w) { w.document.write(html); w.document.close() }
+}
+
 // Supabase realtime — auto-sync changes across sessions (agency adds/removes → client sees instantly)
 const channel = db.channel('bioderma-realtime')
   .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
@@ -1234,10 +1622,15 @@ const channel = db.channel('bioderma-realtime')
         allCreators[idx] = newRow
       }
       _applyApprovalUI(newRow.id, newRow.client_approved)
+      // TASK 4: Confetti on POSTED status change
+      if (IS_CLIENT && ['POSTED','COMPLETED'].includes(newRow.status)) {
+        const cardEl = document.getElementById('card-' + newRow.id)
+        if (cardEl) { cardEl.classList.add('card-posted'); triggerConfetti(cardEl) }
+      }
     } else if (eventType === 'DELETE') {
       allCreators = allCreators.filter(c=>c.id!==oldRow.id)
     }
-    applyFilters(); updateStats(); updateApprovalCounts()
+    applyFilters(); updateStats(); updateApprovalCounts(); updateRings()
   })
   .subscribe()
 
