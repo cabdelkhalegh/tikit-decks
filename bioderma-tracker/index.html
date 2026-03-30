@@ -1991,9 +1991,8 @@ function generateReport() {
   if (w) { w.document.write(html); w.document.close() }
 }
 
-// Supabase realtime — auto-sync changes across sessions (agency adds/removes → client sees instantly)
-// Start load — if page already complete, call now; otherwise wait for load event
-function startApp() { init().then(() => {
+// Load data then subscribe to realtime
+init().then(() => {
   db.channel('bioderma-rt-' + Date.now())
     .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
       const { eventType, new: newRow, old: oldRow } = payload
@@ -2020,12 +2019,7 @@ function startApp() { init().then(() => {
       }
     })
     .subscribe()
-  }) }
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  startApp()
-} else {
-  window.addEventListener('DOMContentLoaded', startApp)
-}
+  })
 </script>
 </body>
 </html>
