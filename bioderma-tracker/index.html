@@ -1757,18 +1757,18 @@ async function addCreator() {
   const ig = document.getElementById('new-ig').value.trim()
   const igUrl = document.getElementById('new-ig-url').value.trim()
   const igUrlFinal = igUrl || (ig ? `https://www.instagram.com/${ig.replace('@','')}` : null)
-  const { error } = await db.from(TABLE).insert({
-    name, handle_ig: ig,
-    handle_tt: document.getElementById('new-tt').value.trim()||null,
-    ig_url: igUrlFinal,
-    tt_url: document.getElementById('new-tt-url').value.trim()||null,
-    batch: document.getElementById('new-batch').value,
-    category: document.getElementById('new-cat').value,
-    reach: document.getElementById('new-reach').value.trim()||null,
-    status: 'SHORTLISTED', market:'UAE', priority:'P2',
-    created_at: new Date().toISOString(), updated_at: new Date().toISOString()
+  const tt = document.getElementById('new-tt').value.trim()||null
+  const ttUrl = document.getElementById('new-tt-url').value.trim()||null
+  // Get next ID (DB has no auto-increment)
+  const maxRes = await fetch(SUPA_URL+'/rest/v1/'+TABLE+'?select=id&order=id.desc&limit=1', {headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}})
+  const maxRows = await maxRes.json()
+  const nextId = (maxRows&&maxRows[0] ? maxRows[0].id : 3000) + 1
+  const res = await fetch(SUPA_URL+'/rest/v1/'+TABLE, {
+    method:'POST',
+    headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body: JSON.stringify({id:nextId, name, handle_ig:ig||null, handle_tt:tt, ig_url:igUrlFinal, tt_url:ttUrl, batch:document.getElementById('new-batch').value, category:document.getElementById('new-cat').value, reach:document.getElementById('new-reach').value.trim()||null, status:'SHORTLISTED', market:'UAE', priority:'P2'})
   })
-  if (error) return alert('Error: '+error.message)
+  if (!res.ok) { const e=await res.json(); return alert('Error: '+(e.message||res.status)) }
   hideModal(); await init()
 }
 

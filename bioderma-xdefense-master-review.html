@@ -6292,10 +6292,14 @@ async function submitAddCreator(){
   btn.textContent='⏳ Adding...'
   btn.disabled=true
   try{
+    // Get next ID (DB has no auto-increment)
+    const maxRes=await fetch(SUPA_URL+'/rest/v1/bioderma_creators?select=id&order=id.desc&limit=1',{headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}})
+    const maxRows=await maxRes.json()
+    const nextId=(maxRows&&maxRows[0]?maxRows[0].id:3000)+1
     const res=await fetch(SUPA_URL+'/rest/v1/bioderma_creators',{
       method:'POST',
       headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=representation'},
-      body:JSON.stringify({name,handle_ig,handle_tt,ig_url,tt_url:tt_url||null,category:cat,reach:reach||'TBC',market:'UAE',batch:'NEW',priority:'P2',status:'SHORTLISTED',agency_approved:null,notes:why||null})
+      body:JSON.stringify({id:nextId,name,handle_ig,handle_tt,ig_url,tt_url:tt_url||null,category:cat,reach:reach||'TBC',market:'UAE',batch:'NEW',priority:'P2',status:'SHORTLISTED',agency_approved:null,notes:why||null})
     })
     const rows=await res.json()
     if(!Array.isArray(rows)||!rows[0])throw new Error((rows&&rows.message)||'Insert failed')
