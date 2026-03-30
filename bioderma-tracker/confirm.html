@@ -151,19 +151,24 @@ body::before{content:"";position:fixed;top:-15%;left:50%;transform:translateX(-5
 <script>
 const SUPA_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME'
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY)
-
 const params = new URLSearchParams(location.search)
 const creatorId = parseInt(params.get('id'))
+const SB_HEADERS = { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' }
 
 let creatorRow = null
+
+async function sbFetch(path, opts) {
+  const res = await fetch(SUPA_URL + '/rest/v1/' + path, Object.assign({ headers: SB_HEADERS }, opts||{}))
+  return res.json()
+}
 
 async function init() {
   if (!creatorId) { show('notfound'); return }
   show('loading')
-  const { data, error } = await sb.from('bioderma_creators').select('*').eq('id', creatorId).single()
-  if (error || !data) { show('notfound'); return }
-  creatorRow = data
+  const rows = await sbFetch('bioderma_creators?select=*&id=eq.' + creatorId)
+  if (!Array.isArray(rows) || !rows.length) { show('notfound'); return }
+  creatorRow = rows[0]
+  const data = creatorRow
   
   // Pre-fill greeting
   const handle = data.handle_ig || data.handle_tt || ''
@@ -209,38 +214,34 @@ async function submitForm() {
 
   try {
     // 1. Insert into creator_profiles
-    const { data: profile, error: profErr } = await sb.from('creator_profiles').insert({
-      handle_ig: creatorRow.handle_ig,
-      handle_tt: creatorRow.handle_tt,
-      full_name: name,
-      phone_whatsapp: phone,
-      address_line1: addr1,
-      address_line2: addr2,
-      city: city || emirate,
-      emirate: emirate,
-      country: 'UAE',
-      language_pref: lang
-    }).select('id').single()
-
-    if (profErr) throw profErr
+    const profileRes = await sbFetch('creator_profiles?select=id', {
+      method: 'POST',
+      headers: Object.assign({}, SB_HEADERS, { Prefer: 'return=representation' }),
+      body: JSON.stringify({
+        handle_ig: creatorRow.handle_ig,
+        handle_tt: creatorRow.handle_tt,
+        full_name: name, phone_whatsapp: phone,
+        address_line1: addr1, address_line2: addr2,
+        city: city || emirate, emirate, country: 'UAE', language_pref: lang
+      })
+    })
+    if (!Array.isArray(profileRes) || !profileRes[0]?.id) throw new Error(profileRes?.message || 'Profile insert failed')
+    const profileId = profileRes[0].id
 
     // 2. Link profile to creator + update status
     const fullAddress = [addr1, addr2, city||emirate, emirate, 'UAE'].filter(Boolean).join(', ')
-    const { error: updateErr } = await sb.from('bioderma_creators').update({
-      creator_profile_id: profile.id,
-      shipping_address: fullAddress,
-      status: 'DETAILS_COLLECTED'
-    }).eq('id', creatorId)
-
-    if (updateErr) throw updateErr
+    const updateRes = await sbFetch('bioderma_creators?id=eq.' + creatorId, {
+      method: 'PATCH',
+      body: JSON.stringify({ creator_profile_id: profileId, shipping_address: fullAddress, status: 'DETAILS_COLLECTED' })
+    })
+    if (updateRes?.message) throw new Error(updateRes.message)
 
     show('success')
   } catch(e) {
-    errBox.textContent = '❌ Something went wrong. Please try again or contact TiKiT.'
+    errBox.textContent = '❌ Something went wrong: ' + e.message
     errBox.style.display = 'block'
     btn.disabled = false
     btn.textContent = '📦 Confirm My Details'
-    console.error(e)
   }
 }
 
