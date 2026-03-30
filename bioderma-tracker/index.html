@@ -1242,17 +1242,22 @@ if (IS_CLIENT) {
 // CAT_LABELS defined on window at script top
 
 async function init() {
-  // Client view: only show creators the agency has approved (agency_approved=true)
-  // Agency view: show all
+  const tbody = document.getElementById('table-body')
+  if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">Loading...</td></tr>'
   let query = db.from(TABLE).select('*').order('batch').order('name')
   if (IS_CLIENT) query = query.eq('agency_approved', true)
   const { data, error } = await query
   if (error) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px">${error.message}</td></tr>`
     document.getElementById('cards-container').innerHTML = `<div class="empty-state"><div class="big">❌</div>${error.message}</div>`
     return
   }
   allCreators = data || []
-  applyFilters()
+  filtered = [...allCreators]
+  page = 1
+  renderCards()
+  renderTable()
+  renderPagination()
   updateStats()
   updateRings()
 }
