@@ -1289,7 +1289,9 @@ function renderCards() {
   const start = (page-1)*PAGE_SIZE
   const pageData = filtered.slice(start, start+PAGE_SIZE)
   if (!pageData.length) {
-    container.innerHTML = '<div class="empty-state"><div class="big">🔍</div>No creators found.</div>'
+    container.innerHTML = IS_CLIENT
+      ? `<div class="empty-state"><div class="big">⏳</div><p style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">Creator proposals coming soon</p><p style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.7">TiKiT is finalising your selection.<br>Check back shortly — creators will appear here once approved.</p></div>`
+      : '<div class="empty-state"><div class="big">🔍</div>No creators found.</div>'
     return
   }
   const _cardIds = []
@@ -1767,6 +1769,8 @@ async function refreshData() {
 function dismissWelcome() {
   const wo = document.getElementById('welcome-overlay')
   if (wo) { wo.classList.remove('show'); wo.style.display = 'none'; }
+  // Trigger data load if not already loaded
+  if (!allCreators.length) init()
 }
 // Welcome show is handled in the IS_CLIENT init block above
 
