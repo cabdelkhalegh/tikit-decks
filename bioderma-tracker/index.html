@@ -950,15 +950,28 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
         <div><h4>Track Live</h4><p>Once outreach starts, watch the campaign progress here</p></div>
       </div>
     </div>
-    <button class="welcome-go" onclick="dismissWelcome()">Let's Go →</button>
+    <button class="welcome-go" id="welcome-go-btn">Let's Go →</button>
   </div>
 </div>
-<!-- Inline trigger: runs immediately, zero dependency on Supabase or main script -->
+<!-- Inline script: shows welcome immediately + handles dismiss without waiting for main script -->
 <script>
 (function(){
-  if(new URLSearchParams(location.search).get('view')==='client'){
-    var wo=document.getElementById('welcome-overlay');
-    if(wo){wo.style.cssText='display:flex!important;position:fixed!important;inset:0!important;z-index:99999!important;background:rgba(5,5,20,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;';}
+  var isClient = new URLSearchParams(location.search).get('view') === 'client';
+  if (!isClient) return;
+  var wo = document.getElementById('welcome-overlay');
+  if (!wo) return;
+  // Show immediately
+  wo.style.cssText = 'display:flex!important;position:fixed!important;inset:0!important;z-index:99999!important;background:rgba(5,5,20,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;';
+  // Dismiss button — self-contained, no dependency on main script
+  var btn = document.getElementById('welcome-go-btn');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      wo.style.display = 'none';
+      wo.style.zIndex = '-1';
+      // Trigger init if main script already loaded
+      if (typeof init === 'function') init();
+      if (typeof allCreators !== 'undefined' && !allCreators.length && typeof init === 'function') init();
+    });
   }
 })();
 </script>
