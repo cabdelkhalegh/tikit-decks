@@ -83,7 +83,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .card-approval-row .cab-approve,.card-approval-row .cab-reject{flex:1;justify-content:center}
 /* Agency expand */
 .card-expand-btn{width:100%;border:none;background:var(--light);border-top:1px solid var(--border);padding:10px;font-size:12px;color:var(--muted);cursor:pointer;font-weight:600;text-align:center}
-.card-expand-panel{display:none;border-top:1px solid var(--border);padding:14px 16px;background:#FAFAFA}
+.card-expand-panel{display:none;border-top:1px solid rgba(255,255,255,0.08);padding:14px 16px;background:rgba(255,255,255,0.04)}
 .card-expand-panel.open{display:block}
 .ce-section{margin-bottom:14px}
 .ce-section h4{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.6px;margin-bottom:8px}
@@ -158,9 +158,13 @@ tbody tr:hover{background:#FAFAFA}
 tbody tr.row-approved{background:#F1F8E9}
 tbody tr.row-rejected{background:#FFEBEE}
 td{padding:10px 12px;vertical-align:middle}
-.dt-expand{background:#FAFAFA;border-bottom:2px solid var(--border);display:none;padding:16px 20px}
+.dt-expand{background:rgba(255,255,255,0.04);border-bottom:2px solid rgba(255,255,255,0.08);display:none;padding:16px 20px}
 .dt-expand.open{display:table-cell}
 .dt-expand-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.dt-expand label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px}
+.dt-expand input,.dt-expand select,.dt-expand textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 11px;font-size:12px;color:#E8E8F0;outline:none}
+.dt-expand input::placeholder,.dt-expand textarea::placeholder{color:rgba(255,255,255,0.25)}
+.dt-expand select option{background:#12141F;color:#E8E8F0}
 body.client-view .agency-col{display:none!important}
 .approval-btns-dt{display:flex;gap:6px}
 .approval-btns-dt .cab-approve,.approval-btns-dt .cab-reject{padding:6px 12px;font-size:11px}
