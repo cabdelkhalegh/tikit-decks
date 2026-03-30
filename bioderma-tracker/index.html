@@ -1996,7 +1996,12 @@ function generateReport() {
 }
 
 // Load data then subscribe to realtime
-document.addEventListener("DOMContentLoaded", function() {
+// init() called directly — script runs synchronously after Supabase CDN loads
+// Also retry on DOMContentLoaded in case first call beats the DOM
+var _initDone = false
+function _bootInit() {
+  if (_initDone) return
+  _initDone = true
   init().then(() => {
   db.channel('bioderma-rt-' + Date.now())
     .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
@@ -2025,7 +2030,13 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .subscribe()
   })
-})
+}
+// Fire immediately (script already parsed, DOM exists)
+_bootInit()
+// Also fire on DOMContentLoaded as safety net
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _bootInit)
+}
 </script>
 </body>
 </html>
