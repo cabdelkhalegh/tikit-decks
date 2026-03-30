@@ -1580,24 +1580,58 @@ function toggleDtExpand(id) {
 
 // ── ACTIONS ──
 async function setClientApproval(id, approved, btn) {
-  // Optimistic: store old value for rollback
   const idx = allCreators.findIndex(c=>c.id===id)
   const old = idx>=0 ? allCreators[idx].client_approved : null
-  // Immediate UI feedback
   if (idx>=0) allCreators[idx].client_approved = approved
   _applyApprovalUI(id, approved)
   updateApprovalCounts(); updateStats()
-  // Persist to Supabase
   const { error } = await db.from(TABLE).update({client_approved: approved, updated_at: new Date().toISOString()}).eq('id', id)
   if (error) {
-    // Rollback
     if (idx>=0) allCreators[idx].client_approved = old
     _applyApprovalUI(id, old)
     updateApprovalCounts(); updateStats()
     showToast('❌ Save failed — check connection and try again', true)
   } else {
     showToast(approved ? '✅ Approved — saved' : '❌ Rejected — saved')
+    // Show comment box after approval/rejection
+    if (IS_CLIENT) showClientCommentBox(id, approved)
   }
+}
+
+function showClientCommentBox(id, approved) {
+  // Remove any existing comment box for this card
+  const existing = document.getElementById('client-comment-'+id)
+  if (existing) existing.remove()
+  const card = document.getElementById('card-'+id)
+  if (!card) return
+  const creator = allCreators.find(c=>c.id===id)
+  const box = document.createElement('div')
+  box.id = 'client-comment-'+id
+  box.style.cssText = 'padding:0 18px 16px;'
+  box.innerHTML = `
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);margin-bottom:8px">${approved ? '💬 Add a note (optional)' : '💬 Reason for rejection (optional)'}</div>
+      <textarea id="cmt-txt-${id}" placeholder="${approved ? 'Any notes for the agency...' : 'Why are you rejecting this creator?'}" rows="2"
+        style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px;font-size:13px;color:#E8E8F0;outline:none;resize:vertical;font-family:inherit"
+      >${creator && creator.client_notes ? creator.client_notes : ''}</textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button onclick="saveClientNote(${id})" style="background:rgba(233,30,140,.2);border:1px solid rgba(233,30,140,.4);color:#F472B6;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer">💾 Save Note</button>
+        <button onclick="document.getElementById('client-comment-${id}').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.4);border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer">Skip</button>
+      </div>
+    </div>`
+  card.appendChild(box)
+}
+
+async function saveClientNote(id) {
+  const txt = document.getElementById('cmt-txt-'+id)
+  if (!txt) return
+  const note = txt.value.trim()
+  const idx = allCreators.findIndex(c=>c.id===id)
+  if (idx>=0) allCreators[idx].client_notes = note
+  const { error } = await db.from(TABLE).update({client_notes: note || null, updated_at: new Date().toISOString()}).eq('id', id)
+  if (error) { showToast('❌ Note not saved', true); return }
+  showToast('💬 Note saved')
+  document.getElementById('client-comment-'+id)?.remove()
 }
 
 function _applyApprovalUI(id, approved) {

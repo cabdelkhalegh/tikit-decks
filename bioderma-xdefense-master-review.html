@@ -205,6 +205,52 @@ code { background: rgba(0,0,0,0.3) !important; color: #4ADE80 !important; border
   <div style="display:flex;gap:8px">
     <button class="btn-exp" onclick="exp()">⬇ Export Approved</button>
     <button class="btn-sec" onclick="window.print()">🖨 Print</button>
+    <button class="btn-exp" onclick="showAddCreator()" style="background:rgba(0,102,204,0.2);border:1px solid rgba(0,102,204,0.4);color:#64B5F6">+ Add Creator</button>
+  </div>
+</div>
+
+<!-- Add Creator Modal -->
+<div id="add-creator-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px">
+  <div style="background:#141420;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:32px;width:100%;max-width:480px;color:#E8E8F0">
+    <h3 style="font-size:18px;font-weight:800;margin-bottom:20px;color:#fff">+ Add Creator for Review</h3>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Full Name *</label>
+        <input id="ac-name" type="text" placeholder="e.g. Sara Al Rashidi" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+      </div>
+      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Instagram Handle *</label>
+        <input id="ac-ig" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+      </div>
+      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">TikTok Handle (optional)</label>
+        <input id="ac-tt" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Category</label>
+          <select id="ac-cat" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:13px;color:#E8E8F0;outline:none">
+            <option value="beauty">💄 Beauty</option>
+            <option value="derm">🧪 Derm/Skincare</option>
+            <option value="sport">🏃 Sport</option>
+            <option value="pharma">💊 Pharma</option>
+            <option value="lifestyle">🌟 Lifestyle</option>
+            <option value="travel">✈️ Travel</option>
+            <option value="food">🍽️ Food</option>
+            <option value="fitness">💪 Fitness</option>
+            <option value="fashion">👗 Fashion</option>
+            <option value="mom">👩‍👧 Mom</option>
+          </select>
+        </div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Reach</label>
+          <input id="ac-reach" type="text" placeholder="e.g. IG 45K" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+        </div>
+      </div>
+      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Notes / Why this creator</label>
+        <textarea id="ac-why" placeholder="Why this creator fits the campaign..." rows="2" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:13px;color:#E8E8F0;outline:none;resize:vertical"></textarea>
+      </div>
+    </div>
+    <div id="ac-err" style="display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);border-radius:8px;padding:10px 14px;font-size:13px;color:#F87171;margin-top:12px"></div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <button onclick="submitAddCreator()" style="flex:1;background:linear-gradient(135deg,#E91E8C,#A855F7);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer">Add to Review List</button>
+      <button onclick="closeAddCreator()" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 20px;font-size:14px;cursor:pointer">Cancel</button>
+    </div>
   </div>
 </div>
 <div class="sbar">
@@ -6203,6 +6249,57 @@ _supa.channel('mr-realtime')
 
 // Load saved state from Supabase on page load
 _loadFromSupabase()
+
+// ── ADD CREATOR ──
+function showAddCreator(){
+  const m=document.getElementById('add-creator-modal')
+  m.style.display='flex'
+  document.getElementById('ac-name').focus()
+}
+function closeAddCreator(){
+  document.getElementById('add-creator-modal').style.display='none'
+  ;['ac-name','ac-ig','ac-tt','ac-reach','ac-why'].forEach(id=>{document.getElementById(id).value=''})
+  document.getElementById('ac-err').style.display='none'
+}
+async function submitAddCreator(){
+  const name=document.getElementById('ac-name').value.trim()
+  const ig=document.getElementById('ac-ig').value.trim()
+  const tt=document.getElementById('ac-tt').value.trim()
+  const cat=document.getElementById('ac-cat').value
+  const reach=document.getElementById('ac-reach').value.trim()
+  const why=document.getElementById('ac-why').value.trim()
+  const errEl=document.getElementById('ac-err')
+  if(!name||!ig){errEl.textContent='⚠️ Name and Instagram handle are required.';errEl.style.display='block';return}
+  errEl.style.display='none'
+  const handle_ig=ig.startsWith('@')?ig:'@'+ig
+  const handle_tt=tt?(tt.startsWith('@')?tt:'@'+tt):null
+  const btn=document.querySelector('#add-creator-modal button[onclick="submitAddCreator()"]')
+  btn.textContent='⏳ Adding...'
+  btn.disabled=true
+  try{
+    const{data,error}=await _supa.from('bioderma_creators').insert({
+      name,handle_ig,handle_tt,
+      ig_url:handle_ig?`https://www.instagram.com/${handle_ig.replace('@','')}/`:'',
+      tt_url:handle_tt?`https://www.tiktok.com/@${handle_tt.replace('@','')}`:'',
+      category:cat,reach:reach||'TBC',
+      market:'UAE',batch:'NEW',priority:'P2',
+      status:'SHORTLISTED',agency_approved:null,
+      notes:why||null
+    }).select('id').single()
+    if(error)throw error
+    showMRToast(`✅ ${name} added to review list (id ${data.id})`)
+    closeAddCreator()
+    // Reload from Supabase to reflect new creator
+    await _loadFromSupabase()
+  }catch(e){
+    errEl.textContent='❌ '+e.message
+    errEl.style.display='block'
+    btn.textContent='Add to Review List'
+    btn.disabled=false
+  }
+}
+// Close modal on backdrop click
+document.getElementById('add-creator-modal').addEventListener('click',function(e){if(e.target===this)closeAddCreator()})
 </script>
 </body>
 </html>
