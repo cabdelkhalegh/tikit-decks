@@ -1168,6 +1168,9 @@ window.PAGE_SIZE = 30
 window.allCreators = []
 window.filtered = []
 window.page = 1
+window.selectedIds = new Set()
+window.longPressTimer = null
+window._toastT = null
 window.STATUS_LABELS = {SHORTLISTED:'Shortlisted',CONTACTED:'Contacted',FOLLOW_UP_1:'Follow-Up 1',FOLLOW_UP_2:'Follow-Up 2',CONFIRMED:'Confirmed',DETAILS_COLLECTED:'Details Collected',BOX_ASSEMBLED:'Box Assembled',BRIEF_SENT:'Brief Sent',DISPATCHED:'Dispatched',IN_TRANSIT:'In Transit',DELIVERED:'Delivered',AWAITING_CONTENT:'Awaiting Content',POSTED:'Posted',COMPLETED:'Completed',DECLINED:'Declined',NO_RESPONSE:'No Response',DID_NOT_POST:'Did Not Post',DELIVERY_FAILED:'Delivery Failed'}
 window.CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family'}
 
@@ -1652,7 +1655,7 @@ function _applyApprovalUI(id, approved) {
   if (dtr) dtr.className = approved === true ? 'row-approved' : approved === false ? 'row-rejected' : ''
 }
 
-var _toastT
+// _toastT declared on window at top //
 function showToast(msg, isErr=false) {
   let t = document.getElementById('toast')
   if (!t) { t = document.createElement('div'); t.id='toast'; t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;z-index:9999;transition:opacity .3s;pointer-events:none'; document.body.appendChild(t) }
@@ -1856,8 +1859,8 @@ if (IS_CLIENT) {
 }
 
 // ═══ TASK 6: BULK ACTIONS ═══
-var selectedIds = new Set()
-var longPressTimer = null
+// selectedIds declared on window at top
+// longPressTimer declared on window at top
 
 function toggleSelectAll(checked) {
   const start = (page - 1) * PAGE_SIZE
