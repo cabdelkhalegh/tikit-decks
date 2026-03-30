@@ -1985,37 +1985,35 @@ function generateReport() {
 }
 
 // Supabase realtime — auto-sync changes across sessions (agency adds/removes → client sees instantly)
-const channel = db.channel('bioderma-realtime')
-  .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
-    const { eventType, new: newRow, old: oldRow } = payload
-    if (eventType === 'INSERT') {
-      // Client view: only add if agency approved it
-      if (!IS_CLIENT || newRow.agency_approved === true) allCreators.push(newRow)
-    } else if (eventType === 'UPDATE') {
-      const idx = allCreators.findIndex(c=>c.id===newRow.id)
-      if (IS_CLIENT && newRow.agency_approved === true && idx < 0) {
-        // Agency just approved — add to client view
-        allCreators.push(newRow)
-      } else if (IS_CLIENT && newRow.agency_approved !== true && idx >= 0) {
-        // Agency un-approved — remove from client view (but only if not yet contacted)
-        if (newRow.status === 'SHORTLISTED') allCreators = allCreators.filter(c=>c.id!==newRow.id)
-      } else if (idx>=0) {
-        allCreators[idx] = newRow
+// Load data first, then subscribe to realtime
+init().then(() => {
+  db.channel('bioderma-rt-' + Date.now())
+    .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
+      const { eventType, new: newRow, old: oldRow } = payload
+      if (eventType === 'INSERT') {
+        if (!IS_CLIENT || newRow.agency_approved === true) { allCreators.push(newRow); applyFilters(); updateStats(); updateApprovalCounts(); updateRings() }
+      } else if (eventType === 'UPDATE') {
+        const idx = allCreators.findIndex(c=>c.id===newRow.id)
+        if (IS_CLIENT && newRow.agency_approved === true && idx < 0) {
+          allCreators.push(newRow)
+        } else if (IS_CLIENT && newRow.agency_approved !== true && idx >= 0) {
+          if (newRow.status === 'SHORTLISTED') allCreators = allCreators.filter(c=>c.id!==newRow.id)
+        } else if (idx>=0) {
+          allCreators[idx] = newRow
+        }
+        _applyApprovalUI(newRow.id, newRow.client_approved)
+        if (IS_CLIENT && ['POSTED','COMPLETED'].includes(newRow.status)) {
+          const cardEl = document.getElementById('card-' + newRow.id)
+          if (cardEl) { cardEl.classList.add('card-posted'); triggerConfetti(cardEl) }
+        }
+        applyFilters(); updateStats(); updateApprovalCounts(); updateRings()
+      } else if (eventType === 'DELETE') {
+        allCreators = allCreators.filter(c=>c.id!==oldRow.id)
+        applyFilters(); updateStats(); updateApprovalCounts(); updateRings()
       }
-      _applyApprovalUI(newRow.id, newRow.client_approved)
-      // TASK 4: Confetti on POSTED status change
-      if (IS_CLIENT && ['POSTED','COMPLETED'].includes(newRow.status)) {
-        const cardEl = document.getElementById('card-' + newRow.id)
-        if (cardEl) { cardEl.classList.add('card-posted'); triggerConfetti(cardEl) }
-      }
-    } else if (eventType === 'DELETE') {
-      allCreators = allCreators.filter(c=>c.id!==oldRow.id)
-    }
-    applyFilters(); updateStats(); updateApprovalCounts(); updateRings()
-  })
-  .subscribe()
-
-init()
+    })
+    .subscribe()
+})
 </script>
 </body>
 </html>
