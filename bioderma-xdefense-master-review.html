@@ -217,11 +217,21 @@ code { background: rgba(0,0,0,0.3) !important; color: #4ADE80 !important; border
       <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Full Name *</label>
         <input id="ac-name" type="text" placeholder="e.g. Sara Al Rashidi" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
       </div>
-      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Instagram Handle *</label>
-        <input id="ac-ig" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Instagram Handle *</label>
+          <input id="ac-ig" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+        </div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">IG Profile Link</label>
+          <input id="ac-ig-url" type="url" placeholder="https://instagram.com/..." style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+        </div>
       </div>
-      <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">TikTok Handle (optional)</label>
-        <input id="ac-tt" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">TikTok Handle (optional)</label>
+          <input id="ac-tt" type="text" placeholder="@handle" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+        </div>
+        <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">TikTok Profile Link</label>
+          <input id="ac-tt-url" type="url" placeholder="https://tiktok.com/@..." style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 14px;font-size:14px;color:#E8E8F0;outline:none">
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div><label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);display:block;margin-bottom:5px">Category</label>
@@ -6258,13 +6268,15 @@ function showAddCreator(){
 }
 function closeAddCreator(){
   document.getElementById('add-creator-modal').style.display='none'
-  ;['ac-name','ac-ig','ac-tt','ac-reach','ac-why'].forEach(id=>{document.getElementById(id).value=''})
+  ;['ac-name','ac-ig','ac-ig-url','ac-tt','ac-tt-url','ac-reach','ac-why'].forEach(id=>{document.getElementById(id).value=''})
   document.getElementById('ac-err').style.display='none'
 }
 async function submitAddCreator(){
   const name=document.getElementById('ac-name').value.trim()
   const ig=document.getElementById('ac-ig').value.trim()
+  const igUrl=document.getElementById('ac-ig-url').value.trim()
   const tt=document.getElementById('ac-tt').value.trim()
+  const ttUrl=document.getElementById('ac-tt-url').value.trim()
   const cat=document.getElementById('ac-cat').value
   const reach=document.getElementById('ac-reach').value.trim()
   const why=document.getElementById('ac-why').value.trim()
@@ -6273,23 +6285,22 @@ async function submitAddCreator(){
   errEl.style.display='none'
   const handle_ig=ig.startsWith('@')?ig:'@'+ig
   const handle_tt=tt?(tt.startsWith('@')?tt:'@'+tt):null
+  // Auto-build URL from handle if not provided
+  const ig_url=igUrl||`https://www.instagram.com/${handle_ig.replace('@','')}/`
+  const tt_url=ttUrl||(handle_tt?`https://www.tiktok.com/${handle_tt.replace('@','@')}`:'')
   const btn=document.querySelector('#add-creator-modal button[onclick="submitAddCreator()"]')
   btn.textContent='⏳ Adding...'
   btn.disabled=true
   try{
-    const{data,error}=await _supa.from('bioderma_creators').insert({
-      name,handle_ig,handle_tt,
-      ig_url:handle_ig?`https://www.instagram.com/${handle_ig.replace('@','')}/`:'',
-      tt_url:handle_tt?`https://www.tiktok.com/@${handle_tt.replace('@','')}`:'',
-      category:cat,reach:reach||'TBC',
-      market:'UAE',batch:'NEW',priority:'P2',
-      status:'SHORTLISTED',agency_approved:null,
-      notes:why||null
-    }).select('id').single()
-    if(error)throw error
-    showMRToast(`✅ ${name} added to review list (id ${data.id})`)
+    const res=await fetch(SUPA_URL+'/rest/v1/bioderma_creators',{
+      method:'POST',
+      headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify({name,handle_ig,handle_tt,ig_url,tt_url:tt_url||null,category:cat,reach:reach||'TBC',market:'UAE',batch:'NEW',priority:'P2',status:'SHORTLISTED',agency_approved:null,notes:why||null})
+    })
+    const rows=await res.json()
+    if(!Array.isArray(rows)||!rows[0])throw new Error((rows&&rows.message)||'Insert failed')
+    showMRToast('✅ '+name+' added (id '+rows[0].id+')')
     closeAddCreator()
-    // Reload from Supabase to reflect new creator
     await _loadFromSupabase()
   }catch(e){
     errEl.textContent='❌ '+e.message
