@@ -1996,7 +1996,8 @@ function generateReport() {
 }
 
 // Load data then subscribe to realtime
-init().then(() => {
+document.addEventListener("DOMContentLoaded", function() {
+  init().then(() => {
   db.channel('bioderma-rt-' + Date.now())
     .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
       const { eventType, new: newRow, old: oldRow } = payload
@@ -2024,6 +2025,7 @@ init().then(() => {
     })
     .subscribe()
   })
+})
 </script>
 </body>
 </html>
