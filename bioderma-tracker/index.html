@@ -956,24 +956,22 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
 <!-- Inline script: shows welcome immediately + handles dismiss without waiting for main script -->
 <script>
 (function(){
-  var isClient = new URLSearchParams(location.search).get('view') === 'client';
+  var params = new URLSearchParams(location.search);
+  var isClient = params.get('view') === 'client';
+  var welcomed = params.get('w') === '1';
   if (!isClient) return;
-  // Apply client-view class IMMEDIATELY so CSS renders correctly before main script
+  // Apply body class immediately — before main script loads
   document.body.classList.add('client-view');
+  // If already welcomed (w=1 in URL), skip overlay
+  if (welcomed) return;
+  // Show overlay
   var wo = document.getElementById('welcome-overlay');
-  if (!wo) return;
-  // Show immediately
-  wo.style.cssText = 'display:flex!important;position:fixed!important;inset:0!important;z-index:99999!important;background:rgba(5,5,20,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;';
-  // Dismiss button — self-contained, no dependency on main script
+  if (wo) wo.style.cssText = 'display:flex!important;position:fixed!important;inset:0!important;z-index:99999!important;background:rgba(5,5,20,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;';
+  // Let's Go — reload with w=1 to skip overlay, keeps view=client
   var btn = document.getElementById('welcome-go-btn');
-  if (btn) {
-    btn.addEventListener('click', function() {
-      wo.style.display = 'none';
-      wo.style.zIndex = '-1';
-      // Trigger init if main script already loaded
-      if (typeof init === 'function') init();
-    });
-  }
+  if (btn) btn.addEventListener('click', function(){
+    location.href = location.pathname + '?view=client&w=1';
+  });
 })();
 </script>
 
