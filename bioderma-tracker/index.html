@@ -1972,109 +1972,7 @@ function generateReport() {
     'a{color:#0066CC;text-decoration:none}a:hover{text-decoration:underline}' +
     'footer{margin-top:40px;padding-top:16px;border-top:1px solid #E9ECEF;text-align:center;font-size:11px;color:#999}' +
     '@media print{body{padding:20px}th{background:#f5f5f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}' +
-    '</style>
-<!-- ═══════════════════════════════════════
-     AGENCY VIEW DARK THEME
-     Applies when NOT in client view
-     ═══════════════════════════════════════ -->
-<style>
-/* Agency view dark base — only when body does NOT have client-view class */
-body:not(.client-view) {
-  background:
-    radial-gradient(ellipse at 20% 10%, rgba(255,140,0,0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.08) 0%, transparent 50%),
-    #0A0805 !important;
-  color: #E8E8F0 !important;
-}
-body:not(.client-view)::before {
-  content: "" !important;
-  position: fixed !important;
-  top: -15% !important; left: 50% !important;
-  transform: translateX(-50%) rotate(0deg) !important;
-  width: 140vw !important; height: 140vw !important;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg, rgba(255,140,0,0.04) 18deg, transparent 36deg,
-    rgba(233,30,140,0.03) 54deg, transparent 72deg,
-    rgba(255,180,0,0.04) 90deg, transparent 108deg,
-    rgba(255,140,0,0.03) 126deg, transparent 180deg,
-    rgba(255,140,0,0.04) 198deg, transparent 252deg,
-    rgba(233,30,140,0.03) 270deg, transparent 360deg
-  ) !important;
-  border-radius: 50% !important;
-  pointer-events: none !important; z-index: 0 !important;
-  animation: bd-halo-spin 55s linear infinite !important; opacity: 0.5 !important;
-}
-/* Topbar */
-body:not(.client-view) .topbar {
-  background: rgba(3,7,18,0.90) !important;
-  backdrop-filter: blur(28px) !important;
-  -webkit-backdrop-filter: blur(28px) !important;
-  border-bottom: 1px solid rgba(255,140,0,0.2) !important;
-  box-shadow: 0 1px 0 rgba(255,140,0,0.2), 0 4px 32px rgba(0,0,0,0.6) !important;
-}
-body:not(.client-view) .logo { color: #fff !important; }
-body:not(.client-view) .logo .x { color: #E91E8C !important; }
-body:not(.client-view) .logo .blue { color: #64B5F6 !important; }
-body:not(.client-view) .badge-agency { background: rgba(0,200,83,0.15) !important; color: #4ADE80 !important; border-color: rgba(0,200,83,0.25) !important; }
-/* Buttons */
-body:not(.client-view) .btn-outline { background: rgba(255,255,255,0.07) !important; color: rgba(255,255,255,0.7) !important; border-color: rgba(255,255,255,0.15) !important; }
-body:not(.client-view) .btn-pink { background: #E91E8C !important; }
-/* Stats */
-body:not(.client-view) .stats { background: rgba(255,255,255,0.04) !important; border-bottom-color: rgba(255,255,255,0.06) !important; }
-body:not(.client-view) .stat { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.08) !important; }
-body:not(.client-view) .stat .n { color: #F472B6; }
-body:not(.client-view) .stat .l { color: rgba(255,255,255,0.4) !important; }
-body:not(.client-view) .stat.green .n { color: #4ADE80 !important; }
-body:not(.client-view) .stat.blue .n  { color: #60A5FA !important; }
-body:not(.client-view) .stat.purple .n { color: #C084FC !important; }
-body:not(.client-view) .stat.orange .n { color: #FB923C !important; }
-/* Filters */
-body:not(.client-view) .filters { background: rgba(255,255,255,0.03) !important; border-bottom-color: rgba(255,255,255,0.06) !important; }
-body:not(.client-view) .filter-row select,
-body:not(.client-view) .filter-row input { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; color: #E8E8F0 !important; }
-body:not(.client-view) .filter-row select option { background: #0A0F1E; color: #fff; }
-body:not(.client-view) .filter-clear { background: rgba(255,255,255,0.05) !important; color: rgba(255,255,255,0.5) !important; border-color: rgba(255,255,255,0.1) !important; }
-/* Cards */
-body:not(.client-view) .creator-card { background: rgba(255,255,255,0.07) !important; border-color: rgba(255,255,255,0.12) !important; }
-body:not(.client-view) .creator-card.card-approved { background: rgba(74,222,128,0.06) !important; border-color: rgba(74,222,128,0.2) !important; }
-body:not(.client-view) .creator-card.card-rejected { background: rgba(248,113,113,0.05) !important; border-color: rgba(248,113,113,0.15) !important; }
-body:not(.client-view) .card-name { color: #fff !important; }
-body:not(.client-view) .card-handle { color: rgba(255,255,255,0.4) !important; }
-body:not(.client-view) .card-expand-btn { background: rgba(255,255,255,0.04) !important; border-top-color: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.4) !important; }
-body:not(.client-view) .card-expand-panel { background: rgba(0,0,0,0.2) !important; border-top-color: rgba(255,255,255,0.08) !important; }
-body:not(.client-view) .ce-field label { color: rgba(255,255,255,0.5) !important; }
-body:not(.client-view) .ce-field input,
-body:not(.client-view) .ce-field select,
-body:not(.client-view) .ce-field textarea { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; color: #E8E8F0 !important; }
-body:not(.client-view) .ce-section h4 { color: rgba(255,255,255,0.5) !important; }
-/* Table */
-body:not(.client-view) table { background: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.08) !important; }
-body:not(.client-view) thead tr { background: rgba(255,255,255,0.06) !important; }
-body:not(.client-view) th { color: rgba(255,255,255,0.45) !important; }
-body:not(.client-view) tbody tr { border-bottom-color: rgba(255,255,255,0.05) !important; }
-body:not(.client-view) tbody tr:hover { background: rgba(255,255,255,0.04) !important; }
-body:not(.client-view) td { color: rgba(255,255,255,0.8) !important; background: transparent !important; }
-body:not(.client-view) tbody tr.row-approved { background: rgba(74,222,128,0.05) !important; }
-body:not(.client-view) tbody tr.row-rejected { background: rgba(248,113,113,0.05) !important; }
-/* Pagination */
-body:not(.client-view) .pagination { background: rgba(255,255,255,0.03) !important; border-top-color: rgba(255,255,255,0.06) !important; }
-body:not(.client-view) .pgb { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; color: rgba(255,255,255,0.5) !important; }
-body:not(.client-view) .pgb.active { background: linear-gradient(135deg,#E91E8C,#A855F7) !important; border-color: transparent !important; color: #fff !important; }
-/* Modal */
-body:not(.client-view) .modal { background: #141420 !important; color: #E8E8F0 !important; }
-body:not(.client-view) .modal h3 { color: #fff !important; }
-body:not(.client-view) .mf label { color: rgba(255,255,255,0.5) !important; }
-body:not(.client-view) .mf input,
-body:not(.client-view) .mf select { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; color: #E8E8F0 !important; }
-/* Empty state */
-body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-</style>
-</head><body>' +
+    '<\/style><\/head><body>' +
     '<div class="header"><div><div class="logos"><span>TiKiT<span class="pink">.</span> × <span class="blue">Bioderma</span></span></div><h1>Photoderm XDefense — <em>Campaign Report</em></h1><div class="date">' + today + '</div></div></div>' +
     '<div class="stats-grid">' +
     '<div class="stat-box green"><div class="n">' + approved.length + '</div><div class="l">Approved</div></div>' +
@@ -2085,7 +1983,7 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
     '<h2 style="font-size:16px;margin-bottom:4px">Approved Creators</h2>' +
     '<table><thead><tr><th>Name</th><th>Handle</th><th>Category</th><th>Reach</th><th>Status</th><th>Content</th></tr></thead><tbody>' + rows + '</tbody></table>' +
     '<footer>Generated by TiKiT Marketing Management · #PhotodermXdefenseReview</footer>' +
-    '</body></html>'
+    '<\/body><\/html>'
   const w = window.open('', '_blank')
   if (w) { w.document.write(html); w.document.close() }
 }
