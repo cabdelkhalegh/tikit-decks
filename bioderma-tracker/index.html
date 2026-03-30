@@ -564,11 +564,11 @@ body.client-view.client-force-phone .pagination{max-width:520px!important;margin
 
 /* ═══ TASK 1: WELCOME OVERLAY ═══ */
 #welcome-overlay{
-  position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;
-  background:rgba(5,5,20,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  position:fixed!important;inset:0!important;z-index:9999!important;display:none;align-items:center;justify-content:center;
+  background:rgba(5,5,20,.92)!important;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   padding:24px;overflow-y:auto;
 }
-#welcome-overlay.show{display:flex}
+#welcome-overlay.show{display:flex!important}
 .welcome-box{
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
   border-radius:24px;padding:40px 32px;max-width:440px;width:100%;text-align:center;
@@ -1162,8 +1162,17 @@ if (IS_CLIENT) {
   const rb = document.getElementById('report-btn'); if(rb) rb.style.display='inline-flex';
   // Show shipping export for client (Bioderma needs it to send to courier)
   const sb2 = document.getElementById('shipping-export-btn'); if(sb2) sb2.style.display='inline-flex';
-  // Show welcome overlay immediately on every client visit
-  const wo = document.getElementById('welcome-overlay'); if(wo) wo.classList.add('show');
+  // Show welcome overlay immediately on every client visit — force via inline style
+  function showWelcome() {
+    const wo = document.getElementById('welcome-overlay')
+    if (wo) { wo.style.display = 'flex'; wo.style.zIndex = '9999'; }
+  }
+  showWelcome()
+  // Safety net: also fire after DOM fully loaded
+  if (document.readyState !== 'complete') {
+    window.addEventListener('DOMContentLoaded', showWelcome)
+    window.addEventListener('load', showWelcome)
+  }
 
   // Auto-detect: phone vs desktop — apply compact layout class on desktop
   function detectLayout() {
@@ -1747,7 +1756,8 @@ async function refreshData() {
 
 // ═══ TASK 1: WELCOME OVERLAY ═══
 function dismissWelcome() {
-  document.getElementById('welcome-overlay').classList.remove('show')
+  const wo = document.getElementById('welcome-overlay')
+  if (wo) { wo.classList.remove('show'); wo.style.display = 'none'; }
 }
 // Welcome show is handled in the IS_CLIENT init block above
 
