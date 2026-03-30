@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Bioderma XDefense — Campaign Tracker | TiKiT</title>
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/bioderma-logo.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="XDefense">
 <meta name="theme-color" content="#E91E8C">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -995,6 +998,7 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
     <button class="btn btn-outline" onclick="exportCSV()" style="padding:8px 10px;font-size:12px">⬇ Export</button>
     <button class="btn btn-outline" id="report-btn" onclick="generateReport()" style="padding:8px 10px;font-size:12px;display:none">📄 Report</button>
     <button class="btn btn-outline" id="shipping-export-btn" onclick="exportShipping()" style="padding:8px 10px;font-size:12px;display:none;background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)">📦 Export Shipping</button>
+    <button id="a2hs-btn" onclick="triggerA2HS()" style="display:none;padding:8px 12px;font-size:12px;background:linear-gradient(135deg,rgba(233,30,140,.25),rgba(168,85,247,.25));color:#E91E8C;border:1px solid rgba(233,30,140,.4);border-radius:8px;cursor:pointer;font-weight:700">📲 Add to Home Screen</button>
     <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-campaign-guide.html" target="_blank" class="btn btn-outline agency-col" style="padding:8px 10px;font-size:12px;text-decoration:none">📖 Guide</a>
     <button class="btn btn-outline agency-col" onclick="exportShipping()" style="padding:8px 10px;font-size:12px;background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)">📦 Shipping</button>
     <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
@@ -2053,6 +2057,38 @@ _bootInit()
 setTimeout(function() { if (!allCreators.length) { _initDone = false; _bootInit() } }, 2000)
 // Retry after 5s as final safety net
 setTimeout(function() { if (!allCreators.length) { _initDone = false; _bootInit() } }, 5000)
+
+// ── PWA: Add to Home Screen ──
+var _deferredPrompt = null
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault()
+  _deferredPrompt = e
+  var btn = document.getElementById('a2hs-btn')
+  if (btn) btn.style.display = 'inline-block'
+})
+window.addEventListener('appinstalled', function() {
+  var btn = document.getElementById('a2hs-btn')
+  if (btn) btn.style.display = 'none'
+  _deferredPrompt = null
+})
+function triggerA2HS() {
+  if (_deferredPrompt) {
+    _deferredPrompt.prompt()
+    _deferredPrompt.userChoice.then(function(r) {
+      _deferredPrompt = null
+      var btn = document.getElementById('a2hs-btn')
+      if (btn) btn.style.display = 'none'
+    })
+  } else {
+    // iOS / already installed: show instructions
+    var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+    if (isIOS) {
+      alert('To add to Home Screen on iPhone/iPad:\n\n1. Tap the Share button (box with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"')
+    } else {
+      alert('To add to Home Screen:\n\nIn Chrome: tap the 3-dot menu → "Add to Home screen"\nIn Safari: tap Share → "Add to Home Screen"')
+    }
+  }
+}
 </script>
 </body>
 </html>

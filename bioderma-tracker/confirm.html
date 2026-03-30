@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E91E8C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="XDefense">
+<link rel="apple-touch-icon" href="assets/bioderma-logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Bioderma XDefense — Confirm Your Details</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -145,6 +152,7 @@ body::before{content:"";position:fixed;top:-15%;left:50%;transform:translateX(-5
     <div class="icon">📦</div>
     <h2>Details Confirmed!</h2>
     <p>Thank you! Your Bioderma Photoderm XDefense box<br>will be on its way to you within <strong style="color:#4ADE80">5–7 working days</strong>.<br><br>Watch for our DM with the tracking number. 🎉</p>
+    <button id="a2hs" onclick="doA2HS()" style="display:none;margin-top:20px;width:100%;background:linear-gradient(135deg,#E91E8C,#A855F7);color:#fff;border:none;border-radius:14px;padding:14px;font-size:14px;font-weight:800;cursor:pointer">📲 Add to Home Screen</button>
   </div>
 </div>
 
@@ -246,6 +254,14 @@ async function submitForm() {
 }
 
 init()
+
+// PWA install
+var _dp = null
+window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); _dp = e; var b = document.getElementById('a2hs'); if(b) b.style.display='block' })
+function doA2HS() {
+  if (_dp) { _dp.prompt(); _dp.userChoice.then(function(){ _dp=null; var b=document.getElementById('a2hs'); if(b) b.style.display='none' }) }
+  else { var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent); alert(isIOS ? 'Tap Share → "Add to Home Screen"' : 'Tap browser menu → "Add to Home screen"') }
+}
 </script>
 </body>
 </html>

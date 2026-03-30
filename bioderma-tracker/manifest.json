@@ -1,14 +1,16 @@
 {
-  "name": "Bioderma XDefense Campaign",
-  "short_name": "Bioderma",
-  "description": "Photoderm XDefense — Selected Reviewer Campaign Tracker",
+  "name": "Bioderma XDefense — Creator Review",
+  "short_name": "XDefense",
+  "description": "Photoderm XDefense PR Campaign — Creator Review & Tracker",
   "start_url": "/tikit-decks/bioderma-tracker/?view=client",
+  "scope": "/tikit-decks/bioderma-tracker/",
   "display": "standalone",
   "background_color": "#0A0805",
   "theme_color": "#E91E8C",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
-    { "src": "assets/bioderma-logo.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "assets/bioderma-logo.png", "sizes": "512x512", "type": "image/png" }
-  ]
+    { "src": "assets/bioderma-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/bioderma-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["business", "productivity"]
 }
