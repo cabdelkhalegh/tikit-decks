@@ -167,8 +167,8 @@ async function init() {
   
   // Pre-fill greeting
   const handle = data.handle_ig || data.handle_tt || ''
-  document.getElementById('greeting-title').textContent = handle ? Hi @ 🎉 : 'You\'re Selected! 🎉'
-  document.getElementById('greeting-sub').textContent = Congrats on being selected as a Bioderma Photoderm XDefense reviewer! Please share your delivery details so we can ship your PR box.
+  document.getElementById('greeting-title').textContent = handle ? `Hi ${handle} 🎉` : "You're Selected! 🎉"
+  document.getElementById('greeting-sub').textContent = "Congrats on being selected as a Bioderma Photoderm XDefense reviewer! Please share your delivery details so we can ship your PR box."
   
   // Pre-fill name if available
   if (data.name) document.getElementById('f-name').value = data.name
