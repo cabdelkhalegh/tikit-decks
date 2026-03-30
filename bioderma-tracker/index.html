@@ -1246,27 +1246,30 @@ if (IS_CLIENT) {
 
 async function init() {
   const tbody = document.getElementById('table-body')
-  if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">Loading...</td></tr>'
-  // Use fetch() directly — bypass Supabase JS client which may have state issues
+  if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">⏳ Loading creators...</td></tr>'
   const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name' + (IS_CLIENT ? '&agency_approved=eq.true' : '')
-  let data, fetchError
+  let data
   try {
-    const res = await fetch(url, { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' } })
-    data = await res.json()
-    if (!Array.isArray(data)) fetchError = data.message || JSON.stringify(data)
-  } catch(e) { fetchError = e.message }
-  if (fetchError) {
-    if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px">${fetchError}</td></tr>`
+    const res = await fetch(url, { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
+    const json = await res.json()
+    if (!Array.isArray(json)) {
+      if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px;text-align:center">DB Error: ${json.message||JSON.stringify(json)}</td></tr>`
+      return
+    }
+    data = json
+  } catch(e) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px;text-align:center">Network error: ${e.message}</td></tr>`
     return
   }
-  allCreators = data || []
+  allCreators = data
   filtered = [...allCreators]
   page = 1
-  renderCards()
-  renderTable()
-  renderPagination()
-  updateStats()
-  updateRings()
+  try { renderCards() } catch(e) { console.error('renderCards:', e) }
+  try { renderTable() } catch(e) { if(tbody) tbody.innerHTML=`<tr><td colspan="13" style="color:red">${e.message}</td></tr>` }
+  try { renderPagination() } catch(e) { console.error('renderPagination:', e) }
+  try { updateStats() } catch(e) { console.error('updateStats:', e) }
+  try { updateRings() } catch(e) { console.error('updateRings:', e) }
+  try { updateApprovalCounts() } catch(e) { console.error('updateApprovalCounts:', e) }
 }
 
 function applyFilters() {
