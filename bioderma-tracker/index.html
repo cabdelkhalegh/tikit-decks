@@ -1248,7 +1248,8 @@ async function init() {
   const tbody = document.getElementById('table-body')
   if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">⏳ Loading creators...</td></tr>'
   console.log('[init] starting, SUPA_URL=' + (typeof SUPA_URL) + ' TABLE=' + (typeof TABLE))
-  const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name' + (IS_CLIENT ? '&agency_approved=eq.true' : '')
+  // Both views only show creators approved in the Master Review
+  const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name&agency_approved=eq.true'
   let data
   try {
     const res = await fetch(url, { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
@@ -1478,10 +1479,15 @@ async function exportShipping() {
 async function setAgencyApproval(id, approved) {
   const { error } = await db.from(TABLE).update({agency_approved: approved, updated_at: new Date().toISOString()}).eq('id', id)
   if (!error) {
-    const idx = allCreators.findIndex(c=>c.id===id)
-    if (idx>=0) allCreators[idx].agency_approved = approved
-    showToast(approved ? '✅ Added to client shortlist' : '↩ Removed from client shortlist')
-    applyFilters(); updateStats()
+    if (approved) {
+      const idx = allCreators.findIndex(c=>c.id===id)
+      if (idx>=0) allCreators[idx].agency_approved = approved
+    } else {
+      // Creator un-approved → remove from view (both views filter by agency_approved)
+      allCreators = allCreators.filter(c=>c.id!==id)
+    }
+    showToast(approved ? '✅ Added to client shortlist' : '↩ Removed — return to Master Review to re-approve')
+    applyFilters(); updateStats(); updateApprovalCounts(); updateRings()
   } else {
     showToast('❌ Failed: ' + error.message, true)
   }
@@ -1766,7 +1772,7 @@ async function addCreator() {
   const res = await fetch(SUPA_URL+'/rest/v1/'+TABLE, {
     method:'POST',
     headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},
-    body: JSON.stringify({id:nextId, name, handle_ig:ig||null, handle_tt:tt, ig_url:igUrlFinal, tt_url:ttUrl, batch:document.getElementById('new-batch').value, category:document.getElementById('new-cat').value, reach:document.getElementById('new-reach').value.trim()||null, status:'SHORTLISTED', market:'UAE', priority:'P2'})
+    body: JSON.stringify({id:nextId, name, handle_ig:ig||null, handle_tt:tt, ig_url:igUrlFinal, tt_url:ttUrl, batch:document.getElementById('new-batch').value, category:document.getElementById('new-cat').value, reach:document.getElementById('new-reach').value.trim()||null, status:'SHORTLISTED', market:'UAE', priority:'P2', agency_approved:true})
   })
   if (!res.ok) { const e=await res.json(); return alert('Error: '+(e.message||res.status)) }
   hideModal(); await init()
@@ -2010,12 +2016,14 @@ function _bootInit() {
     .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
       const { eventType, new: newRow, old: oldRow } = payload
       if (eventType === 'INSERT') {
-        if (!IS_CLIENT || newRow.agency_approved === true) { allCreators.push(newRow); applyFilters(); updateStats(); updateApprovalCounts(); updateRings() }
+        if (newRow.agency_approved === true) { allCreators.push(newRow); applyFilters(); updateStats(); updateApprovalCounts(); updateRings() }
       } else if (eventType === 'UPDATE') {
         const idx = allCreators.findIndex(c=>c.id===newRow.id)
-        if (IS_CLIENT && newRow.agency_approved === true && idx < 0) {
+        // Creator just approved in Master Review → add to both views
+        if (newRow.agency_approved === true && idx < 0) {
           allCreators.push(newRow)
-        } else if (IS_CLIENT && newRow.agency_approved !== true && idx >= 0) {
+        // Creator un-approved → remove from both views (only if still shortlisted)
+        } else if (newRow.agency_approved !== true && idx >= 0) {
           if (newRow.status === 'SHORTLISTED') allCreators = allCreators.filter(c=>c.id!==newRow.id)
         } else if (idx>=0) {
           allCreators[idx] = newRow
