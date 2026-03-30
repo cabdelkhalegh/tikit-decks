@@ -1783,8 +1783,8 @@ function hideModal() { document.getElementById('add-modal').classList.remove('op
 document.getElementById('add-modal').addEventListener('click', e => { if(e.target===e.currentTarget) hideModal() })
 
 // ── TEST RESET — set to false before production ──
-const SHOW_RESET_BTN = true
-if (!SHOW_RESET_BTN) {
+const SHOW_RESET_BTN = false
+if (!SHOW_RESET_BTN || IS_CLIENT) {
   const rb = document.getElementById('reset-test-btn')
   if (rb) rb.style.display = 'none'
 }
