@@ -1183,17 +1183,7 @@ if (IS_CLIENT) {
   const rb = document.getElementById('report-btn'); if(rb) rb.style.display='inline-flex';
   // Show shipping export for client (Bioderma needs it to send to courier)
   const sb2 = document.getElementById('shipping-export-btn'); if(sb2) sb2.style.display='inline-flex';
-  // Show welcome overlay immediately on every client visit — force via inline style
-  function showWelcome() {
-    const wo = document.getElementById('welcome-overlay')
-    if (wo) { wo.style.display = 'flex'; wo.style.zIndex = '9999'; }
-  }
-  showWelcome()
-  // Safety net: also fire after DOM fully loaded
-  if (document.readyState !== 'complete') {
-    window.addEventListener('DOMContentLoaded', showWelcome)
-    window.addEventListener('load', showWelcome)
-  }
+  // Welcome overlay handled by inline script (shows if w!=1 in URL)
 
   // Auto-detect: phone vs desktop — apply compact layout class on desktop
   function detectLayout() {
