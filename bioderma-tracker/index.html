@@ -1163,13 +1163,13 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
 </div>
 
 <script>
-const SUPA_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME'
+var SUPA_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME'
 const { createClient } = supabase
-const db = createClient(SUPA_URL, SUPA_KEY)
-const TABLE = 'bioderma_creators'
+var db = createClient(SUPA_URL, SUPA_KEY)
+var TABLE = 'bioderma_creators'
 
-const IS_CLIENT = new URLSearchParams(location.search).get('view') === 'client'
+var IS_CLIENT = new URLSearchParams(location.search).get('view') === 'client'
 if (IS_CLIENT) {
   document.body.classList.add('client-view')
   document.getElementById('view-badge').textContent = 'Bioderma Review'
@@ -1228,8 +1228,8 @@ if (IS_CLIENT) {
   document.getElementById('logo-x').style.display = 'inline'
 }
 
-const PAGE_SIZE = 30
-let allCreators = [], filtered = [], page = 1
+var PAGE_SIZE = 30
+var allCreators = [], filtered = [], page = 1
 
 const STATUS_LABELS = {
   SHORTLISTED:'Shortlisted',CONTACTED:'Contacted',FOLLOW_UP_1:'Follow-Up 1',FOLLOW_UP_2:'Follow-Up 2',
@@ -1646,7 +1646,7 @@ function _applyApprovalUI(id, approved) {
   if (dtr) dtr.className = approved === true ? 'row-approved' : approved === false ? 'row-rejected' : ''
 }
 
-let _toastT
+var _toastT
 function showToast(msg, isErr=false) {
   let t = document.getElementById('toast')
   if (!t) { t = document.createElement('div'); t.id='toast'; t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;z-index:9999;transition:opacity .3s;pointer-events:none'; document.body.appendChild(t) }
@@ -1850,8 +1850,8 @@ if (IS_CLIENT) {
 }
 
 // ═══ TASK 6: BULK ACTIONS ═══
-let selectedIds = new Set()
-let longPressTimer = null
+var selectedIds = new Set()
+var longPressTimer = null
 
 function toggleSelectAll(checked) {
   const start = (page - 1) * PAGE_SIZE
