@@ -994,6 +994,7 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
     <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-campaign-guide.html" target="_blank" class="btn btn-outline agency-col" style="padding:8px 10px;font-size:12px;text-decoration:none">📖 Guide</a>
     <button class="btn btn-outline agency-col" onclick="exportShipping()" style="padding:8px 10px;font-size:12px;background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)">📦 Shipping</button>
     <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
+    <button id="refresh-btn" class="btn agency-col" onclick="_initDone=false;_bootInit()" style="padding:8px 10px;font-size:12px;background:rgba(100,181,246,.15);color:#64B5F6;border:1px solid rgba(100,181,246,.3)" title="Reload creators">🔄 Refresh</button>
     <!-- TESTING ONLY — set SHOW_RESET_BTN=false before production -->
     <button id="reset-test-btn" class="btn agency-col" onclick="resetTestData()" style="padding:8px 10px;font-size:12px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80">🔁 Reset</button>
   </div>
@@ -1248,8 +1249,8 @@ async function init() {
   const tbody = document.getElementById('table-body')
   if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">⏳ Loading creators...</td></tr>'
   console.log('[init] starting, SUPA_URL=' + (typeof SUPA_URL) + ' TABLE=' + (typeof TABLE))
-  // Both views only show creators approved in the Master Review
-  const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name&agency_approved=eq.true'
+  // Client view: only agency_approved creators. Agency: all creators.
+  const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name' + (IS_CLIENT ? '&agency_approved=eq.true' : '')
   let data
   try {
     const res = await fetch(url, { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
