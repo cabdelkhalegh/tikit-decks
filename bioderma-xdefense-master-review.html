@@ -6082,20 +6082,25 @@ const dbStatus={}  // dbId → status
 
 async function _loadFromSupabase(){
   try{
-    // DB IDs = master review IDs + 1 (DB: 1001-1095, MR: 1000-1094)
-    const{data,error}=await _supa.from('bioderma_creators').select('id,agency_approved,status').order('id')
+    // Match by handle_ig (strip @ for comparison)
+    const{data,error}=await _supa.from('bioderma_creators').select('id,handle_ig,agency_approved,status').order('id')
     if(error)throw error
     if(!data||!data.length)return
-    const dbMap={},dbSt={}
-    data.forEach(r=>{dbMap[r.id]=r.agency_approved;dbSt[r.id]=r.status})
+    // Build lookup by normalised handle
+    const dbByHandle={}
+    data.forEach(r=>{
+      const h=(r.handle_ig||'').replace('@','').toLowerCase()
+      dbByHandle[h]=r
+    })
     ALL.forEach(c=>{
-      c._dbId=c.id+1
-      dbStatus[c._dbId]=dbSt[c._dbId]
-      const dbVal=dbMap[c._dbId]
-      const s=_dbToSt(dbVal)
+      const h=(c.handle||'').replace('@','').toLowerCase()
+      const row=dbByHandle[h]
+      if(!row)return
+      c._dbId=row.id
+      dbStatus[row.id]=row.status
+      const s=_dbToSt(row.agency_approved)
       if(s){st[c.id]=s;_applyBtnState(c.id,s)}
-      // Lock buttons if past shortlisting
-      if(LOCKED_STATUSES.includes(dbSt[c._dbId])){_lockCreatorBtns(c.id,dbSt[c._dbId])}
+      if(LOCKED_STATUSES.includes(row.status)){_lockCreatorBtns(c.id,row.status)}
     })
     uc();uat()
     showMRToast('✅ Selections loaded')
@@ -6142,8 +6147,10 @@ function showMRToast(msg,isErr=false){
 function ts(id,e){document.getElementById('row-'+id).classList.toggle('sel');uc();}
 
 async function ss(id,status,btn){
-  // DB id = MR id + 1 (deterministic offset)
-  const dbId=id+1
+  // Get real DB id from creator object (set during _loadFromSupabase)
+  const creator=ALL.find(c=>c.id===id)
+  const dbId=creator?creator._dbId:null
+  if(!dbId){showMRToast('⚠️ Creator not synced with database',true);return}
   // Block changes if creator is past shortlisting
   if(LOCKED_STATUSES.includes(dbStatus[dbId])){
     showMRToast('🔒 Locked — outreach already started for this creator',true)
