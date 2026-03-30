@@ -1247,6 +1247,7 @@ if (IS_CLIENT) {
 async function init() {
   const tbody = document.getElementById('table-body')
   if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">⏳ Loading creators...</td></tr>'
+  console.log('[init] starting, SUPA_URL=' + (typeof SUPA_URL) + ' TABLE=' + (typeof TABLE))
   const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name' + (IS_CLIENT ? '&agency_approved=eq.true' : '')
   let data
   try {
