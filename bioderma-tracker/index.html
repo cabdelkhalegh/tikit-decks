@@ -1325,6 +1325,7 @@ function renderCards() {
     const cardClass = isPosted ? 'card-approved card-posted' : c.client_approved === true ? 'card-approved' : c.client_approved === false ? 'card-rejected' : ''
     const postedBadge = isPosted ? '<span class="content-live-badge">🎬 Content Live</span>' : ''
     const approvalBadge = c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : ''
+    const addressBadge = IS_CLIENT && c.creator_profile_id ? '<span style="display:inline-flex;align-items:center;gap:4px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:20px;font-size:10px;font-weight:700;padding:3px 9px;white-space:nowrap">📦 Address received</span>' : ''
     // Profile links
     const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig">📸 IG</a>` : ''
     const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt">🎵 TT</a>` : ''
@@ -1375,6 +1376,7 @@ function renderCards() {
           ${!IS_CLIENT ? `<span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span>` : ''}
           ${postedBadge}
           ${approvalBadge}
+          ${addressBadge}
         </div>
       </div>
       <div class="card-links">${igBtn}${ttBtn}${contentLinksHtml}</div>
@@ -1550,10 +1552,11 @@ function renderTable() {
     }
     const _dtStatusColor = (s) => ['DECLINED','NO_RESPONSE','DID_NOT_POST','DELIVERY_FAILED'].includes(s)?'#C62828':['POSTED','COMPLETED'].includes(s)?'#2E7D32':'#1565C0'
     const _dtStatusBg   = (s) => ['DECLINED','NO_RESPONSE','DID_NOT_POST','DELIVERY_FAILED'].includes(s)?'#FFEBEE':['POSTED','COMPLETED'].includes(s)?'#E8F5E9':'#E3F2FD'
+    const addrBadgeDt = IS_CLIENT && c.creator_profile_id ? '<div style="margin-top:4px;display:inline-flex;align-items:center;gap:3px;background:#E8F5E9;color:#2E7D32;border:1px solid #A5D6A7;border-radius:12px;font-size:10px;font-weight:700;padding:2px 7px">📦 Address received</div>' : ''
     const approvalCell = IS_CLIENT
       ? (isLocked
-          ? `<div style="font-size:11px;font-weight:700;padding:5px 8px;border-radius:6px;background:${_dtStatusBg(c.status)};color:${_dtStatusColor(c.status)};white-space:nowrap">${DT_CLIENT_STATUS[c.status]||c.status}</div>`
-          : `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>`)
+          ? `<div style="font-size:11px;font-weight:700;padding:5px 8px;border-radius:6px;background:${_dtStatusBg(c.status)};color:${_dtStatusColor(c.status)};white-space:nowrap">${DT_CLIENT_STATUS[c.status]||c.status}</div>${addrBadgeDt}`
+          : `<div class="approval-btns-dt"><button class="cab-approve ${aActive}" onclick="setClientApproval(${c.id},true,this)">✅</button><button class="cab-reject ${rActive}" onclick="setClientApproval(${c.id},false,this)">❌</button></div>${addrBadgeDt}`)
       : (c.client_approved === true ? '<span class="cap-approved">✅ Approved</span>' : c.client_approved === false ? '<span class="cap-rejected">❌ Rejected</span>' : '<span class="cap-pending">⏳ Pending</span>')
     const rowClass = c.client_approved === true ? 'row-approved' : c.client_approved === false ? 'row-rejected' : ''
     const agencyActions = IS_CLIENT ? '' : `<td class="agency-col" onclick="event.stopPropagation()">${buildQuickActions(c)}</td>`
