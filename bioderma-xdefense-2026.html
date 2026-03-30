@@ -148,10 +148,10 @@ body::before {
 @keyframes float-orb { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(22px,-30px) scale(1.05)} 66%{transform:translate(-15px,20px) scale(0.95)} }
 </style>
 
+
 <!-- ═══════════════════════════════════════════
-     BIODERMA UNIFIED DARK THEME
+     BIODERMA UNIFIED DARK THEME v2
      Source: bioderma-tracker/?view=client
-     Applied to all campaign pages
      ═══════════════════════════════════════════ -->
 <style>
 /* ── WARM DARK BACKGROUND ── */
@@ -161,7 +161,7 @@ html, body {
     radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.10) 0%, transparent 50%),
     radial-gradient(ellipse at 50% 50%, rgba(255,180,0,0.05) 0%, transparent 65%),
     #0A0805 !important;
-  color: #E8E8F0 !important;
+  color: #E8E8F0;
 }
 
 /* ── UV SUN HALO ── */
@@ -200,106 +200,79 @@ body::before {
 .bd-orb-3 { width:260px; height:260px; background:rgba(255,180,50,0.07); top:40%; left:60%; animation-delay:-16s; }
 @keyframes bd-float { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-35px) scale(1.06)} 66%{transform:translate(-18px,22px) scale(0.94)} }
 
-/* ── FROSTED TOPBAR / HEADER ── */
-.topbar, header, .header, nav.main-nav, .nav-bar {
+/* ── FROSTED TOPBAR ── */
+.topbar, .header, nav.main-nav {
   background: rgba(3,7,18,0.88) !important;
   backdrop-filter: blur(28px) !important;
   -webkit-backdrop-filter: blur(28px) !important;
   border-bottom: 1px solid rgba(255,140,0,0.2) !important;
   box-shadow: 0 1px 0 rgba(255,140,0,0.2), 0 4px 32px rgba(0,0,0,0.6) !important;
-  color: #E8E8F0 !important;
-  position: sticky; top: 0; z-index: 100;
 }
-.topbar *, header *, .header * { color: #E8E8F0 !important; }
-.topbar a, header a { color: rgba(255,255,255,0.7) !important; text-decoration: none; }
-.topbar a:hover, header a:hover { color: #FF8C00 !important; }
 
 /* ── LOGO ── */
-.logo, .logo-text { color: #fff !important; }
+.logo { color: #fff !important; }
 
-/* ── CARDS / SECTIONS ── */
-.card, .section, .creator-card, .step, .template, .msg-block, .outline-box {
-  background: rgba(255,255,255,0.07) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
-  border-radius: 18px !important;
-  color: #E8E8F0 !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-}
+/* ── SECTION / CARD BACKGROUNDS ── */
+.card { background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(255,255,255,0.12) !important; color: #E8E8F0 !important; }
+.section-header { border-bottom-color: rgba(255,255,255,0.08) !important; }
+.section-icon.blue  { background: rgba(0,102,204,0.2) !important; }
+.section-icon.green { background: rgba(0,200,83,0.15) !important; }
+.section-icon.purple{ background: rgba(124,58,237,0.15) !important; }
+.section-icon.orange{ background: rgba(255,140,0,0.15) !important; }
+
+/* ── TABLE ── */
+.links-table { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 14px !important; overflow: hidden; }
+.links-table thead tr { background: rgba(255,255,255,0.08) !important; }
+.links-table th { color: rgba(255,255,255,0.5) !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+.links-table td { color: rgba(255,255,255,0.8) !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; background: transparent !important; }
+.links-table tbody tr:hover { background: rgba(255,255,255,0.04) !important; }
+.links-table a { color: #FF8C00 !important; }
+.links-table strong { color: #fff !important; }
+.links-table span[style*="color:var(--muted)"] { color: rgba(255,255,255,0.4) !important; }
 
 /* ── HEADINGS ── */
-h1, h2, h3, h4 { color: #fff !important; }
+h1, h2, h3, h4 { color: #fff; }
 
-/* ── BODY TEXT ── */
-p, li, td, th, span, label { color: rgba(255,255,255,0.78) !important; }
+/* ── BODY TEXT — NO !important so card/specific styles win ── */
+p { color: rgba(255,255,255,0.75); }
+li { color: rgba(255,255,255,0.75); }
 
-/* ── LINKS ── */
-a { color: #FF8C00 !important; }
-a:hover { color: #FFB300 !important; }
+/* ── STEP CARDS ── */
+.step { background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(255,255,255,0.12) !important; border-radius: 14px !important; }
+.step-num { background: #E91E8C !important; color: #fff !important; }
+.step-content h4 { color: #fff !important; }
+.step-content p, .step-content li { color: rgba(255,255,255,0.72) !important; }
 
-/* ── INPUTS / SELECTS ── */
-input, select, textarea {
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
-  color: #E8E8F0 !important;
-  border-radius: 10px !important;
-}
-input:focus, select:focus, textarea:focus {
-  border-color: rgba(233,30,140,0.5) !important;
-  outline: none !important;
-}
-
-/* ── BUTTONS ── */
-button:not(.cab-approve):not(.cab-reject) {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1px solid rgba(255,255,255,0.15) !important;
-  color: rgba(255,255,255,0.8) !important;
-  border-radius: 10px !important;
+/* ── OUTREACH TEMPLATES ── */
+.template-block, .msg, .msg-block, .outreach-msg, .template {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 12px !important;
+  color: rgba(255,255,255,0.85) !important;
 }
 
-/* ── TABLES ── */
-table { background: transparent !important; border-collapse: collapse; }
-thead tr { background: rgba(255,255,255,0.05) !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
-tbody tr { border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
-tbody tr:hover { background: rgba(255,255,255,0.04) !important; }
-th { color: rgba(255,255,255,0.5) !important; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
-td { color: rgba(255,255,255,0.8) !important; }
+/* ── CODE ── */
+code { background: rgba(0,0,0,0.3) !important; color: #4ADE80 !important; border: 1px solid rgba(255,255,255,0.08) !important; border-radius: 6px; padding: 1px 6px; }
 
-/* ── CODE BLOCKS ── */
-code, pre { background: rgba(0,0,0,0.35) !important; color: #4ADE80 !important; border: 1px solid rgba(255,255,255,0.08) !important; border-radius: 8px !important; }
+/* ── QUICK LINKS — preserve button colors ── */
+.ql { color: inherit !important; }
+.ql-pink { background: #E91E8C !important; color: #fff !important; }
+.ql-blue  { background: #FF8C00 !important; color: #fff !important; }
+.ql-outline { background: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.85) !important; border: 1px solid rgba(255,255,255,0.15) !important; }
+.ql-outline:hover { border-color: #FF8C00 !important; color: #FF8C00 !important; }
+
+/* ── STATUS PIPELINE ── */
+.pip-step { backdrop-filter: blur(8px); }
+.pip-arrow { color: rgba(255,255,255,0.3) !important; }
+
+/* ── BADGES ── */
+.badge-pink { background: rgba(233,30,140,0.2) !important; color: #F472B6 !important; border: 1px solid rgba(233,30,140,0.3) !important; }
+.badge-blue { background: rgba(0,102,204,0.2) !important; color: #60A5FA !important; border: 1px solid rgba(0,102,204,0.3) !important; }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-
-/* ── PINK ACCENTS ── */
-.highlight, em, strong { color: #E91E8C !important; }
-.accent-amber { color: #FF8C00 !important; }
-
-/* ── BADGES / PILLS ── */
-.badge, .pill, .tag, .sp {
-  backdrop-filter: blur(8px);
-  border-radius: 20px;
-}
-
-/* ── PAGINATION / DOTS ── */
-.dot, .pgb.active, .progress-dot.active { background: #FF8C00 !important; }
-
-/* ── SHIMMER ACCENT TITLES ── */
-.shimmer-title, .hero-title {
-  background: linear-gradient(135deg, #FF8C00 0%, #E91E8C 35%, #FFB300 65%, #FF6B35 100%) !important;
-  background-size: 300% 300% !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  animation: bd-shimmer 5s ease infinite !important;
-}
-@keyframes bd-shimmer {
-  0%  { background-position: 0% 50% }
-  50% { background-position: 100% 50% }
-  100%{ background-position: 0% 50% }
-}
 </style>
 </head>
 <body>
