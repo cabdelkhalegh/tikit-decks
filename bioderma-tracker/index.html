@@ -969,7 +969,9 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
     <button class="btn btn-outline" onclick="refreshData()" style="padding:8px 10px;font-size:12px" title="Refresh">🔄</button>
     <button class="btn btn-outline" onclick="exportCSV()" style="padding:8px 10px;font-size:12px">⬇ Export</button>
     <button class="btn btn-outline" id="report-btn" onclick="generateReport()" style="padding:8px 10px;font-size:12px;display:none">📄 Report</button>
+    <button class="btn btn-outline" id="shipping-export-btn" onclick="exportShipping()" style="padding:8px 10px;font-size:12px;display:none;background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)">📦 Export Shipping</button>
     <a href="https://cabdelkhalegh.github.io/tikit-decks/bioderma-campaign-guide.html" target="_blank" class="btn btn-outline agency-col" style="padding:8px 10px;font-size:12px;text-decoration:none">📖 Guide</a>
+    <button class="btn btn-outline agency-col" onclick="exportShipping()" style="padding:8px 10px;font-size:12px;background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)">📦 Shipping</button>
     <button class="btn btn-pink agency-col" onclick="showModal()" style="padding:8px 10px;font-size:12px">+ Add</button>
     <!-- TESTING ONLY — set SHOW_RESET_BTN=false before production -->
     <button id="reset-test-btn" class="btn agency-col" onclick="resetTestData()" style="padding:8px 10px;font-size:12px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80">🔁 Reset</button>
@@ -1158,6 +1160,8 @@ if (IS_CLIENT) {
   ;['orb1','orb2','orb3'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='block'; })
   // Show Report button
   const rb = document.getElementById('report-btn'); if(rb) rb.style.display='inline-flex';
+  // Show shipping export for client (Bioderma needs it to send to courier)
+  const sb2 = document.getElementById('shipping-export-btn'); if(sb2) sb2.style.display='inline-flex';
   // Show welcome overlay immediately on every client visit
   const wo = document.getElementById('welcome-overlay'); if(wo) wo.classList.add('show');
 
@@ -1357,12 +1361,77 @@ function buildQuickActions(c) {
     btns+=`<button class="actb act-decline" onclick="qs(${c.id},'DECLINED')">❌ Declined</button>`
     btns+=`<button class="actb" style="background:#FFF8E1;color:#E65100;border:1px solid #FFE082" onclick="qs(${c.id},'FOLLOW_UP_1')">🔁 Follow-Up</button>`
   }
-  if (s==='CONFIRMED') btns+=`<button class="actb act-s" onclick="qs(${c.id},'DISPATCHED')">📦 Shipped</button>`
+  if (s==='CONFIRMED') {
+    btns+=`<button class="actb act-s" onclick="qs(${c.id},'DISPATCHED')">📦 Shipped</button>`
+    btns+=`<button class="actb" style="background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)" onclick="copyConfirmLink(${c.id})">🔗 Get Link</button>`
+  }
+  if (s==='DETAILS_COLLECTED') btns+=`<button class="actb" style="background:rgba(255,140,0,.15);color:#FFB300;border:1px solid rgba(255,140,0,.3)" onclick="copyConfirmLink(${c.id})">🔗 Link</button>`
   if (['DISPATCHED','IN_TRANSIT'].includes(s)) btns+=`<button class="actb act-s" onclick="qs(${c.id},'DELIVERED')">📬 Delivered</button>`
   if (['DELIVERED','AWAITING_CONTENT'].includes(s)) btns+=`<button class="actb act-p" onclick="qs(${c.id},'POSTED')">🎬 Posted</button>`
   if (s==='POSTED') btns+=`<button class="actb act-d" onclick="qs(${c.id},'COMPLETED')">🏁 Complete</button>`
   if (!btns) return ''
   return `<div class="quick-actions">${btns}</div>`
+}
+
+// ── MAGIC LINK ──
+function copyConfirmLink(id) {
+  const base = location.origin + location.pathname.replace('index.html','').replace(/\/$/, '')
+  const link = `https://cabdelkhalegh.github.io/tikit-decks/bioderma-tracker/confirm.html?id=${id}`
+  navigator.clipboard.writeText(link).then(() => {
+    showToast('🔗 Confirmation link copied! Send it via DM/WhatsApp.')
+  }).catch(() => {
+    prompt('Copy this link and send it to the creator:', link)
+  })
+}
+
+// ── BIODERMA SHIPPING EXPORT ──
+async function exportShipping() {
+  const { data, error } = await db.from('bioderma_creators')
+    .select('id, name, handle_ig, handle_tt, category, reach, batch, creator_profile_id, shipping_address, status')
+    .not('shipping_address', 'is', null)
+    .order('batch')
+  if (error || !data || !data.length) { showToast('No shipping data yet.'); return }
+
+  // Also fetch creator_profiles for full details
+  const profileIds = data.map(d => d.creator_profile_id).filter(Boolean)
+  let profiles = {}
+  if (profileIds.length) {
+    const { data: pd } = await db.from('creator_profiles').select('*').in('id', profileIds)
+    if (pd) pd.forEach(p => profiles[p.id] = p)
+  }
+
+  let csv = '\uFEFF' // BOM for Excel Arabic support
+  csv += 'ID,Name,Handle IG,Handle TikTok,Category,Reach,Batch,Status,Full Name,WhatsApp,Address Line 1,Address Line 2,City,Emirate,Country\n'
+  data.forEach(r => {
+    const p = profiles[r.creator_profile_id] || {}
+    const row = [
+      r.id,
+      `"${(r.name||'').replace(/"/g,'""')}"`,
+      r.handle_ig||'',
+      r.handle_tt||'',
+      r.category||'',
+      r.reach||'',
+      r.batch||'',
+      r.status||'',
+      `"${(p.full_name||'').replace(/"/g,'""')}"`,
+      p.phone_whatsapp||'',
+      `"${(p.address_line1||'').replace(/"/g,'""')}"`,
+      `"${(p.address_line2||'').replace(/"/g,'""')}"`,
+      p.city||'',
+      p.emirate||'',
+      p.country||'UAE'
+    ]
+    csv += row.join(',') + '\n'
+  })
+
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'})
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `Bioderma_XDefense_Shipping_${new Date().toISOString().slice(0,10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+  showToast(`📦 Shipping list exported — ${data.length} creators`)
 }
 
 async function setAgencyApproval(id, approved) {

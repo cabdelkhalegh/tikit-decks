@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bioderma XDefense — Confirm Your Details</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;
+  background:radial-gradient(ellipse at 20% 10%,rgba(255,140,0,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 85%,rgba(233,30,140,.10) 0%,transparent 50%),#0A0805;
+  color:#E8E8F0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+body::before{content:"";position:fixed;top:-15%;left:50%;transform:translateX(-50%) rotate(0deg);
+  width:140vw;height:140vw;
+  background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,140,0,.05) 18deg,transparent 36deg,rgba(233,30,140,.04) 54deg,transparent 72deg,rgba(255,180,0,.05) 90deg,transparent 108deg,rgba(255,100,50,.04) 126deg,transparent 180deg,rgba(255,140,0,.05) 198deg,transparent 252deg,rgba(233,30,140,.04) 270deg,transparent 360deg);
+  border-radius:50%;pointer-events:none;z-index:0;animation:halo 55s linear infinite;opacity:.55;}
+@keyframes halo{from{transform:translateX(-50%) rotate(0deg)}to{transform:translateX(-50%) rotate(360deg)}}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:float 24s infinite ease-in-out}
+.o1{width:380px;height:380px;background:rgba(255,140,0,.10);top:-120px;left:-100px;animation-delay:0s}
+.o2{width:280px;height:280px;background:rgba(233,30,140,.08);bottom:5%;right:-60px;animation-delay:-8s}
+@keyframes float{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-30px)}66%{transform:translate(-15px,20px)}}
+.card{position:relative;z-index:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;padding:36px 28px;width:100%;max-width:460px;backdrop-filter:blur(20px);}
+.brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px}
+.brand img{height:22px;filter:brightness(0) invert(1) opacity(.85)}
+.brand span{color:rgba(255,255,255,.3);font-size:16px}
+.greeting{text-align:center;margin-bottom:28px}
+.greeting h1{font-size:22px;font-weight:900;line-height:1.3;
+  background:linear-gradient(135deg,#FF8C00,#E91E8C,#FFB300);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:300% 300%;animation:shimmer 5s ease infinite;}
+@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.greeting p{font-size:13px;color:rgba(255,255,255,.45);margin-top:8px;line-height:1.6}
+.field{margin-bottom:16px}
+.field label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:rgba(255,255,255,.45);display:block;margin-bottom:6px}
+.field input,.field select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;padding:13px 16px;font-size:14px;color:#E8E8F0;outline:none;transition:border-color .2s}
+.field input::placeholder{color:rgba(255,255,255,.25)}
+.field input:focus,.field select:focus{border-color:rgba(233,30,140,.5);box-shadow:0 0 0 3px rgba(233,30,140,.1)}
+.field select option{background:#0A0F1E;color:#E8E8F0}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.submit-btn{width:100%;background:linear-gradient(135deg,#E91E8C,#A855F7);color:#fff;border:none;
+  border-radius:14px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;margin-top:8px;
+  box-shadow:0 0 30px rgba(233,30,140,.3);transition:transform .15s,box-shadow .15s;letter-spacing:.3px}
+.submit-btn:active{transform:scale(.97)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:11px;color:rgba(255,255,255,.3);text-align:center;margin-top:16px;line-height:1.6}
+/* Success state */
+.success{display:none;text-align:center;padding:20px 0}
+.success .icon{font-size:52px;margin-bottom:16px}
+.success h2{font-size:20px;font-weight:900;color:#4ADE80;margin-bottom:8px}
+.success p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7}
+/* Error */
+.err{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);border-radius:10px;
+  padding:12px 16px;font-size:13px;color:#F87171;margin-bottom:16px;display:none}
+/* Loading */
+.loading{display:none;text-align:center;padding:40px}
+.loading p{color:rgba(255,255,255,.4);font-size:14px}
+/* Not found */
+.notfound{display:none;text-align:center;padding:20px}
+.notfound h2{color:#F87171;font-size:18px;font-weight:800;margin-bottom:8px}
+.notfound p{color:rgba(255,255,255,.4);font-size:13px}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="card">
+  <div class="brand">
+    <img src="assets/tikit-logo.png" alt="TiKiT">
+    <span>×</span>
+    <img src="assets/bioderma-logo.png" alt="Bioderma">
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading"><p>⏳ Loading your invitation...</p></div>
+
+  <!-- Not found -->
+  <div class="notfound" id="notfound">
+    <h2>Link not found</h2>
+    <p>This confirmation link is invalid or has expired.<br>Please contact TiKiT Marketing Management.</p>
+  </div>
+
+  <!-- Form -->
+  <div id="form-wrap" style="display:none">
+    <div class="greeting">
+      <h1 id="greeting-title">You're Selected! 🎉</h1>
+      <p id="greeting-sub">Please share your details so we can ship your Bioderma Photoderm XDefense PR box to you.</p>
+    </div>
+
+    <div class="err" id="err-box"></div>
+
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" id="f-name" placeholder="Your full name" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>WhatsApp Number</label>
+      <input type="tel" id="f-phone" placeholder="+971 XX XXX XXXX" autocomplete="tel">
+    </div>
+    <div class="field">
+      <label>Address — Line 1</label>
+      <input type="text" id="f-addr1" placeholder="Apartment / Villa number, Building name" autocomplete="address-line1">
+    </div>
+    <div class="field">
+      <label>Address — Line 2</label>
+      <input type="text" id="f-addr2" placeholder="Street name / Area" autocomplete="address-line2">
+    </div>
+    <div class="field-row">
+      <div class="field" style="margin-bottom:0">
+        <label>Emirate</label>
+        <select id="f-emirate">
+          <option value="">Select...</option>
+          <option>Dubai</option>
+          <option>Abu Dhabi</option>
+          <option>Sharjah</option>
+          <option>Ajman</option>
+          <option>Ras Al Khaimah</option>
+          <option>Fujairah</option>
+          <option>Umm Al Quwain</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>City</label>
+        <input type="text" id="f-city" placeholder="e.g. Dubai">
+      </div>
+    </div>
+    <div class="field" style="margin-top:16px">
+      <label>Language Preference</label>
+      <select id="f-lang">
+        <option value="">Select...</option>
+        <option value="AR">Arabic</option>
+        <option value="EN">English</option>
+        <option value="AR+EN">Arabic + English</option>
+      </select>
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">📦 Confirm My Details</button>
+    <p class="note">Your details are used solely for shipping your PR box.<br>They will never be shared publicly.</p>
+  </div>
+
+  <!-- Success -->
+  <div class="success" id="success">
+    <div class="icon">📦</div>
+    <h2>Details Confirmed!</h2>
+    <p>Thank you! Your Bioderma Photoderm XDefense box<br>will be on its way to you within <strong style="color:#4ADE80">5–7 working days</strong>.<br><br>Watch for our DM with the tracking number. 🎉</p>
+  </div>
+</div>
+
+<script>
+const SUPA_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME'
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY)
+
+const params = new URLSearchParams(location.search)
+const creatorId = parseInt(params.get('id'))
+
+let creatorRow = null
+
+async function init() {
+  if (!creatorId) { show('notfound'); return }
+  show('loading')
+  const { data, error } = await sb.from('bioderma_creators').select('*').eq('id', creatorId).single()
+  if (error || !data) { show('notfound'); return }
+  creatorRow = data
+  
+  // Pre-fill greeting
+  const handle = data.handle_ig || data.handle_tt || ''
+  document.getElementById('greeting-title').textContent = handle ? Hi @ 🎉 : 'You\'re Selected! 🎉'
+  document.getElementById('greeting-sub').textContent = Congrats on being selected as a Bioderma Photoderm XDefense reviewer! Please share your delivery details so we can ship your PR box.
+  
+  // Pre-fill name if available
+  if (data.name) document.getElementById('f-name').value = data.name
+
+  // If already submitted, show success
+  if (data.creator_profile_id) { show('success'); return }
+  
+  show('form-wrap')
+}
+
+function show(id) {
+  ['loading','notfound','form-wrap','success'].forEach(i => {
+    document.getElementById(i).style.display = i===id ? 'block' : 'none'
+  })
+}
+
+async function submitForm() {
+  const name     = document.getElementById('f-name').value.trim()
+  const phone    = document.getElementById('f-phone').value.trim()
+  const addr1    = document.getElementById('f-addr1').value.trim()
+  const addr2    = document.getElementById('f-addr2').value.trim()
+  const emirate  = document.getElementById('f-emirate').value
+  const city     = document.getElementById('f-city').value.trim()
+  const lang     = document.getElementById('f-lang').value
+
+  const errBox = document.getElementById('err-box')
+  errBox.style.display = 'none'
+
+  if (!name || !phone || !addr1 || !emirate) {
+    errBox.textContent = '⚠️ Please fill in all required fields (Name, WhatsApp, Address, Emirate).'
+    errBox.style.display = 'block'
+    return
+  }
+
+  const btn = document.getElementById('submit-btn')
+  btn.disabled = true
+  btn.textContent = '⏳ Saving...'
+
+  try {
+    // 1. Insert into creator_profiles
+    const { data: profile, error: profErr } = await sb.from('creator_profiles').insert({
+      handle_ig: creatorRow.handle_ig,
+      handle_tt: creatorRow.handle_tt,
+      full_name: name,
+      phone_whatsapp: phone,
+      address_line1: addr1,
+      address_line2: addr2,
+      city: city || emirate,
+      emirate: emirate,
+      country: 'UAE',
+      language_pref: lang
+    }).select('id').single()
+
+    if (profErr) throw profErr
+
+    // 2. Link profile to creator + update status
+    const fullAddress = [addr1, addr2, city||emirate, emirate, 'UAE'].filter(Boolean).join(', ')
+    const { error: updateErr } = await sb.from('bioderma_creators').update({
+      creator_profile_id: profile.id,
+      shipping_address: fullAddress,
+      status: 'DETAILS_COLLECTED'
+    }).eq('id', creatorId)
+
+    if (updateErr) throw updateErr
+
+    show('success')
+  } catch(e) {
+    errBox.textContent = '❌ Something went wrong. Please try again or contact TiKiT.'
+    errBox.style.display = 'block'
+    btn.disabled = false
+    btn.textContent = '📦 Confirm My Details'
+    console.error(e)
+  }
+}
+
+init()
+</script>
+</body>
+</html>
