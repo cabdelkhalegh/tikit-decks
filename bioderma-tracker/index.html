@@ -2031,12 +2031,12 @@ function _bootInit() {
     .subscribe()
   })
 }
-// Fire immediately (script already parsed, DOM exists)
+// Fire immediately
 _bootInit()
-// Also fire on DOMContentLoaded as safety net
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', _bootInit)
-}
+// Retry after 2s if still empty (Supabase cold start)
+setTimeout(function() { if (!allCreators.length) { _initDone = false; _bootInit() } }, 2000)
+// Retry after 5s as final safety net
+setTimeout(function() { if (!allCreators.length) { _initDone = false; _bootInit() } }, 5000)
 </script>
 </body>
 </html>
