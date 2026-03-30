@@ -1247,12 +1247,16 @@ if (IS_CLIENT) {
 async function init() {
   const tbody = document.getElementById('table-body')
   if (tbody) tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:20px;color:#aaa">Loading...</td></tr>'
-  let query = db.from(TABLE).select('*').order('batch').order('name')
-  if (IS_CLIENT) query = query.eq('agency_approved', true)
-  const { data, error } = await query
-  if (error) {
-    if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px">${error.message}</td></tr>`
-    document.getElementById('cards-container').innerHTML = `<div class="empty-state"><div class="big">❌</div>${error.message}</div>`
+  // Use fetch() directly — bypass Supabase JS client which may have state issues
+  const url = SUPA_URL + '/rest/v1/' + TABLE + '?select=*&order=batch,name' + (IS_CLIENT ? '&agency_approved=eq.true' : '')
+  let data, fetchError
+  try {
+    const res = await fetch(url, { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json' } })
+    data = await res.json()
+    if (!Array.isArray(data)) fetchError = data.message || JSON.stringify(data)
+  } catch(e) { fetchError = e.message }
+  if (fetchError) {
+    if (tbody) tbody.innerHTML = `<tr><td colspan="13" style="color:red;padding:20px">${fetchError}</td></tr>`
     return
   }
   allCreators = data || []
