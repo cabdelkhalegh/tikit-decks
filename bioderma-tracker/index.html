@@ -1992,8 +1992,8 @@ function generateReport() {
 }
 
 // Supabase realtime — auto-sync changes across sessions (agency adds/removes → client sees instantly)
-// Load data first, then subscribe to realtime — wait for full page load
-window.addEventListener('load', function() { init().then(() => {
+// Load data immediately, subscribe to realtime after
+init().then(() => {
   db.channel('bioderma-rt-' + Date.now())
     .on('postgres_changes', { event: '*', schema: 'public', table: TABLE }, payload => {
       const { eventType, new: newRow, old: oldRow } = payload
@@ -2020,7 +2020,6 @@ window.addEventListener('load', function() { init().then(() => {
       }
     })
     .subscribe()
-  })
 })
 </script>
 </body>
