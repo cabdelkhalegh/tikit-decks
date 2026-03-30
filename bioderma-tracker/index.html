@@ -1163,6 +1163,12 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
 </div>
 
 <script>
+// ── Global state — declared first so all functions can access ──
+window.PAGE_SIZE = 30
+window.allCreators = []
+window.filtered = []
+window.page = 1
+
 var SUPA_URL = 'https://mijkhorasrdbwjgjmakg.supabase.co'
 var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pamtob3Jhc3JkYndqZ2ptYWtnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0ODAyNjgsImV4cCI6MjA4NzA1NjI2OH0.gjFvyS8yGU1SvVIQA_9AcmytBUfpsgGkMiNsAJV1ZME'
 const { createClient } = supabase
@@ -1228,17 +1234,16 @@ if (IS_CLIENT) {
   document.getElementById('logo-x').style.display = 'inline'
 }
 
-var PAGE_SIZE = 30
-var allCreators = [], filtered = [], page = 1
+// PAGE_SIZE, allCreators, filtered, page — declared on window at script top
 
-const STATUS_LABELS = {
+var STATUS_LABELS = {
   SHORTLISTED:'Shortlisted',CONTACTED:'Contacted',FOLLOW_UP_1:'Follow-Up 1',FOLLOW_UP_2:'Follow-Up 2',
   CONFIRMED:'Confirmed',DETAILS_COLLECTED:'Details Collected',BOX_ASSEMBLED:'Box Assembled',
   BRIEF_SENT:'Brief Sent',DISPATCHED:'Dispatched',IN_TRANSIT:'In Transit',DELIVERED:'Delivered',
   AWAITING_CONTENT:'Awaiting Content',POSTED:'Posted ✓',COMPLETED:'Completed ✓',
   DECLINED:'Declined',NO_RESPONSE:'No Response',DID_NOT_POST:'Did Not Post',DELIVERY_FAILED:'Delivery Failed'
 }
-const CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family'}
+var CAT_LABELS = {sport:'🏃 Sports',pharma:'💊 Pharma',derm:'🔬 Skincare',beauty:'💄 Beauty',lifestyle:'🌟 Lifestyle',travel:'✈️ Travel',food:'🍳 Food',fitness:'🏋️ Fitness',fashion:'👗 Fashion',mom:'👩‍👧 Family'}
 
 async function init() {
   // Client view: only show creators the agency has approved (agency_approved=true)
