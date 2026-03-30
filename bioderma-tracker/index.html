@@ -1574,10 +1574,9 @@ async function refreshData() {
 
 // ═══ TASK 1: WELCOME OVERLAY ═══
 function dismissWelcome() {
-  localStorage.setItem('bioderma_welcome_seen', '1')
   document.getElementById('welcome-overlay').classList.remove('show')
 }
-if (IS_CLIENT && !localStorage.getItem('bioderma_welcome_seen')) {
+if (IS_CLIENT) {
   document.getElementById('welcome-overlay').classList.add('show')
 }
 
