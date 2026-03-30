@@ -6,29 +6,29 @@
 <title>Bioderma XDefense — Campaign Guide | TiKiT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--pink:#E91E8C;--blue:#0066CC;--bg:#F5F6F8;--white:#fff;--border:#E9ECEF;--text:#1a1a1a;--muted:#666}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.7}
-.topbar{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.logo{font-weight:900;font-size:15px}.logo em{color:var(--pink);font-style:normal}.logo span{color:var(--blue)}
+:root{--pink:#E91E8C;--blue:#FF8C00;--bg:#0A0805;--white:rgba(255,255,255,0.07);--border:rgba(255,255,255,0.12);--text:#fff;--muted:rgba(255,255,255,0.55)}
+html,body{background:radial-gradient(ellipse at 20% 10%,rgba(255,140,0,0.10) 0%,transparent 50%),radial-gradient(ellipse at 80% 85%,rgba(233,30,140,0.08) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(255,180,0,0.04) 0%,transparent 65%),#0A0805;color:#E8E8F0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.7}
+.topbar{background:rgba(3,7,18,0.88);border-bottom:1px solid rgba(255,140,0,0.2);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.logo{font-weight:900;font-size:15px;color:#fff}.logo em{color:#E91E8C;font-style:normal}.logo span{color:#FF8C00}
 .nav{display:flex;gap:24px}
-.nav a{color:var(--muted);text-decoration:none;font-size:12px;font-weight:600}.nav a:hover{color:var(--pink)}
-.hero{background:linear-gradient(135deg,#fff,#FFF0F7);border-bottom:1px solid var(--border);padding:56px 40px 48px;text-align:center}
-.hero-badge{display:inline-block;background:#FCE4EC;border:1px solid #F48FB1;border-radius:20px;padding:5px 18px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--pink);margin-bottom:16px}
-.hero h1{font-size:clamp(24px,4vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;color:var(--text)}
+.nav a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:12px;font-weight:600}.nav a:hover{color:#FF8C00}
+.hero{background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.08);padding:56px 40px 48px;text-align:center}
+.hero-badge{display:inline-block;background:rgba(233,30,140,0.15);border:1px solid rgba(233,30,140,0.3);border-radius:20px;padding:5px 18px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#E91E8C;margin-bottom:16px}
+.hero h1{font-size:clamp(24px,4vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;color:#fff}
 .hero h1 em{color:var(--pink);font-style:normal}
-.hero p{font-size:15px;color:var(--muted);max-width:560px;margin:0 auto 28px}
+.hero p{font-size:15px;color:rgba(255,255,255,0.55);max-width:560px;margin:0 auto 28px}
 .quick-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .ql{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:.2s}
-.ql-pink{background:var(--pink);color:#fff}.ql-pink:hover{background:#C2185B}
-.ql-blue{background:var(--blue);color:#fff}.ql-blue:hover{background:#004BA0}
-.ql-outline{background:var(--white);color:var(--text);border:1px solid var(--border)}.ql-outline:hover{border-color:var(--pink);color:var(--pink)}
+.ql-pink{background:#E91E8C;color:#fff}.ql-pink:hover{background:#C2185B}
+.ql-blue{background:#FF8C00;color:#fff}.ql-blue:hover{background:#E67A00}
+.ql-outline{background:rgba(255,255,255,0.07);color:#E8E8F0;border:1px solid rgba(255,255,255,0.12)}.ql-outline:hover{border-color:#FF8C00;color:#FF8C00}
 /* LAYOUT */
 .container{max-width:960px;margin:0 auto;padding:40px 24px}
 /* SECTION */
 .section{margin-bottom:48px}
-.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid rgba(255,255,255,0.08)}
 .section-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.section-icon.pink{background:#FCE4EC}
+.section-icon.pink{background:rgba(233,30,140,0.15)}
 .section-icon.blue{background:#E3F2FD}
 .section-icon.green{background:#E8F5E9}
 .section-icon.purple{background:#F3E5F5}
@@ -91,8 +91,166 @@ footer{text-align:center;padding:40px;border-top:1px solid var(--border);margin-
 .tip-box{background:#FFF8E1;border-left:3px solid #F57C00;border-radius:0 8px 8px 0;padding:12px 16px;margin-top:12px;font-size:11px;color:#555;line-height:1.7;direction:rtl;text-align:right;white-space:pre-line;font-family:inherit}
 .tip-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#F57C00;display:block;margin-bottom:6px}
 </style>
+
+<!-- ═══════════════════════════════════════════
+     BIODERMA UNIFIED DARK THEME
+     Source: bioderma-tracker/?view=client
+     Applied to all campaign pages
+     ═══════════════════════════════════════════ -->
+<style>
+/* ── WARM DARK BACKGROUND ── */
+html, body {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,140,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(233,30,140,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255,180,0,0.05) 0%, transparent 65%),
+    #0A0805 !important;
+  color: #E8E8F0 !important;
+}
+
+/* ── UV SUN HALO ── */
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  top: -15% !important; left: 50% !important;
+  transform: translateX(-50%) rotate(0deg) !important;
+  width: 140vw !important; height: 140vw !important;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg, rgba(255,140,0,0.05) 18deg, transparent 36deg,
+    rgba(233,30,140,0.04) 54deg, transparent 72deg,
+    rgba(255,180,0,0.05) 90deg, transparent 108deg,
+    rgba(255,100,50,0.04) 126deg, transparent 144deg,
+    rgba(233,30,140,0.04) 162deg, transparent 180deg,
+    rgba(255,140,0,0.05) 198deg, transparent 216deg,
+    rgba(255,180,0,0.04) 234deg, transparent 252deg,
+    rgba(233,30,140,0.04) 270deg, transparent 288deg,
+    rgba(255,140,0,0.04) 306deg, transparent 324deg,
+    rgba(233,30,140,0.03) 342deg, transparent 360deg
+  ) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important; z-index: 0 !important;
+  animation: bd-halo-spin 55s linear infinite !important; opacity: 0.6 !important;
+}
+@keyframes bd-halo-spin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* ── FLOATING ORBS ── */
+.bd-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; z-index:0; animation:bd-float 24s infinite ease-in-out; }
+.bd-orb-1 { width:420px; height:420px; background:rgba(255,140,0,0.10); top:-150px; left:-120px; animation-delay:0s; }
+.bd-orb-2 { width:320px; height:320px; background:rgba(233,30,140,0.08); bottom:5%; right:-80px; animation-delay:-8s; }
+.bd-orb-3 { width:260px; height:260px; background:rgba(255,180,50,0.07); top:40%; left:60%; animation-delay:-16s; }
+@keyframes bd-float { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-35px) scale(1.06)} 66%{transform:translate(-18px,22px) scale(0.94)} }
+
+/* ── FROSTED TOPBAR / HEADER ── */
+.topbar, header, .header, nav.main-nav, .nav-bar {
+  background: rgba(3,7,18,0.88) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-bottom: 1px solid rgba(255,140,0,0.2) !important;
+  box-shadow: 0 1px 0 rgba(255,140,0,0.2), 0 4px 32px rgba(0,0,0,0.6) !important;
+  color: #E8E8F0 !important;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar *, header *, .header * { color: #E8E8F0 !important; }
+.topbar a, header a { color: rgba(255,255,255,0.7) !important; text-decoration: none; }
+.topbar a:hover, header a:hover { color: #FF8C00 !important; }
+
+/* ── LOGO ── */
+.logo, .logo-text { color: #fff !important; }
+
+/* ── CARDS / SECTIONS ── */
+.card, .section, .creator-card, .step, .template, .msg-block, .outline-box {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 18px !important;
+  color: #E8E8F0 !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* ── HEADINGS ── */
+h1, h2, h3, h4 { color: #fff !important; }
+
+/* ── BODY TEXT ── */
+p, li, td, th, span, label { color: rgba(255,255,255,0.78) !important; }
+
+/* ── LINKS ── */
+a { color: #FF8C00 !important; }
+a:hover { color: #FFB300 !important; }
+
+/* ── INPUTS / SELECTS ── */
+input, select, textarea {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #E8E8F0 !important;
+  border-radius: 10px !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(233,30,140,0.5) !important;
+  outline: none !important;
+}
+
+/* ── BUTTONS ── */
+button:not(.cab-approve):not(.cab-reject) {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: rgba(255,255,255,0.8) !important;
+  border-radius: 10px !important;
+}
+
+/* ── TABLES ── */
+table { background: transparent !important; border-collapse: collapse; }
+thead tr { background: rgba(255,255,255,0.05) !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+tbody tr { border-bottom: 1px solid rgba(255,255,255,0.06) !important; }
+tbody tr:hover { background: rgba(255,255,255,0.04) !important; }
+th { color: rgba(255,255,255,0.5) !important; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+td { color: rgba(255,255,255,0.8) !important; }
+
+/* ── CODE BLOCKS ── */
+code, pre { background: rgba(0,0,0,0.35) !important; color: #4ADE80 !important; border: 1px solid rgba(255,255,255,0.08) !important; border-radius: 8px !important; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+/* ── PINK ACCENTS ── */
+.highlight, em, strong { color: #E91E8C !important; }
+.accent-amber { color: #FF8C00 !important; }
+
+/* ── BADGES / PILLS ── */
+.badge, .pill, .tag, .sp {
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+}
+
+/* ── PAGINATION / DOTS ── */
+.dot, .pgb.active, .progress-dot.active { background: #FF8C00 !important; }
+
+/* ── SHIMMER ACCENT TITLES ── */
+.shimmer-title, .hero-title {
+  background: linear-gradient(135deg, #FF8C00 0%, #E91E8C 35%, #FFB300 65%, #FF6B35 100%) !important;
+  background-size: 300% 300% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: bd-shimmer 5s ease infinite !important;
+}
+@keyframes bd-shimmer {
+  0%  { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100%{ background-position: 0% 50% }
+}
+</style>
 </head>
 <body>
+<div class="bd-orb bd-orb-1"></div>
+<div class="bd-orb bd-orb-2"></div>
+<div class="bd-orb bd-orb-3"></div>
+
 
 <div class="topbar">
   <div class="logo">TiKiT<em>.</em> × <span>Bioderma</span> — Campaign Guide</div>
