@@ -1254,7 +1254,7 @@ async function init() {
   // Client view: only show creators the agency has approved (agency_approved=true)
   // Agency view: show all
   let query = db.from(TABLE).select('*').order('batch').order('name')
-  if (IS_CLIENT) query = query.eq('agency_approved', true)
+  if (IS_CLIENT) query = query.neq('agency_approved', false) // show null + true, hide only false
   const { data, error } = await query
   if (error) {
     document.getElementById('cards-container').innerHTML = `<div class="empty-state"><div class="big">❌</div>${error.message}</div>`
@@ -2062,7 +2062,7 @@ const channel = db.channel('bioderma-realtime')
     const { eventType, new: newRow, old: oldRow } = payload
     if (eventType === 'INSERT') {
       // Client view: only add if agency approved it
-      if (!IS_CLIENT || newRow.agency_approved === true) allCreators.push(newRow)
+      if (!IS_CLIENT || newRow.agency_approved !== false) allCreators.push(newRow)
     } else if (eventType === 'UPDATE') {
       const idx = allCreators.findIndex(c=>c.id===newRow.id)
       if (IS_CLIENT && newRow.agency_approved === true && idx < 0) {
