@@ -953,6 +953,15 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
     <button class="welcome-go" onclick="dismissWelcome()">Let's Go →</button>
   </div>
 </div>
+<!-- Inline trigger: runs immediately, zero dependency on Supabase or main script -->
+<script>
+(function(){
+  if(new URLSearchParams(location.search).get('view')==='client'){
+    var wo=document.getElementById('welcome-overlay');
+    if(wo){wo.style.cssText='display:flex!important;position:fixed!important;inset:0!important;z-index:99999!important;background:rgba(5,5,20,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;';}
+  }
+})();
+</script>
 
 <div class="topbar">
   <div style="display:flex;align-items:center;min-width:0;gap:10px">
