@@ -1158,6 +1158,8 @@ if (IS_CLIENT) {
   ;['orb1','orb2','orb3'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display='block'; })
   // Show Report button
   const rb = document.getElementById('report-btn'); if(rb) rb.style.display='inline-flex';
+  // Show welcome overlay immediately on every client visit
+  const wo = document.getElementById('welcome-overlay'); if(wo) wo.classList.add('show');
 
   // Auto-detect: phone vs desktop — apply compact layout class on desktop
   function detectLayout() {
@@ -1678,9 +1680,7 @@ async function refreshData() {
 function dismissWelcome() {
   document.getElementById('welcome-overlay').classList.remove('show')
 }
-if (IS_CLIENT) {
-  document.getElementById('welcome-overlay').classList.add('show')
-}
+// Welcome show is handled in the IS_CLIENT init block above
 
 // ═══ TASK 2: PROGRESS RINGS ═══
 function updateRings() {
