@@ -958,6 +958,8 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
 (function(){
   var isClient = new URLSearchParams(location.search).get('view') === 'client';
   if (!isClient) return;
+  // Apply client-view class IMMEDIATELY so CSS renders correctly before main script
+  document.body.classList.add('client-view');
   var wo = document.getElementById('welcome-overlay');
   if (!wo) return;
   // Show immediately
@@ -970,7 +972,6 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
       wo.style.zIndex = '-1';
       // Trigger init if main script already loaded
       if (typeof init === 'function') init();
-      if (typeof allCreators !== 'undefined' && !allCreators.length && typeof init === 'function') init();
     });
   }
 })();
