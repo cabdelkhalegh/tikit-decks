@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="XDefense">
 <meta name="theme-color" content="#E91E8C">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bioderma">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1252,7 +1252,7 @@ if (IS_CLIENT) {
   document.getElementById('approval-summary').style.display = 'block'
   document.getElementById('approval-title').textContent = '📊 Bioderma Approval Progress'
   document.getElementById('approval-subtitle').textContent = 'Add or remove creators in agency view. Client approvals update in real time.'
-  document.getElementById('logo-x').style.display = 'inline'
+  const _lx = document.getElementById('logo-x'); if (_lx) _lx.style.display = 'inline'
 }
 
 // PAGE_SIZE, allCreators, filtered, page — declared on window at script top
