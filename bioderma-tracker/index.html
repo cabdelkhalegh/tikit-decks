@@ -1081,6 +1081,11 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
       <option value="">All Batches</option>
       <option value="B1">Batch 1</option>
       <option value="B2">Batch 2</option>
+<option value="B3">Batch 3</option>
+<option value="B4">Batch 4</option>
+<option value="B5">Batch 5</option>
+<option value="B6">Batch 6</option>
+<option value="B7">Batch 7</option>
       <option value="EM">🇦🇪 Emirati</option>
     </select>
     <select id="f-category" onchange="applyFilters()">
@@ -1328,7 +1333,7 @@ function renderCards() {
   const _cardIds = []
   container.innerHTML = pageData.map(c => {
     _cardIds.push(c.id)
-    const batchBadge = c.batch==='B1'?`<span class="bb1">Batch 1</span>`:c.batch==='B2'?`<span class="bb2">Batch 2</span>`:`<span class="bbem">🇦🇪 Emirati</span>`
+      const batchBadge = `<span class="bb${c.batch==='EM'?'em':'1'}" style="background:${({B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666')}15;color:${({B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666')};border:1px solid ${({B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666')}40;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">${c.batch}</span>`
     const catLabel = CAT_LABELS[c.category]||c.category
     const initial = c.name.charAt(0).toUpperCase()
     const aActive = c.client_approved === true ? 'active' : ''
@@ -1548,7 +1553,7 @@ function renderTable() {
   const pageData = filtered.slice(start, start+PAGE_SIZE)
   if (!pageData.length) { tbody.innerHTML = '<tr><td colspan="13" class="empty-state">No creators found.</td></tr>'; return }
   tbody.innerHTML = pageData.map((c,i) => {
-    const batchBadge = c.batch==='B1'?`<span class="bb1">B1</span>`:c.batch==='B2'?`<span class="bb2">B2</span>`:`<span class="bbem">🇦🇪</span>`
+      const batchBadge = `<span style="background:${{B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666'}15;color:${{B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666'};border:1px solid ${{B1:'#E91E8C',B2:'#0066CC',B3:'#FF6B35',B4:'#7C3AED',B5:'#0891B2',B6:'#D97706',B7:'#059669',EM:'#00875A'}[c.batch]||'#666'}40;padding:2px 6px;border-radius:12px;font-size:9px;font-weight:700">${c.batch}</span>`
     const catLabel = CAT_LABELS[c.category]||c.category
     const igBtn = c.ig_url ? `<a href="${c.ig_url}" target="_blank" class="pl pl-ig" style="font-size:10px;padding:2px 7px">📸</a>` : ''
     const ttBtn = c.tt_url ? `<a href="${c.tt_url}" target="_blank" class="pl pl-tt" style="font-size:10px;padding:2px 7px">🎵</a>` : ''
