@@ -5,7 +5,7 @@
 <link rel="manifest" href="bioderma-tracker/manifest.json">
 <meta name="theme-color" content="#FF8C00">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MR Review">
 <link rel="apple-touch-icon" href="bioderma-tracker/assets/bioderma-logo.png">
@@ -224,6 +224,7 @@ select option:hover, select option:checked {
   <nav class="nav">
     <a href="#top">Creators</a>
     <a href="#summary">Summary</a>
+    <a href="bioderma-tracker/">📊 Agency Tracker</a>
     <a href="bioderma-xdefense-2026.html">🎬 Deck</a>
   </nav>
   <div style="display:flex;gap:8px">
@@ -558,11 +559,11 @@ function clr(){if(!confirm('Clear all selections?'))return;st={};document.queryS
 uc();
 
 // ── SUPABASE REALTIME: auto-sync changes across sessions ──
-// DB id = MR id + 1, so MR id = DB id - 1
+// DB id = MR id (same)
 _supa.channel('mr-realtime')
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'bioderma_creators'},payload=>{
     const row=payload.new
-    const mrId=row.id-1
+    const mrId=row.id
     const creator=ALL.find(c=>c.id===mrId)
     if(!creator)return
     dbStatus[row.id]=row.status
