@@ -228,7 +228,7 @@ select option:hover, select option:checked {
     <a href="bioderma-xdefense-2026.html">🎬 Deck</a>
   </nav>
   <div style="display:flex;gap:8px">
-    <button class="btn-exp" onclick="exp()">⬇ Export Approved</button>
+    <button class="btn-exp" onclick="exp()">⬇ Export All</button>
     <button class="btn-sec" onclick="window.print()">🖨 Print</button>
     <button class="btn-exp" onclick="showAddCreator()" style="background:rgba(0,102,204,0.2);border:1px solid rgba(0,102,204,0.4);color:#64B5F6">+ Add Creator</button>
   </div>
@@ -386,7 +386,7 @@ window.mrInsightsMap = {}
 
 async function mrFetchInsights() {
   try {
-    var res = await fetch(SUPA_URL + '/rest/v1/creator_insights?select=creator_id,engagement_rate,followers', { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
+    var res = await fetch(SUPA_URL + '/rest/v1/creator_insights?select=creator_id,engagement_rate,followers,avg_likes,avg_comments,avg_video_views', { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
     var data = await res.json()
     if (Array.isArray(data)) {
       data.forEach(function(r) { window.mrInsightsMap[r.creator_id] = r })
@@ -599,7 +599,35 @@ function fc(batchKey,cat,btn){const panel=document.getElementById('panel-'+batch
 function sc(batchKey,q){const query=q.toLowerCase();const panel=document.getElementById('panel-'+batchKey);panel.querySelectorAll('tr[data-id]').forEach(row=>{const id=parseInt(row.dataset.id);const c=ALL.find(x=>x.id===id);if(!c)return;const match=c.name.toLowerCase().includes(query)||c.handle.toLowerCase().includes(query)||(c.market||'').toLowerCase().includes(query)||(c.why||'').toLowerCase().includes(query);row.style.display=match?'':'none';});}
 function uc(){const sel=document.querySelectorAll('tr[data-id].sel');const _s=id=>{const e=document.getElementById(id);if(e)return e;return{set textContent(v){}}};const a=Object.values(st).filter(s=>s==='approved').length;const h=Object.values(st).filter(s=>s==='hold').length;const r=Object.values(st).filter(s=>s==='rejected').length;_s('sc-cnt').textContent=sel.length;_s('ca').textContent=a;_s('ch').textContent=h;_s('cr').textContent=r;_s('sa').textContent=a;_s('sh2').textContent=h;_s('sr2').textContent=r;_s('tot').textContent=a+h+r;_s('pen').textContent=ALL.length-(a+h+r);}
 function uat(){const tbody=document.getElementById('atb');if(!tbody)return;const approved=ALL.filter(c=>st[c.id]==='approved');if(!approved.length){tbody.innerHTML='<tr><td colspan="6" style="color:#666;text-align:center;padding:20px;font-size:13px">No creators approved yet</td></tr>';return;}tbody.innerHTML=approved.map(c=>{const bc=BC_COLORS[c.batch]||'#666';return '<tr style="border-bottom:1px solid rgba(255,255,255,0.06)"><td style="padding:10px 12px;font-weight:700;color:#fff">'+c.name+'</td><td style="padding:10px 12px"><a href="'+(c.igUrl||'#')+'" target="_blank" style="color:#E91E8C;text-decoration:none;font-weight:600">'+c.handle+' ↗</a></td><td style="padding:10px 12px"><span style="background:'+bc+'15;color:'+bc+';border:1px solid '+bc+'40;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">'+c.batch+'</span></td><td style="padding:10px 12px;color:#ccc;font-size:12px">'+(c.reach||'')+'</td><td style="padding:10px 12px;color:#999;font-size:11px">'+(c.market||'UAE')+'</td><td style="padding:10px 12px"><span style="color:#4ade80;font-size:10px;font-weight:700">✓</span></td></tr>';}).join('');}
-function exp(){const list=[...ALL.filter(c=>st[c.id]==='approved').map(c=>({...c,status:'APPROVED'})),...ALL.filter(c=>st[c.id]==='hold').map(c=>({...c,status:'HOLD'}))];if(!list.length){alert('No creators approved or on hold yet.');return;}const rows=[['Name','Handle','Batch','Category','Reach','Market','Priority','Confidence','Status']];list.forEach(c=>rows.push([c.name,c.handle,BL[c.batch]||c.batch,c.cat,c.reach||c.platform||'',c.market||c.location||'UAE',c.priority||'P2',c.confirm?'MEDIUM':'HIGH',c.status]));const csv=rows.map(r=>r.map(v=>'"'+(v||'')+'"').join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bioderma-xdefense-approved.csv';a.click();URL.revokeObjectURL(url);}
+function exp(){
+  var list=ALL.map(function(c){
+    var s=st[c.id]||'pending';
+    var ins=window.mrInsightsMap?window.mrInsightsMap[c._dbId||c.id]:null;
+    return {
+      name:c.name,handle:c.handle,batch:c.batch,cat:c.cat,
+      reach:c.reach||'',market:c.market||'UAE',priority:c.priority||'P2',
+      status:s==='approved'?'APPROVED':s==='rejected'?'REJECTED':s==='hold'?'HOLD':'PENDING',
+      igUrl:c.igUrl||'',ttUrl:c.ttUrl||'',
+      followers:ins?ins.followers:'',
+      engagement_rate:ins?ins.engagement_rate:'',
+      avg_likes:ins?ins.avg_likes:'',
+      avg_comments:ins?ins.avg_comments:'',
+      avg_video_views:ins?ins.avg_video_views:''
+    };
+  });
+  var headers=['Name','Handle','Batch','Category','Reach','Market','Priority','Status','IG URL','TT URL','Followers','Engagement Rate','Avg Likes','Avg Comments','Avg Video Views'];
+  var rows=[headers.join(',')];
+  list.forEach(function(r){
+    rows.push([r.name,r.handle,r.batch,r.cat,r.reach,r.market,r.priority,r.status,r.igUrl,r.ttUrl,r.followers,r.engagement_rate,r.avg_likes,r.avg_comments,r.avg_video_views].map(function(v){return '"'+String(v||'').replace(/"/g,'""')+'"'}).join(','));
+  });
+  var csv='\uFEFF'+rows.join('\n');
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='bioderma-xdefense-all-creators.csv';a.click();
+  URL.revokeObjectURL(url);
+  showMRToast('Exported '+list.length+' creators (all statuses)');
+}
 function clr(){if(!confirm('Clear all selections?'))return;st={};document.querySelectorAll('tr[data-id]').forEach(r=>r.classList.remove('sel'));document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));uc();uat();}
 uc();
 
