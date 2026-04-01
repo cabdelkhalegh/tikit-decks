@@ -298,6 +298,32 @@ code { background: rgba(0,0,0,0.3) !important; color: #4ADE80 !important; border
 </div>
 <div class="tabs" id="tab-bar"><button class="tab active" onclick="switchTab('ALL',this)">All (...)</button></div>
 
+<!-- ENHANCED FILTER BAR -->
+<div id="filter-bar" style="background:rgba(3,7,18,0.92);border-bottom:1px solid rgba(255,255,255,0.08);padding:12px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;top:120px;z-index:140;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+  <div style="position:relative;flex:1;min-width:200px;max-width:320px">
+    <input id="mr-search" type="text" placeholder="&#x1F50D; Search name, handle, notes..." style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 14px;font-size:13px;color:#E8E8F0;outline:none" oninput="applyFilters()">
+  </div>
+  <select id="mr-cat-filter" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 12px;font-size:12px;color:#E8E8F0;outline:none;cursor:pointer" onchange="applyFilters()">
+    <option value="">All Categories</option>
+    <option value="beauty">&#x1F484; Beauty</option><option value="lifestyle">&#x1F31F; Lifestyle</option><option value="fashion">&#x1F457; Fashion</option>
+    <option value="fitness">&#x1F4AA; Fitness</option><option value="food">&#x1F374; Food</option><option value="travel">&#x2708;&#xFE0F; Travel</option>
+    <option value="derm">&#x1F9EC; Derm</option><option value="pharma">&#x1F48A; Pharma</option><option value="sport">&#x26BD; Sport</option>
+    <option value="mom">&#x1F476; Mom</option><option value="tech">&#x1F4BB; Tech</option>
+  </select>
+  <select id="mr-pri-filter" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 12px;font-size:12px;color:#E8E8F0;outline:none;cursor:pointer" onchange="applyFilters()">
+    <option value="">All Priority</option><option value="P1">&#x1F7E2; P1 (50K+)</option><option value="P2">&#x1F7E1; P2 (&lt;50K)</option>
+  </select>
+  <select id="mr-status-filter" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 12px;font-size:12px;color:#E8E8F0;outline:none;cursor:pointer" onchange="applyFilters()">
+    <option value="">All Status</option><option value="approved">&#x2705; Approved</option><option value="hold">&#x23F8; On Hold</option>
+    <option value="rejected">&#x274C; Rejected</option><option value="pending">&#x2B1C; Pending</option>
+  </select>
+  <select id="mr-batch-filter" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:9px 12px;font-size:12px;color:#E8E8F0;outline:none;cursor:pointer" onchange="applyFilters()">
+    <option value="">All Batches</option>
+  </select>
+  <span id="mr-filter-count" style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);margin-left:auto;white-space:nowrap">-- shown</span>
+  <button onclick="clearFilters()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:8px 14px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer">&#x2715; Clear</button>
+</div>
+
 
 <div id="panel-ALL" class="tab-panel active" style="padding:0">
 <div style="overflow-x:auto">
@@ -412,6 +438,7 @@ async function loadAllCreators(){
     });
     uc();uat();
     showMRToast('✅ '+ALL.length+' creators loaded');
+    populateBatchFilter();applyFilters();
   }catch(e){
     document.getElementById('dynamic-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:#ef4444">❌ Failed to load: '+e.message+'</td></tr>';
   }
@@ -420,9 +447,10 @@ async function loadAllCreators(){
 function filterBatch(batch,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('#dynamic-tbody tr[data-id]').forEach(row=>{
-    row.style.display=(batch==='ALL'||row.dataset.batch===batch)?'':'none';
-  });
+  // Sync with filter bar dropdown
+  var bsel=document.getElementById('mr-batch-filter');
+  if(bsel)bsel.value=(batch==='ALL'?'':batch);
+  applyFilters();
 }
 
 const BC={"B1":"#E91E8C","B2":"#0066CC","EM":"#00875A"};
@@ -503,7 +531,7 @@ async function ss(id,status,btn){
     showMRToast(label+' — saved')
   }
 }
-function switchTab(key,btn){filterBatch('ALL',btn);}
+function switchTab(key,btn){filterBatch('ALL',btn)}
 function fc(batchKey,cat,btn){const panel=document.getElementById('panel-'+batchKey);panel.querySelectorAll('.catbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');panel.querySelectorAll('tr[data-id]').forEach(row=>{if(cat==='all'){row.style.display='';return;}const id=parseInt(row.dataset.id);const c=ALL.find(x=>x.id===id);row.style.display=(c&&c.cat===cat)?'':'none';});}
 function sc(batchKey,q){const query=q.toLowerCase();const panel=document.getElementById('panel-'+batchKey);panel.querySelectorAll('tr[data-id]').forEach(row=>{const id=parseInt(row.dataset.id);const c=ALL.find(x=>x.id===id);if(!c)return;const match=c.name.toLowerCase().includes(query)||c.handle.toLowerCase().includes(query)||(c.market||'').toLowerCase().includes(query)||(c.why||'').toLowerCase().includes(query);row.style.display=match?'':'none';});}
 function uc(){const sel=document.querySelectorAll('tr[data-id].sel');const _s=id=>{const e=document.getElementById(id);if(e)return e;return{set textContent(v){}}};const a=Object.values(st).filter(s=>s==='approved').length;const h=Object.values(st).filter(s=>s==='hold').length;const r=Object.values(st).filter(s=>s==='rejected').length;_s('sc-cnt').textContent=sel.length;_s('ca').textContent=a;_s('ch').textContent=h;_s('cr').textContent=r;_s('sa').textContent=a;_s('sh2').textContent=h;_s('sr2').textContent=r;_s('tot').textContent=a+h+r;_s('pen').textContent=ALL.length-(a+h+r);}
@@ -587,6 +615,62 @@ async function submitAddCreator(){
 }
 // Close modal on backdrop click
 document.getElementById('add-creator-modal').addEventListener('click',function(e){if(e.target===this)closeAddCreator()})
+
+// ── ENHANCED FILTERS ──
+function applyFilters(){
+  const q=(document.getElementById('mr-search').value||'').toLowerCase();
+  const cat=document.getElementById('mr-cat-filter').value;
+  const pri=document.getElementById('mr-pri-filter').value;
+  const sts=document.getElementById('mr-status-filter').value;
+  const batch=document.getElementById('mr-batch-filter').value;
+  let shown=0;
+  document.querySelectorAll('#dynamic-tbody tr[data-id]').forEach(function(row){
+    const id=parseInt(row.dataset.id);
+    const c=ALL.find(function(x){return x.id===id});
+    if(!c){row.style.display='none';return}
+    let vis=true;
+    // Text search
+    if(q){
+      const haystack=(c.name+' '+c.handle+' '+(c.why||'')+' '+(c.reach||'')+' '+(c.market||'')).toLowerCase();
+      if(haystack.indexOf(q)===-1)vis=false;
+    }
+    // Category
+    if(vis&&cat&&c.cat!==cat)vis=false;
+    // Priority
+    if(vis&&pri&&c.priority!==pri)vis=false;
+    // Batch
+    if(vis&&batch&&c.batch!==batch)vis=false;
+    // Approval status
+    if(vis&&sts){
+      var cst=st[c.id]||null;
+      if(sts==='pending'){if(cst)vis=false;}
+      else{if(cst!==sts)vis=false;}
+    }
+    row.style.display=vis?'':'none';
+    if(vis)shown++;
+  });
+  document.getElementById('mr-filter-count').textContent=shown+' of '+ALL.length+' shown';
+}
+function clearFilters(){
+  document.getElementById('mr-search').value='';
+  document.getElementById('mr-cat-filter').value='';
+  document.getElementById('mr-pri-filter').value='';
+  document.getElementById('mr-status-filter').value='';
+  document.getElementById('mr-batch-filter').value='';
+  applyFilters();
+}
+function populateBatchFilter(){
+  var sel=document.getElementById('mr-batch-filter');
+  if(!sel)return;
+  var batches={};
+  ALL.forEach(function(c){batches[c.batch]=(batches[c.batch]||0)+1});
+  var opts='<option value="">All Batches</option>';
+  Object.keys(batches).sort().forEach(function(b){
+    opts+='<option value="'+b+'">'+b+' ('+batches[b]+')</option>';
+  });
+  sel.innerHTML=opts;
+}
+
 </script>
 </body>
 </html>
