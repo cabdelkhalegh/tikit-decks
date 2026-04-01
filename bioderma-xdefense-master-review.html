@@ -381,6 +381,34 @@ let ALL=[];
 const BC_COLORS={"B1":"#E91E8C","B2":"#0066CC","EM":"#00875A","B3":"#FF6B35","B4":"#7C3AED","B5":"#0891B2","B6":"#D97706","B7":"#059669","NEW":"#6366F1"};
 const CAT_ICONS={"beauty":"💄","lifestyle":"🌟","fashion":"👗","fitness":"🏃‍♀️","food":"🍴","travel":"✈️","derm":"🧬","pharma":"💊","sport":"⚽","mom":"👶","tech":"💻"};
 
+// -- Creator Insights for Master Review --
+window.mrInsightsMap = {}
+
+async function mrFetchInsights() {
+  try {
+    var res = await fetch(SUPA_URL + '/rest/v1/creator_insights?select=creator_id,engagement_rate,followers', { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
+    var data = await res.json()
+    if (Array.isArray(data)) {
+      data.forEach(function(r) { window.mrInsightsMap[r.creator_id] = r })
+    }
+  } catch(e) { console.warn('mrFetchInsights error:', e) }
+}
+
+function mrErBadge(rate) {
+  if (rate === null || rate === undefined || rate === '') return ''
+  var n = parseFloat(rate)
+  var col = n > 3 ? '#4ade80' : n >= 1 ? '#FFB300' : '#ef4444'
+  var bg = n > 3 ? 'rgba(74,222,128,.15)' : n >= 1 ? 'rgba(255,179,0,.15)' : 'rgba(239,68,68,.15)'
+  return '<span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;background:' + bg + ';color:' + col + ';margin-left:4px">' + n.toFixed(1) + '%</span>'
+}
+
+function mrFmtFollowers(n) {
+  if (!n) return ''
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M'
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K'
+  return n.toString()
+}
+
 async function loadAllCreators(){
   try{
     const r=await fetch(SUPA_URL+'/rest/v1/bioderma_creators?select=*&order=batch,id',{headers:{apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY}});
@@ -456,6 +484,23 @@ async function loadAllCreators(){
     });
     uc();uat();
     showMRToast('✅ '+ALL.length+' creators loaded');
+    // Fetch insights and update reach cells
+    mrFetchInsights().then(function() {
+      ALL.forEach(function(c) {
+        var ins = window.mrInsightsMap[c.id]
+        if (!ins) return
+        var row = document.getElementById('row-' + c.id)
+        if (!row) return
+        var cells = row.querySelectorAll('td')
+        // Reach is the 4th td (index 3)
+        if (cells[3]) {
+          var extra = mrErBadge(ins.engagement_rate)
+          var foll = mrFmtFollowers(ins.followers)
+          if (foll) extra += '<div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">' + foll + ' followers</div>'
+          if (extra) cells[3].innerHTML = cells[3].innerHTML + extra
+        }
+      })
+    });
     populateBatchFilter();applyFilters();
   }catch(e){
     document.getElementById('dynamic-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:40px;color:#ef4444">❌ Failed to load: '+e.message+'</td></tr>';

@@ -931,6 +931,37 @@ body:not(.client-view) .empty-state { color: rgba(255,255,255,0.3) !important; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+
+/* -- Creator Insights & Content Performance -- */
+.ci-section{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06)}
+.ci-section h4{font-size:13px;font-weight:700;color:#E8E8F0;margin:0 0 10px}
+.ci-profile-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ci-profile-pic{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.1)}
+.ci-verified{color:#60A5FA;font-size:14px;margin-left:2px}
+.ci-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ci-field{display:flex;flex-direction:column;gap:2px}
+.ci-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.35)}
+.ci-field-row{display:flex;align-items:center;gap:4px}
+.ci-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;font-size:12px;color:#E8E8F0;width:100%;outline:none;font-family:inherit}
+.ci-input:focus{border-color:rgba(233,30,140,.4);box-shadow:0 0 8px rgba(233,30,140,.1)}
+.ci-src{font-size:8px;font-weight:700;padding:1px 5px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.ci-src-apify{background:rgba(0,102,204,.2);color:#60A5FA}
+.ci-src-manual{background:rgba(255,140,0,.2);color:#FFB300}
+.ci-src-pending{background:rgba(255,255,255,.08);color:rgba(255,255,255,.35)}
+.ci-er-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px}
+.ci-er-green{background:rgba(74,222,128,.15);color:#4ade80}
+.ci-er-yellow{background:rgba(255,179,0,.15);color:#FFB300}
+.ci-er-red{background:rgba(239,68,68,.15);color:#ef4444}
+.ci-er-na{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3)}
+.ci-hashtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.ci-hashtag{font-size:10px;background:rgba(233,30,140,.1);color:#F472B6;padding:2px 6px;border-radius:8px}
+.ci-content-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px;margin-bottom:8px}
+.ci-content-card h5{font-size:11px;color:rgba(255,255,255,.5);margin:0 0 6px;font-weight:600}
+.ci-pending-scrape{color:rgba(255,255,255,.3);font-size:11px;font-style:italic;padding:8px 0}
+.ci-card-metrics{font-size:11px;font-weight:600;color:#E8E8F0;display:inline-flex;align-items:center;gap:6px;margin-left:6px}
+.ci-card-er{font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+.ci-card-followers{font-size:10px;color:rgba(255,255,255,.4)}
+
 </style>
 </head>
 <body>
@@ -1197,6 +1228,30 @@ const { createClient } = supabase
 var db = createClient(SUPA_URL, SUPA_KEY)
 var TABLE = 'bioderma_creators'
 
+// -- Creator Insights Maps --
+window.insightsMap = {}
+window.contentPerfMap = {}
+
+async function fetchInsightsData() {
+  try {
+    const [insRes, perfRes] = await Promise.all([
+      fetch(SUPA_URL + '/rest/v1/creator_insights?select=*', { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } }),
+      fetch(SUPA_URL + '/rest/v1/content_performance?select=*', { headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY } })
+    ])
+    const insData = await insRes.json()
+    const perfData = await perfRes.json()
+    if (Array.isArray(insData)) {
+      insData.forEach(r => { window.insightsMap[r.creator_id] = r })
+    }
+    if (Array.isArray(perfData)) {
+      perfData.forEach(r => {
+        if (!window.contentPerfMap[r.creator_id]) window.contentPerfMap[r.creator_id] = []
+        window.contentPerfMap[r.creator_id].push(r)
+      })
+    }
+  } catch(e) { console.warn('fetchInsightsData error:', e) }
+}
+
 var IS_CLIENT = new URLSearchParams(location.search).get('view') === 'client'
 if (IS_CLIENT) {
   document.body.classList.add('client-view')
@@ -1283,6 +1338,11 @@ async function init() {
   allCreators = data
   filtered = [...allCreators]
   page = 1
+  // Fetch insights data in parallel
+  fetchInsightsData().then(function() {
+    try { renderCards() } catch(e) { console.error('re-renderCards after insights:', e) }
+    try { renderTable() } catch(e) { console.error('re-renderTable after insights:', e) }
+  })
   try { renderCards() } catch(e) { console.error('renderCards:', e) }
   try { renderTable() } catch(e) { if(tbody) tbody.innerHTML=`<tr><td colspan="13" style="color:red">${e.message}</td></tr>` }
   try { renderPagination() } catch(e) { console.error('renderPagination:', e) }
@@ -1388,7 +1448,7 @@ function renderCards() {
         <div class="card-info">
           <div class="card-name">${c.name}${c.is_emirati?' 🇦🇪':''}</div>
           <div class="card-handle">${[c.handle_ig,c.handle_tt].filter(Boolean).join(' · ')}</div>
-          <div class="card-meta">${batchBadge}<span style="font-size:11px;color:var(--muted)">${catLabel}</span><span style="font-size:11px;color:var(--muted)">${c.reach||''}</span></div>
+          <div class="card-meta">${batchBadge}<span style="font-size:11px;color:var(--muted)">${catLabel}</span><span style="font-size:11px;color:var(--muted)">${c.reach||''}</span>${buildCardInsightsBadge(c)}</div>
         </div>
         <div class="card-right">
           ${!IS_CLIENT ? `<span class="sp sp-${c.status}" style="font-size:10px">${STATUS_LABELS[c.status]||c.status}</span>` : ''}
@@ -1510,8 +1570,208 @@ async function setAgencyApproval(id, approved) {
   }
 }
 
+
+// -- Insights Helpers --
+function ciErClass(rate) {
+  if (rate === null || rate === undefined || rate === '') return 'ci-er-na'
+  var n = parseFloat(rate)
+  if (n > 3) return 'ci-er-green'
+  if (n >= 1) return 'ci-er-yellow'
+  return 'ci-er-red'
+}
+function ciErLabel(rate) {
+  if (rate === null || rate === undefined || rate === '') return 'N/A'
+  return parseFloat(rate).toFixed(1) + '%'
+}
+function ciSrcBadge(src) {
+  var s = src || 'pending'
+  var cls = s === 'apify' ? 'ci-src-apify' : s === 'manual' ? 'ci-src-manual' : 'ci-src-pending'
+  return '<span class="ci-src ' + cls + '">' + s + '</span>'
+}
+function ciFmtNum(n) {
+  if (n === null || n === undefined || n === '') return '\u2014'
+  var num = parseInt(n)
+  if (num >= 1000000) return (num/1000000).toFixed(1) + 'M'
+  if (num >= 1000) return (num/1000).toFixed(1) + 'K'
+  return num.toString()
+}
+
+async function ciPatchInsight(creatorId, field, value) {
+  var body = {}
+  body[field] = value === '' ? null : (isNaN(value) ? value : Number(value))
+  var srcFields = ['engagement_rate','avg_likes','avg_comments','avg_video_views']
+  srcFields.forEach(function(f) {
+    if (field === f) body[f + '_source'] = 'manual'
+  })
+  try {
+    var existing = window.insightsMap[creatorId]
+    if (existing) {
+      await fetch(SUPA_URL + '/rest/v1/creator_insights?creator_id=eq.' + creatorId, {
+        method: 'PATCH', headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify(body)
+      })
+    } else {
+      body.creator_id = creatorId
+      await fetch(SUPA_URL + '/rest/v1/creator_insights', {
+        method: 'POST', headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify(body)
+      })
+    }
+    if (!window.insightsMap[creatorId]) window.insightsMap[creatorId] = { creator_id: creatorId }
+    Object.assign(window.insightsMap[creatorId], body)
+    srcFields.forEach(function(f) {
+      if (field === f) {
+        var badge = document.getElementById('ci-src-' + creatorId + '-' + f)
+        if (badge) { badge.className = 'ci-src ci-src-manual'; badge.textContent = 'manual' }
+      }
+    })
+  } catch(e) { console.error('ciPatchInsight error:', e) }
+}
+
+async function ciPatchContent(creatorId, slot, field, value) {
+  var body = {}
+  body[field] = value === '' ? null : (isNaN(value) ? value : Number(value))
+  var srcFields = ['likes','comments','video_views']
+  srcFields.forEach(function(f) {
+    if (field === f) body[f + '_source'] = 'manual'
+  })
+  if (field === 'engagement_rate') body.engagement_rate_source = 'manual'
+  try {
+    var perfs = window.contentPerfMap[creatorId] || []
+    var existing = perfs.find(function(p) { return p.content_slot === slot })
+    if (existing) {
+      await fetch(SUPA_URL + '/rest/v1/content_performance?creator_id=eq.' + creatorId + '&content_slot=eq.' + slot, {
+        method: 'PATCH', headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify(body)
+      })
+      Object.assign(existing, body)
+    } else {
+      body.creator_id = creatorId
+      body.content_slot = slot
+      var res = await fetch(SUPA_URL + '/rest/v1/content_performance', {
+        method: 'POST', headers: { apikey: SUPA_KEY, Authorization: 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify(body)
+      })
+      var newRow = await res.json()
+      if (!window.contentPerfMap[creatorId]) window.contentPerfMap[creatorId] = []
+      window.contentPerfMap[creatorId].push(Array.isArray(newRow) ? newRow[0] : newRow)
+    }
+    srcFields.forEach(function(f) {
+      if (field === f) {
+        var badge = document.getElementById('cp-src-' + creatorId + '-' + slot + '-' + f)
+        if (badge) { badge.className = 'ci-src ci-src-manual'; badge.textContent = 'manual' }
+      }
+    })
+    if (field === 'engagement_rate') {
+      var badge = document.getElementById('cp-src-' + creatorId + '-' + slot + '-engagement_rate')
+      if (badge) { badge.className = 'ci-src ci-src-manual'; badge.textContent = 'manual' }
+    }
+  } catch(e) { console.error('ciPatchContent error:', e) }
+}
+
+function buildInsightsSection(c) {
+  var ins = window.insightsMap[c.id] || {}
+  var erClass = ciErClass(ins.engagement_rate)
+  var erLabel = ciErLabel(ins.engagement_rate)
+  function srcBadge(field) {
+    var src = ins[field + '_source'] || 'pending'
+    var cls = src === 'apify' ? 'ci-src-apify' : src === 'manual' ? 'ci-src-manual' : 'ci-src-pending'
+    return '<span class="ci-src ' + cls + '" id="ci-src-' + c.id + '-' + field + '">' + src + '</span>'
+  }
+  var hashtags = (ins.top_hashtags || []).map(function(h) { return '<span class="ci-hashtag">' + h + '</span>' }).join('')
+
+  return '<div class="ci-section"><h4>\ud83d\udcca Profile Insights</h4>' +
+    '<div class="ci-profile-row">' +
+      (ins.profile_pic_url ? '<img class="ci-profile-pic" src="' + ins.profile_pic_url + '" onerror="this.style.display=\'none\'">' : '') +
+      '<div>' +
+        '<span class="ci-er-badge ' + erClass + '">' + erLabel + (ins.is_verified ? ' <span class="ci-verified">\u2713</span>' : '') + '</span>' +
+        '<div style="margin-top:4px;font-size:11px;color:rgba(255,255,255,.4)">' +
+          ciFmtNum(ins.followers) + ' followers \u00b7 ' + ciFmtNum(ins.following) + ' following \u00b7 ' + ciFmtNum(ins.posts_count) + ' posts' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="ci-grid">' +
+      '<div class="ci-field"><label>Engagement Rate %</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.engagement_rate||'') + '" onblur="ciPatchInsight(' + c.id + ',\'engagement_rate\',this.value)" placeholder="\u2014">' + srcBadge('engagement_rate') + '</div></div>' +
+      '<div class="ci-field"><label>Followers</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.followers||'') + '" onblur="ciPatchInsight(' + c.id + ',\'followers\',this.value)" placeholder="\u2014"></div></div>' +
+      '<div class="ci-field"><label>Following</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.following||'') + '" onblur="ciPatchInsight(' + c.id + ',\'following\',this.value)" placeholder="\u2014"></div></div>' +
+      '<div class="ci-field"><label>Posts</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.posts_count||'') + '" onblur="ciPatchInsight(' + c.id + ',\'posts_count\',this.value)" placeholder="\u2014"></div></div>' +
+      '<div class="ci-field"><label>Avg Likes</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.avg_likes||'') + '" onblur="ciPatchInsight(' + c.id + ',\'avg_likes\',this.value)" placeholder="\u2014">' + srcBadge('avg_likes') + '</div></div>' +
+      '<div class="ci-field"><label>Avg Comments</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.avg_comments||'') + '" onblur="ciPatchInsight(' + c.id + ',\'avg_comments\',this.value)" placeholder="\u2014">' + srcBadge('avg_comments') + '</div></div>' +
+      '<div class="ci-field"><label>Avg Video Views</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.avg_video_views||'') + '" onblur="ciPatchInsight(' + c.id + ',\'avg_video_views\',this.value)" placeholder="\u2014">' + srcBadge('avg_video_views') + '</div></div>' +
+      '<div class="ci-field"><label>Post Freq / Week</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.post_frequency_week||'') + '" onblur="ciPatchInsight(' + c.id + ',\'post_frequency_week\',this.value)" placeholder="\u2014"></div></div>' +
+      '<div class="ci-field"><label>Last Post</label><div class="ci-field-row"><input class="ci-input" type="date" value="' + (ins.last_post_date ? ins.last_post_date.split('T')[0] : '') + '" onblur="ciPatchInsight(' + c.id + ',\'last_post_date\',this.value)"></div></div>' +
+      '<div class="ci-field"><label>Audience Quality</label><div class="ci-field-row"><input class="ci-input" value="' + (ins.audience_quality_score||'') + '" onblur="ciPatchInsight(' + c.id + ',\'audience_quality_score\',this.value)" placeholder="\u2014"></div></div>' +
+    '</div>' +
+    '<div style="margin-top:8px">' +
+      '<div class="ci-grid">' +
+        '<div class="ci-field"><label>Video %</label><input class="ci-input" value="' + (ins.content_mix_video_pct||'') + '" onblur="ciPatchInsight(' + c.id + ',\'content_mix_video_pct\',this.value)" placeholder="\u2014"></div>' +
+        '<div class="ci-field"><label>Image %</label><input class="ci-input" value="' + (ins.content_mix_image_pct||'') + '" onblur="ciPatchInsight(' + c.id + ',\'content_mix_image_pct\',this.value)" placeholder="\u2014"></div>' +
+        '<div class="ci-field"><label>Carousel %</label><input class="ci-input" value="' + (ins.content_mix_carousel_pct||'') + '" onblur="ciPatchInsight(' + c.id + ',\'content_mix_carousel_pct\',this.value)" placeholder="\u2014"></div>' +
+      '</div>' +
+    '</div>' +
+    (hashtags ? '<div style="margin-top:8px"><label style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.35)">Top Hashtags</label><div class="ci-hashtags">' + hashtags + '</div></div>' : '') +
+  '</div>'
+}
+
+function buildContentPerfSection(c) {
+  var perfs = window.contentPerfMap[c.id] || []
+  var links = [c.content_link_1, c.content_link_2, c.content_link_3, c.content_link_4]
+  var hasAny = false
+  var html = '<div class="ci-section"><h4>\ud83c\udfac Content Performance</h4>'
+
+  for (var i = 0; i < 4; i++) {
+    var url = links[i]
+    if (!url) continue
+    hasAny = true
+    var slot = i + 1
+    var perf = perfs.find(function(p) { return p.content_slot === slot }) || {}
+    var hasPerfData = perf.likes !== undefined && perf.likes !== null
+
+    html += '<div class="ci-content-card">' +
+      '<h5>Post ' + slot + ' \u00b7 <a href="' + url + '" target="_blank" style="color:#E91E8C;text-decoration:none">View \u2197</a></h5>'
+
+    if (!hasPerfData && !perf.engagement_rate) {
+      html += '<div class="ci-pending-scrape">\u23f3 Pending scrape \u2014 edit values manually below</div>'
+    }
+
+    function cpSrc(field) {
+      var src = perf[field + '_source'] || 'pending'
+      var cls = src === 'apify' ? 'ci-src-apify' : src === 'manual' ? 'ci-src-manual' : 'ci-src-pending'
+      return '<span class="ci-src ' + cls + '" id="cp-src-' + c.id + '-' + slot + '-' + field + '">' + src + '</span>'
+    }
+    html += '<div class="ci-grid">' +
+      '<div class="ci-field"><label>Likes</label><div class="ci-field-row"><input class="ci-input" value="' + (perf.likes||'') + '" onblur="ciPatchContent(' + c.id + ',' + slot + ',\'likes\',this.value)" placeholder="\u2014">' + cpSrc('likes') + '</div></div>' +
+      '<div class="ci-field"><label>Comments</label><div class="ci-field-row"><input class="ci-input" value="' + (perf.comments||'') + '" onblur="ciPatchContent(' + c.id + ',' + slot + ',\'comments\',this.value)" placeholder="\u2014">' + cpSrc('comments') + '</div></div>' +
+      '<div class="ci-field"><label>Video Views</label><div class="ci-field-row"><input class="ci-input" value="' + (perf.video_views||'') + '" onblur="ciPatchContent(' + c.id + ',' + slot + ',\'video_views\',this.value)" placeholder="\u2014">' + cpSrc('video_views') + '</div></div>' +
+      '<div class="ci-field"><label>Engagement %</label><div class="ci-field-row"><input class="ci-input" value="' + (perf.engagement_rate||'') + '" onblur="ciPatchContent(' + c.id + ',' + slot + ',\'engagement_rate\',this.value)" placeholder="\u2014">' + cpSrc('engagement_rate') + '</div></div>' +
+    '</div></div>'
+  }
+
+  if (!hasAny) {
+    html += '<div class="ci-pending-scrape">No content links yet</div>'
+  }
+
+  html += '</div>'
+  return html
+}
+
+function buildCardInsightsBadge(c) {
+  var ins = window.insightsMap[c.id]
+  if (!ins) return ''
+  var html = '<span class="ci-card-metrics">'
+  if (ins.engagement_rate !== null && ins.engagement_rate !== undefined) {
+    var erClass = ciErClass(ins.engagement_rate)
+    html += '<span class="ci-card-er ' + erClass + '">' + parseFloat(ins.engagement_rate).toFixed(1) + '%</span>'
+  }
+  if (ins.followers) {
+    html += '<span class="ci-card-followers">' + ciFmtNum(ins.followers) + '</span>'
+  }
+  html += '</span>'
+  return html
+}
+
 function buildCardExpand(c) {
-  return `<div class="ce-section">
+  return buildInsightsSection(c) + buildContentPerfSection(c) + `<div class="ce-section">
     <h4>📤 Outreach</h4>
     <div class="ce-field"><label>Status</label><select onchange="sf(${c.id},'status',this.value)">${Object.entries(STATUS_LABELS).map(([v,l])=>`<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('')}</select></div>
     <div class="ce-field"><label>Contacted By</label><input value="${c.contacted_by||''}" onblur="sf(${c.id},'contacted_by',this.value)" placeholder="Team member"></div>
